@@ -1,0 +1,27 @@
+div.app-container {
+    display: flex;
+}
+
+div.action-component-box {
+    border: 2px solid black;
+    border-radius: 12px;
+    background-color: aliceblue;
+    min-width: 800px;
+    min-height: 600px;
+}
+
+h2.boxheader {
+    font-size: 1em;
+    font-weight: bold;
+    background-color: mediumpurple;
+    margin: 0;
+    padding: 0.1em;
+    margin-bottom: 1em;
+    background-clip: border-box;
+    overflow: hidden;
+}
+
+hr {
+    margin-left: 2em;
+    margin-right: 2em;
+}
