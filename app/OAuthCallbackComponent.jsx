@@ -51,59 +51,62 @@ class OAuthCallbackComponent extends React.Component {
      * @returns {Promise<void>}
      */
     async requestToken() {
-        // const postdata = {
-        //     grant_type: "authorization_code",
-        //     client_id: this.props.clientId,
-        //     redirect_uri: this.props.redirectUri,
-        //     code: this.state.authCode
-        // }
+        const postdata = {
+            grant_type: "authorization_code",
+            client_id: this.props.clientId,
+            redirect_uri: this.props.redirectUri,
+            code: this.state.authCode
+        }
         console.log("passed client_id ", this.props.clientId);
 
-        let postdata = new FormData();
-        postdata.append("grant_type","authorization_code");
-        postdata.append("client_id", this.props.clientId);
-        postdata.append("redirect_uri", this.props.redirectUri);
-        postdata.append("code", this.state.authCode);
+        const content_elements = Object.keys(postdata).map(k=>k + "=" + encodeURIComponent(postdata[k]));
+        const body_content = content_elements.join("&");
 
         const tokenUri = this.props.oAuthUri + "/adfs/oauth2/token";
-        const response = await fetch(tokenUri, {method: "POST", body: postdata});
+        const response = await fetch(tokenUri, {method: "POST", body: body_content, headers: {Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded"}});
         switch(response.status) {
             case 200:
                 const content = await response.json();
-                return this.setStatePromise({stage: 2, token: content.access_token, expiry: content.expires_in});
+                return this.setStatePromise({stage: 2, token: content.access_token, expiry: content.expires_in, inProgress: false});
             default:
                 const errorContent = await response.text();
                 console.log("token endpoint returned ", response.status, ": ", errorContent);
-                return this.setStatePromise({lastError: errorContent});
+                return this.setStatePromise({lastError: errorContent, inProgress: false});
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        //if the clientId is set when we are ready for it, then action straightaway. Otherwise it will be picked
-        //up in componentDidMount.
+        //if the clientId is set when we are ready for it (stage==1), then action straightaway.
+        //Otherwise it will be picked up in componentDidMount after stage 1 completes.
         if(prevProps.clientId==="" && this.props.clientId!=="" && this.state.stage===1){
-            this.requestToken().catch(err=>console.error("requestToken failed: ", err));
+            this.requestToken().catch(err=>{
+                console.error("requestToken failed: ", err);
+                this.setState({lastError: err.toString, inProgress: false});
+            });
         }
     }
 
     async componentDidMount() {
         await this.loadInAuthcode();
         if(this.props.clientId!=="") {
-            await this.requestToken();
+            await this.requestToken().catch(err=>{
+                console.error("requestToken failed: ", err);
+                this.setState({lastError: err.toString, inProgress: false});
+            });
         }
     }
 
     render() {
         return <div>
             <h1>testing</h1>
-            <table>
+            <table border="1">
                 <tbody>
                 <tr><td>stage</td><td><pre>{this.state.stage}</pre></td></tr>
                 <tr><td>authCode</td><td><pre>{this.state.authCode}</pre></td></tr>
                 <tr><td>state</td><td><pre>{this.state.state}</pre></td></tr>
                 <tr><td>token</td><td><pre>{this.state.token}</pre></td></tr>
-                <tr><td>lastError</td><td><pre>{this.state.lastError}</pre></td></tr>
-                <tr><td>inProgress</td><td><pre>{this.state.inProgress}</pre></td></tr>
+                <tr><td>lastError</td><td><pre style={{color:"red"}}>{this.state.lastError}</pre></td></tr>
+                <tr><td>inProgress</td><td><pre>{this.state.inProgress ? "yes" : "no"}</pre></td></tr>
                 <tr><td>doRedirect</td><td><pre>{this.state.doRedirect}</pre></td></tr>
                 </tbody>
             </table>
