@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import jwt from 'jsonwebtoken';
+
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -27,12 +29,54 @@ class OAuthCallbackComponent extends React.Component {
             haveClientId: false,
             lastError: null,
             inProgress: true,
-            doRedirect: false
+            doRedirect: false,
+            decodedContent: "",
+            signingKey: ""
         }
     }
 
     setStatePromise(newState) {
         return new Promise((resolve, reject)=>this.setState(newState, ()=>resolve()));
+    }
+
+    /**
+     * perform the validation of the token via jsonwebtoken library.
+     * if validation fails then the returned promise is rejected
+     * if validation succeeds, then the promise only completes once the decoded content has been set into the state.
+     * @returns {Promise<unknown>}
+     */
+    async validateAndDecode() {
+        if(!this.state.signingKey){
+            await this.loadInSigningKey();
+        }
+
+        return new Promise((resolve, reject)=>{
+            jwt.verify(this.state.token, this.state.signingKey, (err,decoded)=>{
+                if(err){
+                    console.error("could not verify JWT: ", err);
+                    this.setStatePromise({lastError: err}).then(()=>reject(err));
+                }
+                console.log("decoded JWT");
+                this.setState({decodedContent: decoded, stage: 3}, ()=>resolve());
+            });
+        });
+    }
+
+    /**
+     * gets the signing key from the server
+     * @returns {Promise<void>}
+     */
+    async loadInSigningKey() {
+        const result = await fetch("/meta/oauth/publickey.pem");
+        switch(result.status){
+            case 200:
+                const content = await result.text();
+                return this.setStatePromise({signingKey: content});
+            default:
+                console.error("could not retrieve signing key, server gave us ", result.status);
+                await this.setStatePromise({lastError: "Could not retrieve signing key"});
+                throw "Could not retrieve signing key";
+        }
     }
 
     /**
@@ -51,6 +95,9 @@ class OAuthCallbackComponent extends React.Component {
      * @returns {Promise<void>}
      */
     async requestToken() {
+        //wait for ui to update before continuing
+        await function(){ return new Promise((resolve,reject)=>window.setTimeout(()=>resolve(), 500))}
+
         const postdata = {
             grant_type: "authorization_code",
             client_id: this.props.clientId,
@@ -79,9 +126,9 @@ class OAuthCallbackComponent extends React.Component {
         //if the clientId is set when we are ready for it (stage==1), then action straightaway.
         //Otherwise it will be picked up in componentDidMount after stage 1 completes.
         if(prevProps.clientId==="" && this.props.clientId!=="" && this.state.stage===1){
-            this.requestToken().catch(err=>{
+            this.requestToken().then(this.validateAndDecode()).catch(err=>{
                 console.error("requestToken failed: ", err);
-                this.setState({lastError: err.toString, inProgress: false});
+                this.setState({lastError: err.toString(), inProgress: false});
             });
         }
     }
@@ -91,7 +138,7 @@ class OAuthCallbackComponent extends React.Component {
         if(this.props.clientId!=="") {
             await this.requestToken().catch(err=>{
                 console.error("requestToken failed: ", err);
-                this.setState({lastError: err.toString, inProgress: false});
+                this.setState({lastError: err.toString(), inProgress: false});
             });
         }
     }
@@ -108,6 +155,7 @@ class OAuthCallbackComponent extends React.Component {
                 <tr><td>lastError</td><td><pre style={{color:"red"}}>{this.state.lastError}</pre></td></tr>
                 <tr><td>inProgress</td><td><pre>{this.state.inProgress ? "yes" : "no"}</pre></td></tr>
                 <tr><td>doRedirect</td><td><pre>{this.state.doRedirect}</pre></td></tr>
+                <tr><td>decodedContent</td><td><pre>{this.state.decodedContent}</pre></td></tr>
                 </tbody>
             </table>
         </div>
