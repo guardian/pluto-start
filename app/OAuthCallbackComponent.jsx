@@ -25,6 +25,7 @@ class OAuthCallbackComponent extends React.Component {
             authCode: null,
             state: "/",
             token: null,
+            refreshToken: null,
             expiry: null,
             haveClientId: false,
             lastError: null,
@@ -32,7 +33,9 @@ class OAuthCallbackComponent extends React.Component {
             doRedirect: false,
             decodedContent: "",
             signingKey: ""
-        }
+        };
+
+        this.validateAndDecode = this.validateAndDecode.bind(this);
     }
 
     setStatePromise(newState) {
@@ -57,7 +60,9 @@ class OAuthCallbackComponent extends React.Component {
                     this.setStatePromise({lastError: err}).then(()=>reject(err));
                 }
                 console.log("decoded JWT");
-                this.setState({decodedContent: decoded, stage: 3}, ()=>resolve());
+                sessionStorage.setItem("adfs-test:token", this.state.token);    //it validates, save the token
+                sessionStorage.setItem("adfs-test:refresh", this.state.refreshToken);
+                this.setState({decodedContent: JSON.stringify(decoded), stage: 3}, ()=>resolve());
             });
         });
     }
@@ -114,7 +119,11 @@ class OAuthCallbackComponent extends React.Component {
         switch(response.status) {
             case 200:
                 const content = await response.json();
-                return this.setStatePromise({stage: 2, token: content.access_token, expiry: content.expires_in, inProgress: false});
+                return this.setStatePromise({stage: 2,
+                    token: content.access_token,
+                    refreshToken: content.hasOwnProperty("refresh_token") ? content.refresh_token : null,
+                    expiry: content.expires_in,
+                    inProgress: false});
             default:
                 const errorContent = await response.text();
                 console.log("token endpoint returned ", response.status, ": ", errorContent);
@@ -126,7 +135,7 @@ class OAuthCallbackComponent extends React.Component {
         //if the clientId is set when we are ready for it (stage==1), then action straightaway.
         //Otherwise it will be picked up in componentDidMount after stage 1 completes.
         if(prevProps.clientId==="" && this.props.clientId!=="" && this.state.stage===1){
-            this.requestToken().then(this.validateAndDecode()).catch(err=>{
+            this.requestToken().then(this.validateAndDecode).catch(err=>{
                 console.error("requestToken failed: ", err);
                 this.setState({lastError: err.toString(), inProgress: false});
             });
@@ -152,10 +161,12 @@ class OAuthCallbackComponent extends React.Component {
                 <tr><td>authCode</td><td><pre>{this.state.authCode}</pre></td></tr>
                 <tr><td>state</td><td><pre>{this.state.state}</pre></td></tr>
                 <tr><td>token</td><td><pre>{this.state.token}</pre></td></tr>
-                <tr><td>lastError</td><td><pre style={{color:"red"}}>{this.state.lastError}</pre></td></tr>
+                <tr><td>refresh token</td><td><pre>{this.state.refreshToken}</pre></td></tr>
+                <tr><td>lastError</td><td><pre style={{color:"red"}}>{this.state.lastError}</pre>
+                    <a href="/" style={{display: this.state.lastError ? "inline" : "none"}}>Try again?</a></td></tr>
                 <tr><td>inProgress</td><td><pre>{this.state.inProgress ? "yes" : "no"}</pre></td></tr>
                 <tr><td>doRedirect</td><td><pre>{this.state.doRedirect}</pre></td></tr>
-                <tr><td>decodedContent</td><td><pre>{this.state.decodedContent}</pre></td></tr>
+                <tr><td>decodedContent</td><td><pre id="decoded-content-holder">{this.state.decodedContent}</pre></td></tr>
                 </tbody>
             </table>
         </div>
