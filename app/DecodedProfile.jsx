@@ -25,13 +25,14 @@ class DecodedProfile {
         return this._content.hasOwnProperty("iat") ? this._content.iat : null;
     }
     iat() {
-        return moment.utc(this.iat_raw());
+        return moment.utc(this.iat_raw()*1000);
     }
     exp_raw() {
         return this._content.hasOwnProperty("exp") ? this._content.exp : null;
     }
     exp() {
-        return moment.utc(this.exp_raw());
+        //would be cool to get the user's timezone from the profile to automatically zone this
+        return moment.utc(this.exp_raw()*1000);
     }
     sub() {
         return this._content.hasOwnProperty("sub") ? this._content.sub : null;
