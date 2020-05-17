@@ -5,6 +5,7 @@ import DecodedProfile from "./DecodedProfile.jsx";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import css from './loginbanner.css';
+import {tz} from "moment-timezone";
 
 class LoginBanner extends React.Component {
     static propTypes = {
@@ -41,7 +42,10 @@ class LoginBanner extends React.Component {
             </div>
         }
         return <div className="login-banner">
-            <div className="welcome">Welcome {this.state.loginData.first_name()} {this.state.loginData.family_name()}</div>
+            <div className="welcome">
+                <p style={{margin: 0, padding: 0}}>Welcome {this.state.loginData.first_name()} {this.state.loginData.family_name()}</p>
+                <p className="smaller">Your login expires at {this.state.loginData.exp().tz("Europe/London").format("HH:mm")} (London).  Auto-refresh is {sessionStorage.getItem("adfs-test:refresh") ? "available" : "not available"}</p>
+            </div>
             <div className="username-box">
                 <FontAwesomeIcon style={{marginRight: "0.25em"}} icon="user"/>
                 <span style={{paddingRight: "0.5em"}}>{this.state.loginData.username()}</span>

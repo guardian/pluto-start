@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {tz} from "moment-timezone";
 
 /**
  * this is a helper object to get at the fields of the JWT claim while enabling auto-complete and nice
@@ -24,13 +25,13 @@ class DecodedProfile {
         return this._content.hasOwnProperty("iat") ? this._content.iat : null;
     }
     iat() {
-        return moment(this.iat_raw());
+        return moment.utc(this.iat_raw());
     }
     exp_raw() {
         return this._content.hasOwnProperty("exp") ? this._content.exp : null;
     }
     exp() {
-        return moment(this.exp_raw());
+        return moment.utc(this.exp_raw());
     }
     sub() {
         return this._content.hasOwnProperty("sub") ? this._content.sub : null;

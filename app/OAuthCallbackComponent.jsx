@@ -139,6 +139,9 @@ class OAuthCallbackComponent extends React.Component {
     render() {
         return <div>
             <h1>testing</h1>
+            <div style={{display: this.state.stage===3 && !this.state.inProgress ? "block" : "none", color: "darkgreen", marginBottom: "1em"}}>
+                Login process is complete! (Ignore the "not logged in" message above)  <a href="/">Click here</a> to go back to the main page.
+            </div>
             <table border="1">
                 <tbody>
                 <tr><td>stage</td><td><pre>{this.state.stage}</pre></td></tr>

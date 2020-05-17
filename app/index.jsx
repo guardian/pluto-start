@@ -6,6 +6,7 @@ import { faFolder, faFolderOpen, faTimes, faSearch, faCog, faUser, faSignOutAlt 
 import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
+import LoginBanner from "./LoginBanner.jsx";
 
 library.add(faFolder, faFolderOpen, faTimes, faSearch, faCog, faUser, faSignOutAlt);
 
@@ -32,7 +33,7 @@ class App extends React.Component {
     }
 
     haveToken() {
-        return window.sessionStorage.getItem("adfstest-token");
+        return window.sessionStorage.getItem("adfs-test:token");
     }
 
     /**
@@ -97,7 +98,11 @@ class App extends React.Component {
 
         //it's important that logout uses component= not render=. render= is evaluated at load, when oAuthUri is blank
         //need it to be evaluated at run when it is set
-        return <Switch>
+        return <div>
+            {
+                window.location.href.includes("oauth2") ? "" : <LoginBanner/>
+            }
+            <Switch>
             <Route exact path="/logout" component={()=>{
                 sessionStorage.removeItem("adfs-test:token")
                 return <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"}/>
@@ -105,7 +110,8 @@ class App extends React.Component {
             <Route exact path="/oauth2/callback" render={(props)=><OAuthCallbackComponent {...props} oAuthUri={this.state.oAuthUri} clientId={this.state.clientId} redirectUri={this.redirectUri}/>}/>
             <Route exact path="/" component={RootComponent}/>
             <Route path="/" component={NotFoundComponent}/>
-        </Switch>
+            </Switch>
+        </div>
     }
 }
 
