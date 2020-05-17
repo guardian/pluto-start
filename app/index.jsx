@@ -2,10 +2,12 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter, Link, Route, Switch, Redirect, withRouter} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFolder, faFolderOpen, faTimes, faSearch, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faFolder, faFolderOpen, faTimes, faSearch, faCog, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
+
+library.add(faFolder, faFolderOpen, faTimes, faSearch, faCog, faUser, faSignOutAlt);
 
 class App extends React.Component {
     constructor(props) {
@@ -93,7 +95,13 @@ class App extends React.Component {
             return <pre>Redirecting...</pre>
         }
 
+        //it's important that logout uses component= not render=. render= is evaluated at load, when oAuthUri is blank
+        //need it to be evaluated at run when it is set
         return <Switch>
+            <Route exact path="/logout" component={()=>{
+                sessionStorage.removeItem("adfs-test:token")
+                return <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"}/>
+            }}/>
             <Route exact path="/oauth2/callback" render={(props)=><OAuthCallbackComponent {...props} oAuthUri={this.state.oAuthUri} clientId={this.state.clientId} redirectUri={this.redirectUri}/>}/>
             <Route exact path="/" component={RootComponent}/>
             <Route path="/" component={NotFoundComponent}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import jwt from 'jsonwebtoken';
+import {loadInSigningKey, validateAndDecode} from "./JwtHelpers.jsx";
 
 /**
  * this component handles the token redirect from the authentication
@@ -49,40 +50,22 @@ class OAuthCallbackComponent extends React.Component {
      * @returns {Promise<unknown>}
      */
     async validateAndDecode() {
-        if(!this.state.signingKey){
-            await this.loadInSigningKey();
+        let signingKey = this.state.signingKey;
+        if(!signingKey){
+            signingKey = await loadInSigningKey();
+            await this.setStatePromise({signingKey: signingKey});
         }
 
-        return new Promise((resolve, reject)=>{
-            jwt.verify(this.state.token, this.state.signingKey, (err,decoded)=>{
-                if(err){
-                    console.error("could not verify JWT: ", err);
-                    this.setStatePromise({lastError: err}).then(()=>reject(err));
-                }
-                console.log("decoded JWT");
-                sessionStorage.setItem("adfs-test:token", this.state.token);    //it validates, save the token
-                sessionStorage.setItem("adfs-test:refresh", this.state.refreshToken);
-                this.setState({decodedContent: JSON.stringify(decoded), stage: 3}, ()=>resolve());
-            });
-        });
-    }
-
-    /**
-     * gets the signing key from the server
-     * @returns {Promise<void>}
-     */
-    async loadInSigningKey() {
-        const result = await fetch("/meta/oauth/publickey.pem");
-        switch(result.status){
-            case 200:
-                const content = await result.text();
-                return this.setStatePromise({signingKey: content});
-            default:
-                console.error("could not retrieve signing key, server gave us ", result.status);
-                await this.setStatePromise({lastError: "Could not retrieve signing key"});
-                throw "Could not retrieve signing key";
+        try {
+            const decoded = await validateAndDecode(this.state.token, this.state.signingKey);
+            return this.setStatePromise({decodedContent: JSON.stringify(decoded), stage: 3});
+        } catch(err){
+            console.error("could not decode JWT: ", err);
+            return this.setStatePromise({lastError: err.toString()});
         }
     }
+
+
 
     /**
      * gets the auth code parameter from the URL query string and stores it in the state
@@ -119,6 +102,7 @@ class OAuthCallbackComponent extends React.Component {
         switch(response.status) {
             case 200:
                 const content = await response.json();
+                document.cookie = "adfs-test:token=" + content.access_token + "; domain=localhost; path=/";
                 return this.setStatePromise({stage: 2,
                     token: content.access_token,
                     refreshToken: content.hasOwnProperty("refresh_token") ? content.refresh_token : null,
