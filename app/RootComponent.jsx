@@ -1,6 +1,7 @@
 import React from "react";
-import LoginBanner from "./LoginBanner.jsx";
-
+import ScalaBackendClient from "./ScalaBackendClient.jsx";
+import css from "./rootcomponent.css"
+import DjangoBackendClient from "./DjangoBackendClient.jsx";
 class RootComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,10 @@ class RootComponent extends React.Component {
     render() {
         return <div>
             <h1>App root</h1>
-            <p>Nothing here yet!</p>
+            <div className="api-client-holder">
+                <ScalaBackendClient backendRootUrl="https://adfstest-scala.pluto-dev.gnm.int"/>
+                <DjangoBackendClient/>
+            </div>
         </div>
     }
 }

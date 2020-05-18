@@ -37,4 +37,13 @@ async function loadInSigningKey() {
             throw "Could not retrieve signing key";
     }
 }
-export {validateAndDecode, loadInSigningKey};
+
+/**
+ * returns the raw JWT for passing to backend services
+ * @returns {string} the JWT, or null if it is not set.
+ */
+function getRawToken() {
+    return sessionStorage.getItem("adfs-test:token");
+}
+
+export {validateAndDecode, loadInSigningKey, getRawToken};

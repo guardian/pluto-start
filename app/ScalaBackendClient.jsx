@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import css from './appgeneric.css';
+import {getRawToken} from "./JwtHelpers.jsx";
 
 class ScalaBackendClient extends React.Component {
     static propTypes = {
@@ -27,8 +28,7 @@ class ScalaBackendClient extends React.Component {
     //assumption is that this would become a library function that can be used generically to establish login
     async checkLogin(fetchResponse) {
         if(fetchResponse.status===403) { //request forbidden
-            await this.setStatePromise(oldState=>{return {requestLog: oldState.requestLog.concat("not logged in! Log in via the popup and try again"), isLoggedIn: false}});
-            window.open(this.props.backendRootUrl + "/extlogin", "_blank");
+            await this.setStatePromise(oldState=>{return {requestLog: oldState.requestLog.concat("not logged in! Log in via the link above and try again"), isLoggedIn: false}});
             reject("not logged in");
         } else {
             return this.setStatePromise(oldState=>{return {requestLog: oldState.requestLog.concat("you are logged in to this service"), isLoggedIn: true}});
@@ -36,8 +36,18 @@ class ScalaBackendClient extends React.Component {
     }
 
     async performRequest() {
+        const tok = getRawToken();
+        if(!tok){
+            return this.setStatePromise(oldState=>{return {requestLog: oldState.requestLog.concat("no current session. Log in via the link above and try again"), isLoggedIn: false}});
+        }
+
         await this.setStatePromise(oldState=>{return {requestLog: oldState.requestLog.concat("starting request..."), loading: true}});
-        const result = await fetch(this.props.backendRootUrl + "/api/profile", {credentials: "include"});
+        const result = await fetch(this.props.backendRootUrl + "/api/profile", {
+            headers: {
+                "Authorization": "Bearer " + tok,
+                "Accept": "application/json"
+            }
+        });
         await this.checkLogin(result);  //if not logged in this promise is rejected and await throws an exception
 
         switch(result.status) {
