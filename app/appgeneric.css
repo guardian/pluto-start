@@ -6,7 +6,6 @@ div.action-component-box {
     border: 2px solid black;
     border-radius: 12px;
     background-color: aliceblue;
-    min-width: 800px;
     min-height: 600px;
 }
 
