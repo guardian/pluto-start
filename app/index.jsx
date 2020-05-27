@@ -36,25 +36,6 @@ class App extends React.Component {
         return window.sessionStorage.getItem("adfs-test:token");
     }
 
-    /**
-     * uses the metadata loaded from the server to generate the correct URL to kick off the authentication flow.
-     * if there is no token in storage on mount, then the user is redirected out to this url to authenticate
-     * @returns {string}
-     */
-    makeLoginUrl() {
-        const currentUri = new URL(window.location.href);
-        const args = {
-            response_type: "code",
-            client_id: this.state.clientId,
-            resource: this.state.resource,
-            redirect_uri: this.redirectUri,
-            state: currentUri.pathname,
-        };
-
-        const encoded = Object.keys(args).map(k=>k + "=" + encodeURIComponent(args[k]))
-        return this.state.oAuthUri + "/adfs/oauth2/authorize?" + encoded.join("&");
-    }
-
     async loadOauthData() {
         const response = await fetch("/meta/oauth/config.json");
         switch(response.status){
@@ -90,26 +71,31 @@ class App extends React.Component {
     }
 
     render(){
-        if(this.state.redirectToLogin && !this.state.startup && !this.state.lastError && !window.location.href.includes("oauth2")) {
-            window.location.href = this.makeLoginUrl();
-
-            return <pre>Redirecting...</pre>
-        }
+        // if(this.state.redirectToLogin && !this.state.startup && !this.state.lastError && !window.location.href.includes("oauth2")) {
+        //     window.location.href = this.makeLoginUrl();
+        //
+        //     return <pre>Redirecting...</pre>
+        // }
 
         //it's important that logout uses component= not render=. render= is evaluated at load, when oAuthUri is blank
         //need it to be evaluated at run when it is set
+        //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
         return <div>
             {
-                window.location.href.includes("oauth2") ? "" : <LoginBanner/>
+                window.location.href.includes("oauth2") ? "" : <LoginBanner clientId={this.state.clientId}
+                                                                            redirectUri={this.redirectUri}
+                                                                            resource={this.state.resource}
+                                                                            oAuthUri={this.state.oAuthUri}/>
             }
             <Switch>
-            <Route exact path="/logout" component={()=>{
-                sessionStorage.removeItem("adfs-test:token")
-                return <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"}/>
-            }}/>
-            <Route exact path="/oauth2/callback" render={(props)=><OAuthCallbackComponent {...props} oAuthUri={this.state.oAuthUri} clientId={this.state.clientId} redirectUri={this.redirectUri}/>}/>
-            <Route exact path="/" component={RootComponent}/>
-            <Route path="/" component={NotFoundComponent}/>
+                <Route exact path="/adfs/oauth2/logout" render={()=><Redirect to="/"/>}/>
+                <Route exact path="/logout" component={()=>{
+                    sessionStorage.removeItem("adfs-test:token")
+                    return <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"}/>
+                }}/>
+                <Route exact path="/oauth2/callback" render={(props)=><OAuthCallbackComponent {...props} oAuthUri={this.state.oAuthUri} clientId={this.state.clientId} redirectUri={this.redirectUri}/>}/>
+                <Route exact path="/" component={RootComponent}/>
+                <Route path="/" component={NotFoundComponent}/>
             </Switch>
         </div>
     }

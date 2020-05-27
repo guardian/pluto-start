@@ -14,8 +14,8 @@ class RootComponent extends React.Component {
         return <div>
             <h1>App root</h1>
             <div className="api-client-holder">
-                <ScalaBackendClient backendRootUrl="https://adfstest-scala.pluto-dev.gnm.int"/>
-                <DjangoBackendClient/>
+                <ScalaBackendClient backendRootUrl="https://adfstest.pluto-dev.gnm.int/scala-backend"/>
+                <DjangoBackendClient backendRootUrl="https://adfstest.pluto-dev.gnm.int/django-backend"/>
             </div>
         </div>
     }

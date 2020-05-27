@@ -23,6 +23,10 @@ p.smaller {
     margin: 0;
 }
 
+p.warning {
+    color: orangered;
+}
+
 div.username-box {
     flex: 1;
     justify-self: end;
