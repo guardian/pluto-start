@@ -1,0 +1,48 @@
+stages:
+  - build
+  - deploy
+
+frontend:
+  image: node:12.18-alpine3.12
+  stage: build
+  script:
+    - cd frontend
+    - yarn install
+    - yarn lint
+    - yarn test
+    - yarn build:prod
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-node
+    paths:
+      - frontend/node_modules/
+  artifacts:
+    paths:
+      - build/bundle.js
+    reports:
+      junit: frontend/junit.xml
+  tags:
+    - gnm
+    - docker
+  only:
+    - master
+    - merge_requests
+
+deploy:
+  image: docker:19.03.11
+  stage: deploy
+  services:
+    - docker:19.03.11-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+  script:
+    - echo $DOCKER_HOST
+    - cd build
+    - docker build . -t "$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID"
+    - docker push "$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID"
+  tags:
+    - gnm
+    - docker
+  only:
+    - master
+    - merge_requests

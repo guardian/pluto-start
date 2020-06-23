@@ -1,19 +1,31 @@
 import moment from "moment";
 import { tz } from "moment-timezone";
 
+interface JwtDataShape {
+  aud?: string;
+  iss?: string;
+  iat?: number;
+  exp?: number;
+  sub?: string;
+  email?: string;
+  first_name?: string;
+  family_name?: string;
+  username?: string;
+  location?: string;
+  job_title?: string;
+  authmethod?: string;
+  auth_time?: number;
+  ver?: string;
+  appid?: string;
+}
 /**
  * this is a helper object to get at the fields of the JWT claim while enabling auto-complete and nice
  * things like that
  */
 class DecodedProfile {
-  constructor(fromData) {
-    if (!fromData.hasOwnProperty("sub") || !fromData.hasOwnProperty("aud")) {
-      console.error(
-        "Tried to initialise DecodedProfile from something that is not a user profile"
-      );
-      throw TypeError;
-    }
+  _content: JwtDataShape;
 
+  constructor(fromData: object) {
     this._content = fromData;
   }
 
@@ -27,14 +39,16 @@ class DecodedProfile {
     return this._content.hasOwnProperty("iat") ? this._content.iat : null;
   }
   iat() {
-    return moment.utc(this.iat_raw() * 1000);
+    const time = this.iat_raw();
+    return time ? moment.utc(time * 1000) : null;
   }
   exp_raw() {
     return this._content.hasOwnProperty("exp") ? this._content.exp : null;
   }
   exp() {
     //would be cool to get the user's timezone from the profile to automatically zone this
-    return moment.utc(this.exp_raw() * 1000);
+    const time = this.exp_raw();
+    return time ? moment.utc(time * 1000) : null;
   }
   sub() {
     return this._content.hasOwnProperty("sub") ? this._content.sub : null;

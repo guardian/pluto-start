@@ -36,7 +36,17 @@ var config = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        include: path.join(__dirname, "app/"),
+        use: [
+          "style-loader",
+          {
+            loader: "typings-for-css-modules-loader",
+            options: {
+              modules: true,
+              namedExport: true,
+            },
+          },
+        ],
       },
     ],
   },

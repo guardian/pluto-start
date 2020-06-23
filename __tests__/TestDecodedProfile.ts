@@ -1,5 +1,5 @@
-import DecodedProfile from "../app/DecodedProfile.jsx";
-import moment from "moment";
+import DecodedProfile from "../app/DecodedProfile";
+import moment, { Moment } from "moment";
 
 describe("DecodedProfile", () => {
   it("should take information from a json object and present it nicely", () => {
@@ -29,11 +29,13 @@ describe("DecodedProfile", () => {
       "http://authserver.corp.int/adfs/services/trust"
     );
     expect(prof.iat_raw()).toEqual(1589713614);
-    expect(prof.iat().format("YYYY-MM-DD HH:mm:ss")).toEqual(
+    const iat_obj = prof.iat();
+    expect(iat_obj).toBeTruthy();
+    expect((<Moment>iat_obj).format("YYYY-MM-DD HH:mm:ss")).toEqual(
       "2020-05-17 11:06:54"
     );
     expect(prof.exp_raw()).toEqual(1589717214);
-    expect(prof.exp().format("YYYY-MM-DD HH:mm:ss")).toEqual(
+    expect((<Moment>prof.exp()).format("YYYY-MM-DD HH:mm:ss")).toEqual(
       "2020-05-17 12:06:54"
     );
     expect(prof.sub()).toEqual("jan_kowalski@corp.int");

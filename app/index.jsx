@@ -21,7 +21,7 @@ import {
 import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
-import LoginBanner from "./LoginBanner.jsx";
+import LoginBanner from "./LoginBanner.js";
 
 library.add(
   faFolder,

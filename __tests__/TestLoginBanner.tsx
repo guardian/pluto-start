@@ -12,7 +12,7 @@ describe("LoginBanner", () => {
   it("should display a welcome message if there is content", (done) => {
     Object.defineProperty(window, "sessionStorage", {
       value: {
-        getItem(key) {
+        getItem(key: string) {
           switch (key) {
             case "adfs-test:token":
               return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiYXVkIjoiamVzdC10ZXN0IiwidXNlcm5hbWUiOiJqb2huX2RvZSIsImZhbWlseV9uYW1lIjoiRG9lIiwiZmlyc3RfbmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9.1wuso9Nn7utj_vxF9Ycy2LRYVbfArv6DcT4fTRMfXc0";
@@ -81,6 +81,11 @@ describe("LoginBanner", () => {
   });
 });
 
+interface ExpectedState {
+  expiryWarning: boolean;
+  expired: boolean;
+  expiredAt: number;
+}
 describe("LoginBanner.checkExpiryHandler", () => {
   it("should set expiryWarning if the expiry time is less than 300 seconds in the future", (done) => {
     const nowTimeSeconds = new Date().getTime() / 1000;
@@ -93,17 +98,16 @@ describe("LoginBanner.checkExpiryHandler", () => {
         oAuthUri="fdsfdsfds"
       />
     );
-    rendered
-      .instance()
-      .setStatePromise({
+    rendered.instance().setState(
+      {
         loginData: new DecodedProfile({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",
         }),
-      })
-      .then(() => {
-        const completionPromise = rendered.instance().checkExpiryHandler();
+      },
+      () => {
+        const completionPromise = (rendered.instance() as LoginBanner).checkExpiryHandler();
 
         if (completionPromise == null) {
           done.fail(
@@ -111,13 +115,15 @@ describe("LoginBanner.checkExpiryHandler", () => {
           );
         } else {
           completionPromise.then(() => {
-            expect(rendered.instance().state.expiryWarning).toBeTruthy();
-            expect(rendered.instance().state.expired).toBeFalsy();
-            expect(rendered.instance().state.expiredAt).toEqual(null);
+            const renderedState = rendered.instance().state as ExpectedState;
+            expect(renderedState.expiryWarning).toBeTruthy();
+            expect(renderedState.expired).toBeFalsy();
+            expect(renderedState.expiredAt).toEqual(null);
             done();
           });
         }
-      });
+      }
+    );
   });
 
   it("should set expired if the expiry time is in the past", (done) => {
@@ -131,17 +137,16 @@ describe("LoginBanner.checkExpiryHandler", () => {
         oAuthUri="fdsfdsfds"
       />
     );
-    rendered
-      .instance()
-      .setStatePromise({
+    rendered.instance().setState(
+      {
         loginData: new DecodedProfile({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",
         }),
-      })
-      .then(() => {
-        const completionPromise = rendered.instance().checkExpiryHandler();
+      },
+      () => {
+        const completionPromise = (rendered.instance() as LoginBanner).checkExpiryHandler();
 
         if (completionPromise == null) {
           done.fail(
@@ -149,13 +154,15 @@ describe("LoginBanner.checkExpiryHandler", () => {
           );
         } else {
           completionPromise.then(() => {
-            expect(rendered.instance().state.expiryWarning).toBeFalsy();
-            expect(rendered.instance().state.expired).toBeTruthy();
-            expect(rendered.instance().state.expiredAt).toEqual(fakeExpTime);
+            const renderedState = rendered.instance().state as ExpectedState;
+            expect(renderedState.expiryWarning).toBeFalsy();
+            expect(renderedState.expired).toBeTruthy();
+            expect(renderedState.expiredAt).toEqual(fakeExpTime);
             done();
           });
         }
-      });
+      }
+    );
   });
 
   it("should set nothing if expiry time is more than 5 minutes in the future", (done) => {
@@ -169,17 +176,16 @@ describe("LoginBanner.checkExpiryHandler", () => {
         oAuthUri="fdsfdsfds"
       />
     );
-    rendered
-      .instance()
-      .setStatePromise({
+    rendered.instance().setState(
+      {
         loginData: new DecodedProfile({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",
         }),
-      })
-      .then(() => {
-        const completionPromise = rendered.instance().checkExpiryHandler();
+      },
+      () => {
+        const completionPromise = (rendered.instance() as LoginBanner).checkExpiryHandler();
 
         if (completionPromise == null) {
           done();
@@ -190,6 +196,7 @@ describe("LoginBanner.checkExpiryHandler", () => {
             );
           });
         }
-      });
+      }
+    );
   });
 });
