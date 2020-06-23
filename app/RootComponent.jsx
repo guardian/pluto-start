@@ -1,7 +1,5 @@
 import React from "react";
-import ScalaBackendClient from "./ScalaBackendClient.jsx";
-import css from "./rootcomponent.css";
-import DjangoBackendClient from "./DjangoBackendClient.jsx";
+import "./rootcomponent.css";
 class RootComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -10,13 +8,34 @@ class RootComponent extends React.Component {
   }
 
   render() {
+    const token = window.sessionStorage.getItem("adfs-test:token");
+
     return (
       <div>
-        <h1>App root</h1>
-        <div className="api-client-holder">
-          <ScalaBackendClient backendRootUrl="https://adfstest.pluto-dev.gnm.int/scala-backend" />
-          <DjangoBackendClient backendRootUrl="https://adfstest.pluto-dev.gnm.int/django-backend" />
-        </div>
+        <h1>Next-Gen Pluto Dev Login</h1>
+        {token ? (
+          <div>
+            <p>
+              This page is the under-development landing page for "Prexit", the
+              next-generation version of Pluto.
+            </p>
+            <p>
+              Choose from the following locations:
+              <ul>
+                <li>
+                  <a href="/pluto-core">Pluto-Core</a>
+                </li>
+                <li>
+                  <a href="/vs-jobs">Pluto-Logtool</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        ) : (
+          <div>
+            <p>Please log in with the link above to continue</p>
+          </div>
+        )}
       </div>
     );
   }

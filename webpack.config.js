@@ -20,6 +20,11 @@ var config = {
   module: {
     rules: [
       {
+        test: /\.tsx?/,
+        include: APP_DIR,
+        loader: "ts-loader",
+      },
+      {
         test: /\.jsx?/,
         include: APP_DIR,
         loader: "ts-loader",
@@ -39,12 +44,9 @@ var config = {
         include: path.join(__dirname, "app/"),
         use: [
           "style-loader",
+          "css-loader",
           {
-            loader: "typings-for-css-modules-loader",
-            options: {
-              modules: true,
-              namedExport: true,
-            },
+            loader: "@teamsupercell/typings-for-css-modules-loader",
           },
         ],
       },

@@ -21,7 +21,7 @@ import {
 import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
-import LoginBanner from "./LoginBanner.js";
+import LoginBanner from "./LoginBanner.tsx";
 
 library.add(
   faFolder,
@@ -104,12 +104,6 @@ class App extends React.Component {
   }
 
   render() {
-    // if(this.state.redirectToLogin && !this.state.startup && !this.state.lastError && !window.location.href.includes("oauth2")) {
-    //     window.location.href = this.makeLoginUrl();
-    //
-    //     return <pre>Redirecting...</pre>
-    // }
-
     //it's important that logout uses component= not render=. render= is evaluated at load, when oAuthUri is blank
     //need it to be evaluated at run when it is set
     //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root

@@ -6,11 +6,10 @@ frontend:
   image: node:12.18-alpine3.12
   stage: build
   script:
-    - cd frontend
     - yarn install
     - yarn lint
     - yarn test
-    - yarn build:prod
+    - yarn build
   cache:
     key: ${CI_COMMIT_REF_SLUG}-node
     paths:
