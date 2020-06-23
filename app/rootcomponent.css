@@ -1,9 +1,9 @@
 div.api-client-holder {
-    display: flex;
+  display: flex;
 }
 
 div.action-component-box {
-    flex: 1;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+  flex: 1;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
