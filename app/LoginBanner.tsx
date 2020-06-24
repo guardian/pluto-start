@@ -23,11 +23,9 @@ interface LoginBannerState {
   expiryWarning: boolean;
 }
 
-interface IndexableObject {
-  [key: string]: string;
-}
+class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
+  state: LoginBannerState;
 
-class LoginBanner extends React.Component {
   static propTypes = {
     clientId: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
@@ -45,20 +43,16 @@ class LoginBanner extends React.Component {
 
     const args = {
       response_type: "code",
-      client_id: (this.props as LoginBannerProps).clientId,
-      resource: (this.props as LoginBannerProps).resource,
-      redirect_uri: (this.props as LoginBannerProps).redirectUri,
+      client_id: this.props.clientId,
+      resource: this.props.resource,
+      redirect_uri: this.props.redirectUri,
       state: currentUri.pathname,
     };
 
-    const encoded = Object.keys(args).map(
-      (k) => k + "=" + encodeURIComponent((args as IndexableObject)["k"])
+    const encoded = Object.entries(args).map(
+      ([k, v]) => `${k}=${encodeURIComponent(v as string)}`
     );
-    return (
-      (this.props as LoginBannerProps).oAuthUri +
-      "/adfs/oauth2/authorize?" +
-      encoded.join("&")
-    );
+    return this.props.oAuthUri + "/adfs/oauth2/authorize?" + encoded.join("&");
   }
 
   constructor(props: LoginBannerProps) {
@@ -68,7 +62,7 @@ class LoginBanner extends React.Component {
       loginData: null,
       expiredAt: null,
       expired: false,
-      checkExpiryTimer: null,
+      checkExpiryTimer: undefined,
       expiryWarning: false,
     };
 
@@ -82,8 +76,8 @@ class LoginBanner extends React.Component {
   }
 
   componentWillUnmount() {
-    if ((this.state as LoginBannerState).checkExpiryTimer) {
-      window.clearInterval((this.state as LoginBannerState).checkExpiryTimer);
+    if (this.state.checkExpiryTimer) {
+      window.clearInterval(this.state.checkExpiryTimer);
     }
   }
 
@@ -93,11 +87,10 @@ class LoginBanner extends React.Component {
    * is ignored but it is used in testing to ensure that the component state is only checked after it has been set.
    */
   checkExpiryHandler() {
-    if ((this.state as LoginBannerState).loginData) {
+    if (this.state.loginData) {
       const nowTime = new Date().getTime() / 1000; //assume time is in seconds
       //we know that it is not null due to above check
-      const expiry = ((this.state as LoginBannerState)
-        .loginData as DecodedProfile).exp_raw();
+      const expiry = (this.state.loginData as DecodedProfile).exp_raw();
       const timeToGo = expiry ? expiry - nowTime : null;
       if (timeToGo && timeToGo >= 300) {
         console.log("expiry is in 5 minutes or more");
@@ -144,7 +137,7 @@ class LoginBanner extends React.Component {
   }
 
   render() {
-    if ((this.state as LoginBannerState).expired) {
+    if (this.state.expired) {
       return (
         <div className="login-banner">
           <div className="welcome">
@@ -154,7 +147,7 @@ class LoginBanner extends React.Component {
         </div>
       );
     }
-    if (!(this.state as LoginBannerState).loginData) {
+    if (!this.state.loginData) {
       return (
         <div className="login-banner">
           <div className="welcome">
@@ -165,8 +158,7 @@ class LoginBanner extends React.Component {
       );
     }
 
-    const loginData = (this.state as LoginBannerState)
-      .loginData as DecodedProfile;
+    const loginData = this.state.loginData as DecodedProfile;
     const loginExpires = loginData.exp();
     return (
       <div className="login-banner">
@@ -175,13 +167,9 @@ class LoginBanner extends React.Component {
             Welcome {loginData.first_name()} {loginData.family_name()}
           </p>
           <p
-            className={
-              (this.state as LoginBannerState).expiryWarning
-                ? "smaller warning"
-                : "smaller"
-            }
+            className={this.state.expiryWarning ? "smaller warning" : "smaller"}
           >
-            {(this.state as LoginBannerState).expiryWarning
+            {this.state.expiryWarning
               ? "Your login expires soon!"
               : "Your login expires at"}{" "}
             {loginExpires

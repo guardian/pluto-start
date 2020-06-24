@@ -200,3 +200,22 @@ describe("LoginBanner.checkExpiryHandler", () => {
     );
   });
 });
+
+describe("LoginBanner.makeLoginUrl", () => {
+  it("should build a URL with the props as query string content", () => {
+    const rendered = shallow(
+      <LoginBanner
+        clientId="some-client-id"
+        resource="some-resource"
+        redirectUri="https://my-redirect-uri"
+        oAuthUri="https://oauthIdP.int"
+      />
+    );
+    const loginBanner = rendered.instance() as LoginBanner;
+
+    const result = loginBanner.makeLoginUrl();
+    expect(result).toEqual(
+      "https://oauthIdP.int/adfs/oauth2/authorize?response_type=code&client_id=some-client-id&resource=some-resource&redirect_uri=https%3A%2F%2Fmy-redirect-uri&state=%2F"
+    );
+  });
+});
