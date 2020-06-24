@@ -18,7 +18,7 @@ frontend:
     paths:
       - build/bundle.js
     reports:
-      junit: frontend/junit.xml
+      junit: junit.xml
   tags:
     - gnm
     - docker
