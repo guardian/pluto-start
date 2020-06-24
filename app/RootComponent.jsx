@@ -8,7 +8,7 @@ class RootComponent extends React.Component {
   }
 
   render() {
-    const token = window.sessionStorage.getItem("adfs-test:token");
+    const token = window.sessionStorage.getItem("pluto:access-token");
 
     return (
       <div>

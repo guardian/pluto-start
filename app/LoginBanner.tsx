@@ -112,7 +112,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
   }
 
   async componentDidMount() {
-    const token = sessionStorage.getItem("adfs-test:token");
+    const token = sessionStorage.getItem("pluto:access-token");
     if (!token) return;
 
     await this.setStatePromise({
@@ -175,7 +175,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
               ? loginExpires.tz("Europe/London").format("HH:mm")
               : "Unknown!"}{" "}
             (London). Auto-refresh is{" "}
-            {sessionStorage.getItem("adfs-test:refresh")
+            {sessionStorage.getItem("pluto:refresh-token")
               ? "available"
               : "not available"}
           </p>

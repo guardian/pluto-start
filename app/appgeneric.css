@@ -24,3 +24,18 @@ hr {
   margin-left: 2em;
   margin-right: 2em;
 }
+
+div.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+img.loading-image {
+  min-width: 200px;
+  max-height: 50px;
+  flex: 1 1 0;
+  object-fit: cover;
+}

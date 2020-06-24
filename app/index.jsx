@@ -59,7 +59,7 @@ class App extends React.Component {
   }
 
   haveToken() {
-    return window.sessionStorage.getItem("adfs-test:token");
+    return window.sessionStorage.getItem("pluto:access-token");
   }
 
   async loadOauthData() {
@@ -129,7 +129,7 @@ class App extends React.Component {
             exact
             path="/logout"
             component={() => {
-              sessionStorage.removeItem("adfs-test:token");
+              sessionStorage.removeItem("pluto:access-token");
               return (
                 <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"} />
               );

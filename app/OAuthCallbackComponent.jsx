@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import jwt from "jsonwebtoken";
 import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
-
+import { Redirect } from "react-router";
+require("./appgeneric.css");
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -126,7 +127,7 @@ class OAuthCallbackComponent extends React.Component {
       case 200:
         const content = await response.json();
         document.cookie =
-          "adfs-test:token=" +
+          "pluto:access-token=" +
           content.access_token +
           "; domain=localhost; path=/";
         return this.setStatePromise({
@@ -181,88 +182,35 @@ class OAuthCallbackComponent extends React.Component {
   }
 
   render() {
+    if (this.state.stage === 3) {
+      const newLocation = this.props.location.state ?? "/";
+      return <Redirect to={newLocation} />;
+    }
+
     return (
-      <div>
-        <h1>testing</h1>
-        <div
+      <div
+        className="centered"
+        style={{ display: this.state.inProgress ? "flex" : "none" }}
+      >
+        <img
+          src="/static/Ellipsis-4.5s-200px.svg"
+          alt="loading"
+          className="loading-image"
+        />
+        <p
           style={{
-            display:
-              this.state.stage === 3 && !this.state.inProgress
-                ? "block"
-                : "none",
-            color: "darkgreen",
-            marginBottom: "1em",
+            flex: 1,
+            display: this.state.inProgress ? "inherit" : "none",
           }}
         >
-          Login process is complete! (Ignore the "not logged in" message above){" "}
-          <a href="/">Click here</a> to go back to the main page.
-        </div>
-        <table border="1">
-          <tbody>
-            <tr>
-              <td>stage</td>
-              <td>
-                <pre>{this.state.stage}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>authCode</td>
-              <td>
-                <pre>{this.state.authCode}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>state</td>
-              <td>
-                <pre>{this.state.state}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>token</td>
-              <td>
-                <pre>{this.state.token}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>refresh token</td>
-              <td>
-                <pre>{this.state.refreshToken}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>lastError</td>
-              <td>
-                <pre style={{ color: "red" }}>{this.state.lastError}</pre>
-                <a
-                  href="/"
-                  style={{ display: this.state.lastError ? "inline" : "none" }}
-                >
-                  Try again?
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>inProgress</td>
-              <td>
-                <pre>{this.state.inProgress ? "yes" : "no"}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>doRedirect</td>
-              <td>
-                <pre>{this.state.doRedirect}</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>decodedContent</td>
-              <td>
-                <pre id="decoded-content-holder">
-                  {this.state.decodedContent}
-                </pre>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          Logging you in...
+        </p>
+        <p
+          className="error"
+          style={{ display: this.state.lastError ? "inherit" : "none" }}
+        >
+          Uh-oh, something went wrong: {this.state.lastError}
+        </p>
       </div>
     );
   }
