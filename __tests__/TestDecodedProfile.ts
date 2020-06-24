@@ -1,4 +1,4 @@
-import DecodedProfile from "../app/DecodedProfile";
+import { JwtDataShape, JwtData } from "../app/DecodedProfile";
 import moment, { Moment } from "moment";
 
 describe("DecodedProfile", () => {
@@ -22,28 +22,24 @@ describe("DecodedProfile", () => {
       appid: "4BEDDDD2-BE69-4792-9C91-5708C43566D6",
     };
 
-    const prof = new DecodedProfile(rawdata);
+    const prof = JwtData(rawdata as JwtDataShape);
 
-    expect(prof.aud()).toEqual("https://someservice.corp.int/callback");
-    expect(prof.iss()).toEqual(
-      "http://authserver.corp.int/adfs/services/trust"
-    );
-    expect(prof.iat_raw()).toEqual(1589713614);
-    const iat_obj = prof.iat();
-    expect(iat_obj).toBeTruthy();
-    expect((<Moment>iat_obj).format("YYYY-MM-DD HH:mm:ss")).toEqual(
+    expect(prof.aud).toEqual("https://someservice.corp.int/callback");
+    expect(prof.iss).toEqual("http://authserver.corp.int/adfs/services/trust");
+
+    expect(prof.iat_moment.format("YYYY-MM-DD HH:mm:ss")).toEqual(
       "2020-05-17 11:06:54"
     );
-    expect(prof.exp_raw()).toEqual(1589717214);
-    expect((<Moment>prof.exp()).format("YYYY-MM-DD HH:mm:ss")).toEqual(
+    expect(prof.exp).toEqual(1589717214);
+    expect(prof.exp_moment.format("YYYY-MM-DD HH:mm:ss")).toEqual(
       "2020-05-17 12:06:54"
     );
-    expect(prof.sub()).toEqual("jan_kowalski@corp.int");
-    expect(prof.email()).toEqual("jan.kowalski@corp.com");
-    expect(prof.first_name()).toEqual("Jan");
-    expect(prof.family_name()).toEqual("Kowalski");
-    expect(prof.username()).toEqual("jan_kowalski");
-    expect(prof.location()).toEqual("Stuck at home");
-    expect(prof.job_title()).toEqual("Something boring");
+    expect(prof.sub).toEqual("jan_kowalski@corp.int");
+    expect(prof.email).toEqual("jan.kowalski@corp.com");
+    expect(prof.first_name).toEqual("Jan");
+    expect(prof.family_name).toEqual("Kowalski");
+    expect(prof.username).toEqual("jan_kowalski");
+    expect(prof.location).toEqual("Stuck at home");
+    expect(prof.job_title).toEqual("Something boring");
   });
 });

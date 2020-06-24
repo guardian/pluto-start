@@ -2,7 +2,7 @@ import React from "react";
 import { shallow, mount } from "enzyme";
 import sinon from "sinon";
 import LoginBanner from "../app/LoginBanner";
-import DecodedProfile from "../app/DecodedProfile";
+import { JwtDataShape, JwtData } from "../app/DecodedProfile";
 
 describe("LoginBanner", () => {
   afterEach(() => {
@@ -62,7 +62,7 @@ describe("LoginBanner", () => {
         oAuthUri="fdfdsfsd"
       />
     );
-    const fakeProfile = new DecodedProfile({
+    const fakeProfile = JwtData({
       exp: fakeExpTime,
       sub: "someuser",
       aud: "someapp",
@@ -100,7 +100,7 @@ describe("LoginBanner.checkExpiryHandler", () => {
     );
     rendered.instance().setState(
       {
-        loginData: new DecodedProfile({
+        loginData: JwtData({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",
@@ -139,7 +139,7 @@ describe("LoginBanner.checkExpiryHandler", () => {
     );
     rendered.instance().setState(
       {
-        loginData: new DecodedProfile({
+        loginData: JwtData({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",
@@ -178,7 +178,7 @@ describe("LoginBanner.checkExpiryHandler", () => {
     );
     rendered.instance().setState(
       {
-        loginData: new DecodedProfile({
+        loginData: JwtData({
           exp: fakeExpTime,
           sub: "someuser",
           aud: "someapp",

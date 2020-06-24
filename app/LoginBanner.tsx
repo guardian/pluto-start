@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
-import DecodedProfile from "./DecodedProfile";
-import { Link } from "react-router-dom";
+import { JwtDataShape, JwtData } from "./DecodedProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 require("./loginbanner.css");
 import moment from "moment";
@@ -16,11 +15,11 @@ interface LoginBannerProps {
 }
 
 interface LoginBannerState {
-  loginData: DecodedProfile | null;
-  expiredAt: moment.Moment | null;
-  expired: boolean;
-  checkExpiryTimer: number | undefined;
-  expiryWarning: boolean;
+  loginData?: JwtDataShape | null;
+  expiredAt?: number | null;
+  expired?: boolean;
+  checkExpiryTimer?: number | undefined;
+  expiryWarning?: boolean;
 }
 
 class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
@@ -90,7 +89,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
     if (this.state.loginData) {
       const nowTime = new Date().getTime() / 1000; //assume time is in seconds
       //we know that it is not null due to above check
-      const expiry = (this.state.loginData as DecodedProfile).exp_raw();
+      const expiry = this.state.loginData.exp;
       const timeToGo = expiry ? expiry - nowTime : null;
       if (timeToGo && timeToGo >= 300) {
         console.log("expiry is in 5 minutes or more");
@@ -105,7 +104,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
           expired: true,
           expiryWarning: false,
           expiredAt: expiry,
-        } as LoginBannerState);
+        });
       }
     } else {
       console.log("no login data present for expiry check");
@@ -125,7 +124,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
       if (!signingKey) signingKey = await loadInSigningKey();
 
       const decodedData = await validateAndDecode(token, signingKey);
-      this.setState({ loginData: new DecodedProfile(decodedData) });
+      this.setState({ loginData: JwtData(decodedData) });
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         console.error("Token has already expired");
@@ -158,13 +157,13 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
       );
     }
 
-    const loginData = this.state.loginData as DecodedProfile;
-    const loginExpires = loginData.exp();
+    const loginData = this.state.loginData;
+    const loginExpires = loginData.exp_moment;
     return (
       <div className="login-banner">
         <div className="welcome">
           <p style={{ margin: 0, padding: 0 }}>
-            Welcome {loginData.first_name()} {loginData.family_name()}
+            Welcome {loginData.first_name} {loginData.family_name}
           </p>
           <p
             className={this.state.expiryWarning ? "smaller warning" : "smaller"}
@@ -183,7 +182,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
         </div>
         <div className="username-box">
           <FontAwesomeIcon style={{ marginRight: "0.25em" }} icon="user" />
-          <span style={{ paddingRight: "0.5em" }}>{loginData.username()}</span>
+          <span style={{ paddingRight: "0.5em" }}>{loginData.username}</span>
           <a href="/logout">
             <FontAwesomeIcon icon="sign-out-alt" />
           </a>
