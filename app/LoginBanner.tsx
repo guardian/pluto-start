@@ -42,9 +42,9 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
 
     const args: Record<string, string> = {
       response_type: "code",
-      client_id: this.props.clientId,
-      resource: this.props.resource,
-      redirect_uri: this.props.redirectUri,
+      client_id: this.props.clientId as string,
+      resource: this.props.resource as string,
+      redirect_uri: this.props.redirectUri as string,
       state: currentUri.pathname,
     };
 
