@@ -8,10 +8,10 @@ import moment from "moment";
 import "moment-timezone";
 
 interface LoginBannerProps {
-  clientId?: string;
-  resource?: string;
-  redirectUri?: string;
-  oAuthUri?: string;
+  clientId: string;
+  resource: string;
+  redirectUri: string;
+  oAuthUri: string;
 }
 
 interface LoginBannerState {
@@ -42,9 +42,9 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
 
     const args: Record<string, string> = {
       response_type: "code",
-      client_id: this.props.clientId as string,
-      resource: this.props.resource as string,
-      redirect_uri: this.props.redirectUri as string,
+      client_id: this.props.clientId,
+      resource: this.props.resource,
+      redirect_uri: this.props.redirectUri,
       state: currentUri.pathname,
     };
 
