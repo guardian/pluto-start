@@ -40,7 +40,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
   makeLoginUrl() {
     const currentUri = new URL(window.location.href);
 
-    const args:Record<string, string> = {
+    const args: Record<string, string> = {
       response_type: "code",
       client_id: this.props.clientId,
       resource: this.props.resource,
