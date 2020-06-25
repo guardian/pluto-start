@@ -40,7 +40,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
   makeLoginUrl() {
     const currentUri = new URL(window.location.href);
 
-    const args = {
+    const args:Record<string, string> = {
       response_type: "code",
       client_id: this.props.clientId,
       resource: this.props.resource,
@@ -49,7 +49,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
     };
 
     const encoded = Object.entries(args).map(
-      ([k, v]) => `${k}=${encodeURIComponent(v as string)}`
+      ([k, v]) => `${k}=${encodeURIComponent(v)}`
     );
     return this.props.oAuthUri + "/adfs/oauth2/authorize?" + encoded.join("&");
   }
