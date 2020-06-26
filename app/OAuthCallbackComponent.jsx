@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import jwt from "jsonwebtoken";
-import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
+import { loadInSigningKey, validateAndDecode } from "./JwtHelpers";
 
 /**
  * this component handles the token redirect from the authentication

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { JwtData, JwtDataShape } from "./DecodedProfile";
 
 /**
  * perform the validation of the token via jsonwebtoken library.
@@ -6,7 +7,11 @@ import jwt from "jsonwebtoken";
  * if validation succeeds, then the promise only completes once the decoded content has been set into the state.
  * @returns {Promise<object>} Decoded JWT content or rejects with an error
  */
-function validateAndDecode(token, signingKey, refreshToken) {
+function validateAndDecode(
+  token: string,
+  signingKey: string,
+  refreshToken: string | undefined
+): Promise<JwtDataShape> {
   return new Promise((resolve, reject) => {
     jwt.verify(token, signingKey, (err, decoded) => {
       if (err) {
@@ -16,10 +21,14 @@ function validateAndDecode(token, signingKey, refreshToken) {
         reject(err);
       }
       // console.log("decoded JWT");
-      sessionStorage.setItem("adfs-test:token", token); //it validates so save the token
-      if (refreshToken)
-        sessionStorage.setItem("adfs-test:refresh", refreshToken);
-      resolve(decoded);
+      if (decoded) {
+        sessionStorage.setItem("adfs-test:token", token); //it validates so save the token
+        if (refreshToken)
+          sessionStorage.setItem("adfs-test:refresh", refreshToken);
+        resolve(JwtData(decoded));
+      } else {
+        reject("no decoded data nor error");
+      }
     });
   });
 }

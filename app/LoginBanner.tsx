@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
+import { loadInSigningKey, validateAndDecode } from "./JwtHelpers";
 import { JwtDataShape, JwtData } from "./DecodedProfile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 require("./loginbanner.css");
@@ -123,8 +123,8 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
       let signingKey = sessionStorage.getItem("adfs-test:signing-key");
       if (!signingKey) signingKey = await loadInSigningKey();
 
-      const decodedData = await validateAndDecode(token, signingKey);
-      this.setState({ loginData: JwtData(decodedData) });
+      const decodedData = await validateAndDecode(token, signingKey, undefined);
+      this.setState({ loginData: decodedData });
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         console.error("Token has already expired");
