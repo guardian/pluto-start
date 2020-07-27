@@ -64,6 +64,22 @@ class OAuthCallbackComponent extends React.Component {
         this.state.token,
         this.state.signingKey
       );
+      /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
+       * You should not assume that the component will still be existing when the initial promise completes! */
+      fetch("/userbeacon/register-login", {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${this.state.token}`, body: "" },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("UserBeacon contacted successfully");
+          } else {
+            console.log("UserBeacon returned an error: ", response.status);
+          }
+        })
+        .catch((err) => {
+          console.error("Could not contact userbeacon: ", err);
+        });
       return this.setStatePromise({
         decodedContent: JSON.stringify(decoded),
         stage: 3,
