@@ -14,9 +14,9 @@ describe("LoginBanner", () => {
       value: {
         getItem(key: string) {
           switch (key) {
-            case "adfs-test:token":
+            case "pluto:access-token":
               return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiYXVkIjoiamVzdC10ZXN0IiwidXNlcm5hbWUiOiJqb2huX2RvZSIsImZhbWlseV9uYW1lIjoiRG9lIiwiZmlyc3RfbmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9.1wuso9Nn7utj_vxF9Ycy2LRYVbfArv6DcT4fTRMfXc0";
-            case "adfs-test:refresh":
+            case "pluto:refresh-token":
               return null;
             case "adfs-test:signing-key":
               return "your-256-bit-secret";

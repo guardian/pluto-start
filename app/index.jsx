@@ -22,6 +22,7 @@ import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
 import LoginBanner from "./LoginBanner.tsx";
+import RefreshLoginComponent from "./RefreshLoginComponent";
 
 library.add(
   faFolder,
@@ -122,11 +123,6 @@ class App extends React.Component {
         <Switch>
           <Route
             exact
-            path="/adfs/oauth2/logout"
-            render={() => <Redirect to="/" />}
-          />
-          <Route
-            exact
             path="/logout"
             component={() => {
               sessionStorage.removeItem("pluto:access-token");
@@ -134,6 +130,18 @@ class App extends React.Component {
                 <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"} />
               );
             }}
+          />
+          <Route
+            path="/refreshlogin"
+            component={(props) => (
+              <RefreshLoginComponent
+                clientId={this.state.clientId}
+                redirectUri={this.redirectUri}
+                resource={this.state.resource}
+                oAuthUri={this.state.oAuthUri}
+                location={props.location}
+              />
+            )}
           />
           <Route
             exact
