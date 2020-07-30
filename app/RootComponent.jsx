@@ -23,10 +23,10 @@ class RootComponent extends React.Component {
               Choose from the following locations:
               <ul>
                 <li>
-                  <a href="/pluto-core">Pluto-Core</a>
+                  <a href="/pluto-core/">Pluto-Core</a>
                 </li>
                 <li>
-                  <a href="/vs-jobs">Pluto-Logtool</a>
+                  <a href="/vs-jobs/">Pluto-Logtool</a>
                 </li>
               </ul>
             </p>
