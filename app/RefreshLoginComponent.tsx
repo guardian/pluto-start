@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QueryString from "query-string";
 import { Redirect } from "react-router";
+require("./appgeneric.css");
 
 interface ReactRouterLocation {
   search?: string;
@@ -47,7 +48,17 @@ class RefreshLoginComponent extends React.Component<
   }
 
   render() {
-    return <Redirect to={this.makeLoginUrl()} />;
+    window.location.href = this.makeLoginUrl();
+    return (
+      <div className="centered" style={{ display: "flex" }}>
+        <img
+          src="/static/Ellipsis-4.5s-200px.svg"
+          alt="loading"
+          className="loading-image"
+        />
+        <p style={{ flex: 1 }}>Redirecting to login service...</p>
+      </div>
+    );
   }
 }
 

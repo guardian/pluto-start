@@ -198,9 +198,11 @@ class OAuthCallbackComponent extends React.Component {
   }
 
   render() {
+    let newLocation = "";
     if (this.state.stage === 3) {
-      const newLocation = this.props.location.state ?? "/";
-      return <Redirect to={newLocation} />;
+      newLocation = this.state.state ?? "/";
+      console.log(newLocation, this.state);
+      window.location.href = newLocation;
     }
 
     return (
@@ -219,7 +221,9 @@ class OAuthCallbackComponent extends React.Component {
             display: this.state.inProgress ? "inherit" : "none",
           }}
         >
-          Logging you in...
+          {this.state.stage === 3
+            ? `Login completed, sending you to ${newLocation}`
+            : "Logging you in..."}
         </p>
         <p
           className="error"

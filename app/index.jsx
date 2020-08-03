@@ -23,6 +23,7 @@ import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
 import LoginBanner from "./LoginBanner.tsx";
 import RefreshLoginComponent from "./RefreshLoginComponent";
+import StartingUpComponent from "./StartingUpComponent";
 
 library.add(
   faFolder,
@@ -105,7 +106,7 @@ class App extends React.Component {
   }
 
   render() {
-    //it's important that logout uses component= not render=. render= is evaluated at load, when oAuthUri is blank
+    //it's important that logout uses render= not component=. render= is evaluated at load, when oAuthUri is blank
     //need it to be evaluated at run when it is set
     //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
     return (
@@ -124,7 +125,7 @@ class App extends React.Component {
           <Route
             exact
             path="/logout"
-            component={() => {
+            render={() => {
               sessionStorage.removeItem("pluto:access-token");
               return (
                 <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"} />
@@ -133,15 +134,21 @@ class App extends React.Component {
           />
           <Route
             path="/refreshlogin"
-            component={(props) => (
-              <RefreshLoginComponent
-                clientId={this.state.clientId}
-                redirectUri={this.redirectUri}
-                resource={this.state.resource}
-                oAuthUri={this.state.oAuthUri}
-                location={props.location}
-              />
-            )}
+            render={(props) => {
+              console.log("refreshlogin", this.state);
+              return this.state.startup ? (
+                <StartingUpComponent />
+              ) : (
+                <RefreshLoginComponent
+                  {...props}
+                  clientId={this.state.clientId}
+                  redirectUri={this.redirectUri}
+                  resource={this.state.resource}
+                  oAuthUri={this.state.oAuthUri}
+                  location={props.location}
+                />
+              );
+            }}
           />
           <Route
             exact

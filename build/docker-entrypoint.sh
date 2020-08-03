@@ -8,4 +8,5 @@ fi
 mkdir -p /usr/share/nginx/html/meta/oauth
 cp -avL /etc/oauth-config/* /usr/share/nginx/html/meta/oauth
 
+echo Running server....
 nginx -g 'daemon off;'

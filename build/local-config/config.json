@@ -1,0 +1,5 @@
+{
+  "clientId": "your-uuid-here",
+  "resource": "your-adfs-relay-party-identifier",
+  "oAuthUri": "http://keycloak-local:8010"
+}
