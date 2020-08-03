@@ -19,7 +19,7 @@ describe("RefreshLoginComponent", () => {
       />
     );
 
-    const redir = rendered.find("Redirect");
+    const redir = rendered.find("AbsoluteRedirect");
     expect(redir.length).toEqual(1);
     expect(redir.props().to).toEqual(
       "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2Fpath%2Fto%2Fsome%2Fother%2Fservice"
@@ -41,7 +41,7 @@ describe("RefreshLoginComponent", () => {
       />
     );
 
-    const redir = rendered.find("Redirect");
+    const redir = rendered.find("AbsoluteRedirect");
     expect(redir.length).toEqual(1);
     expect(redir.props().to).toEqual(
       "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
@@ -63,7 +63,7 @@ describe("RefreshLoginComponent", () => {
       />
     );
 
-    const redir = rendered.find("Redirect");
+    const redir = rendered.find("AbsoluteRedirect");
     expect(redir.length).toEqual(1);
     expect(redir.props().to).toEqual(
       "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
@@ -83,7 +83,7 @@ describe("RefreshLoginComponent", () => {
       />
     );
 
-    const redir = rendered.find("Redirect");
+    const redir = rendered.find("AbsoluteRedirect");
     expect(redir.length).toEqual(1);
     expect(redir.props().to).toEqual(
       "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"

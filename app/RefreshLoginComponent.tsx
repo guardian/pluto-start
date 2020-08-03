@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import QueryString from "query-string";
-import { Redirect } from "react-router";
+import AbsoluteRedirect from "./AbsoluteRedirect";
 require("./appgeneric.css");
 
 interface ReactRouterLocation {
@@ -48,16 +48,11 @@ class RefreshLoginComponent extends React.Component<
   }
 
   render() {
-    window.location.href = this.makeLoginUrl();
     return (
-      <div className="centered" style={{ display: "flex" }}>
-        <img
-          src="/static/Ellipsis-4.5s-200px.svg"
-          alt="loading"
-          className="loading-image"
-        />
-        <p style={{ flex: 1 }}>Redirecting to login service...</p>
-      </div>
+      <AbsoluteRedirect
+        to={this.makeLoginUrl()}
+        descriptiveLabel="Redirecting to login service..."
+      />
     );
   }
 }
