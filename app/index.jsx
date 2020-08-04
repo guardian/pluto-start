@@ -47,6 +47,7 @@ class App extends React.Component {
       clientId: "",
       resource: "",
       oAuthUri: "",
+      tokenUri: "",
     };
 
     const currentUri = new URL(window.location.href);
@@ -74,6 +75,7 @@ class App extends React.Component {
           clientId: content.clientId,
           resource: content.resource,
           oAuthUri: content.oAuthUri,
+          tokenUri: content.tokenUri,
           startup: false,
         });
       case 404:
@@ -157,6 +159,7 @@ class App extends React.Component {
               <OAuthCallbackComponent
                 {...props}
                 oAuthUri={this.state.oAuthUri}
+                tokenUri={this.state.tokenUri}
                 clientId={this.state.clientId}
                 redirectUri={this.redirectUri}
               />

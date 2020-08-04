@@ -51,7 +51,7 @@ class LoginBanner extends React.Component<LoginBannerProps, LoginBannerState> {
     const encoded = Object.entries(args).map(
       ([k, v]) => `${k}=${encodeURIComponent(v)}`
     );
-    return this.props.oAuthUri + "/adfs/oauth2/authorize?" + encoded.join("&");
+    return this.props.oAuthUri + "?" + encoded.join("&");
   }
 
   constructor(props: LoginBannerProps) {

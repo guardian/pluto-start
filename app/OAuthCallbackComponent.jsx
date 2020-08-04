@@ -15,6 +15,7 @@ require("./appgeneric.css");
 class OAuthCallbackComponent extends React.Component {
   static propTypes = {
     oAuthUri: PropTypes.string.isRequired,
+    tokenUri: PropTypes.string.isRequired,
     clientId: PropTypes.string.isRequired,
     redirectUri: PropTypes.string.isRequired,
   };
@@ -130,9 +131,9 @@ class OAuthCallbackComponent extends React.Component {
     );
     const body_content = content_elements.join("&");
 
-    const tokenUri = this.props.oAuthUri + "/adfs/oauth2/token";
-    const response = await fetch(tokenUri, {
+    const response = await fetch(this.props.tokenUri, {
       method: "POST",
+      mode: "no-cors",
       body: body_content,
       headers: {
         Accept: "application/json",
