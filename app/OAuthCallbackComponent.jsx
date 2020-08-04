@@ -133,7 +133,6 @@ class OAuthCallbackComponent extends React.Component {
 
     const response = await fetch(this.props.tokenUri, {
       method: "POST",
-      mode: "no-cors",
       body: body_content,
       headers: {
         Accept: "application/json",
