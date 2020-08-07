@@ -14,7 +14,7 @@ describe("RefreshLoginComponent", () => {
         clientId="my-clientid"
         resource="someresource"
         redirectUri="https://my-service/oauth2callback"
-        oAuthUri="https://my-oauth-server"
+        oAuthUri="https://my-oauth-server/adfs/oauth2/authorize"
         location={fakeLocation}
       />
     );
@@ -36,7 +36,7 @@ describe("RefreshLoginComponent", () => {
         clientId="my-clientid"
         resource="someresource"
         redirectUri="https://my-service/oauth2callback"
-        oAuthUri="https://my-oauth-server"
+        oAuthUri="https://my-oauth-server/adfs/oauth2/authorize"
         location={fakeLocation}
       />
     );
@@ -58,7 +58,7 @@ describe("RefreshLoginComponent", () => {
         clientId="my-clientid"
         resource="someresource"
         redirectUri="https://my-service/oauth2callback"
-        oAuthUri="https://my-oauth-server"
+        oAuthUri="https://my-oauth-server/adfs/oauth2/authorize"
         location={fakeLocation}
       />
     );
@@ -78,7 +78,7 @@ describe("RefreshLoginComponent", () => {
         clientId="my-clientid"
         resource="someresource"
         redirectUri="https://my-service/oauth2callback"
-        oAuthUri="https://my-oauth-server"
+        oAuthUri="https://my-oauth-server/adfs/oauth2/authorize"
         location={fakeLocation}
       />
     );

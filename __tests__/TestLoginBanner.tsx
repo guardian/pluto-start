@@ -208,7 +208,7 @@ describe("LoginBanner.makeLoginUrl", () => {
         clientId="some-client-id"
         resource="some-resource"
         redirectUri="https://my-redirect-uri"
-        oAuthUri="https://oauthIdP.int"
+        oAuthUri="https://oauthIdP.int/adfs/oauth2/authorize"
       />
     );
     const loginBanner = rendered.instance() as LoginBanner;
