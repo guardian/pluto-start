@@ -71,6 +71,11 @@ class App extends React.Component {
       case 200:
         console.log("got response data");
         const content = await response.json();
+
+        // Store tokenUri and clientId to be used for refreshing a token.
+        sessionStorage.setItem("pluto:token-uri", content.tokenUri);
+        sessionStorage.setItem("pluto:client-id", content.clientId);
+
         return this.setStatePromise({
           clientId: content.clientId,
           resource: content.resource,

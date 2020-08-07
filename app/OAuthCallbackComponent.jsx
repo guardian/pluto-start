@@ -63,7 +63,8 @@ class OAuthCallbackComponent extends React.Component {
     try {
       const decoded = await validateAndDecode(
         this.state.token,
-        this.state.signingKey
+        this.state.signingKey,
+        this.state.refreshToken
       );
       /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
        * You should not assume that the component will still be existing when the initial promise completes! */

@@ -1,5 +1,6 @@
 {
   "clientId": "your-uuid-here",
   "resource": "your-adfs-relay-party-identifier",
-  "oAuthUri": "root-url-to-adfs"
+  "oAuthUri": "root-url-to-adfs",
+  "tokenUri": "root-url-to-token-endpoint"
 }
