@@ -32,13 +32,12 @@ deploy:
   services:
     - docker:19.03.11-dind
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u "${DOCKER_USER}" -p "{DOCKER_PAT}"
 
   script:
-    - echo $DOCKER_HOST
     - cd build
-    - docker build . -t "$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID"
+    - docker build . -t "guardianmultimedia/pluto-start:$CI_PIPELINE_IID"
+    - docker push "guardianmultimedia/pluto-start:$CI_PIPELINE_IID"
   tags:
     - gnm
     - docker
