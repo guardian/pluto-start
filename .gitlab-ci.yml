@@ -32,6 +32,7 @@ deploy:
   services:
     - docker:19.03.11-dind
   before_script:
+    - echo "Authenticating as ${DOCKER_USER} with ${DOCKER_PAT}"
     - docker login -u "${DOCKER_USER}" -p "{DOCKER_PAT}"
 
   script:
