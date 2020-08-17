@@ -5,6 +5,9 @@ if [ ! -d /etc/oauth-config ]; then
   exit 1
 fi
 
+mkdir -p /usr/share/nginx/html/meta/menu-config
+cp -avL /etc/menu-config/* /usr/share/nginx/html/meta/menu-config
+
 mkdir -p /usr/share/nginx/html/meta/oauth
 cp -avL /etc/oauth-config/* /usr/share/nginx/html/meta/oauth
 

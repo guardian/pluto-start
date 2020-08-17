@@ -2,5 +2,6 @@
   "clientId": "your-uuid-here",
   "resource": "your-adfs-relay-party-identifier",
   "oAuthUri": "root-url-to-adfs",
-  "tokenUri": "root-url-to-token-endpoint"
+  "tokenUri": "root-url-to-token-endpoint",
+  "adminClaimName": "your-admin-claim-name-here"
 }

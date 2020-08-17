@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "react-dom";
 import {
   BrowserRouter,
-  Link,
   Route,
   Switch,
   Redirect,
@@ -12,7 +11,6 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faFolder,
   faFolderOpen,
-  faTimes,
   faSearch,
   faCog,
   faUser,
@@ -21,19 +19,12 @@ import {
 import RootComponent from "./RootComponent.jsx";
 import NotFoundComponent from "./NotFoundComponent.jsx";
 import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
-import LoginBanner from "./LoginBanner.tsx";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
+import { Header, AppSwitcher } from "pluto-headers";
 
-library.add(
-  faFolder,
-  faFolderOpen,
-  faTimes,
-  faSearch,
-  faCog,
-  faUser,
-  faSignOutAlt
-);
+library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
+require("./app.css");
 
 class App extends React.Component {
   constructor(props) {
@@ -117,12 +108,10 @@ class App extends React.Component {
         {window.location.href.includes("oauth2") ? (
           ""
         ) : (
-          <LoginBanner
-            clientId={this.state.clientId}
-            redirectUri={this.redirectUri}
-            resource={this.state.resource}
-            oAuthUri={this.state.oAuthUri}
-          />
+          <>
+            <Header></Header>
+            <AppSwitcher></AppSwitcher>
+          </>
         )}
         <Switch>
           <Route
