@@ -26,6 +26,9 @@ class RootComponent extends React.Component {
                   <a href="/pluto-core/">Pluto-Core</a>
                 </li>
                 <li>
+                  <a href="/deliverables/">Deliverables</a>
+                </li>
+                <li>
                   <a href="/vs-jobs/">Pluto-Logtool</a>
                 </li>
               </ul>
