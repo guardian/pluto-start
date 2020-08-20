@@ -1,5 +1,6 @@
 import React from "react";
 import "./rootcomponent.css";
+
 class RootComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +28,9 @@ class RootComponent extends React.Component {
                 </li>
                 <li>
                   <a href="/deliverables/">Deliverables</a>
+                </li>
+                <li>
+                  <a href="/vs/">Media Browser</a>
                 </li>
                 <li>
                   <a href="/vs-jobs/">Pluto-Logtool</a>
