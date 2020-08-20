@@ -26,6 +26,22 @@
     },
     {
         "type": "submenu",
+        "text": "Assets",
+        "content": [
+            {
+                "text": "Last 15",
+                "type": "link",
+                "href": "/vs/last/15"
+            },
+            {
+                "text": "Search",
+                "type": "link",
+                "href": "/search"
+            }
+        ]
+    },
+    {
+        "type": "submenu",
         "text": "Admin",
         "adminOnly": true,
         "content": [
