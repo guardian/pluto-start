@@ -6,17 +6,22 @@
     },
     {
         "type": "link",
-        "text": "Commissions",
-        "href": "/pluto-core/commission/"
-    },
-    {
-        "type": "link",
         "text": "Working Groups",
         "href": "/pluto-core/working-group/"
     },
     {
         "type": "link",
+        "text": "Commissions",
+        "href": "/pluto-core/commission/"
+    },
+    {
+        "type": "link",
         "text": "Projects",
+        "href": "/pluto-core/project/?mine"
+    },
+    {
+        "type": "link",
+        "text": "Deliverables",
         "href": "/pluto-core/project/?mine"
     },
     {
@@ -36,7 +41,7 @@
             {
                 "text": "Search",
                 "type": "link",
-                "href": "/search"
+                "href": "/vs/search"
             }
         ]
     },
