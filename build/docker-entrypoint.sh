@@ -5,6 +5,12 @@ if [ ! -d /etc/oauth-config ]; then
   exit 1
 fi
 
+/usr/local/bin/menu-validator -file /etc/menu-config/menu.json
+if [ "$?" != "0" ]; then
+  echo Validation failed
+  exit 1
+fi
+
 mkdir -p /usr/share/nginx/html/meta/menu-config
 cp -avL /etc/menu-config/* /usr/share/nginx/html/meta/menu-config
 

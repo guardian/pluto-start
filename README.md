@@ -32,6 +32,25 @@ yarn install
   -----END PUBLIC KEY-----
   ```
 
+### Building the validator
+
+pluto-start serves out a json definition file that is used by all components to build their menus, via the shared
+pluto-headers library. A misconfiguration, either in the json syntax or in the data available, could seriously
+break the UI; therefore the content is validated on image startup and on image build.
+Before you can `run-local` you need to have the validation tool present.
+
+You need to install the Go toolchain in order to build it, either go to https://golang.org/doc/install and follow the
+instructions or use the docker image `golang:1.15-alpine` as the CI build does.
+
+```
+$ cd menuvalidator
+$ GOOS=linux GOARCH=amd64 go build
+```
+
+This will create the `menu-validator` binary which is required by the Dockerfile in `build`. The `run-local.sh` script
+will automatically copy it over prior to every build, and the Dockerfile build will now fail if the menu.json is not
+valid.
+
 ### Run the local server
 
 ```bash

@@ -5,6 +5,7 @@ if [ ! -f ./Dockerfile ]; then
   exit 1
 fi
 
+cp ../menuvalidator/menu-validator .
 docker build . -t guardianmultimedia/pluto-start:DEV
 
 echo Starting up pluto-start on port 8000...

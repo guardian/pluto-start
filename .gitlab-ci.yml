@@ -29,6 +29,22 @@ frontend:
     - master
     - merge_requests
 
+validationtool:
+  image: golang:1.15-alpine
+  stage: build
+  script:
+    - cd menuvalidator
+    - go build
+  artifacts:
+    paths:
+      - menuvalidator/menu-validator
+  tags:
+    - gnm
+    - docker
+  only:
+    - master
+    - merge_requests
+
 deploy:
   image: docker:19.03.11
   stage: deploy
@@ -39,6 +55,7 @@ deploy:
 
   script:
     - cd build
+    - cp ../menuvalidator/menu-validator .
     - docker build . -t "guardianmultimedia/pluto-start:$CI_PIPELINE_IID"
     - docker push "guardianmultimedia/pluto-start:$CI_PIPELINE_IID"
   tags:
