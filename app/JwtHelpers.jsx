@@ -15,10 +15,10 @@ function validateAndDecode(token, signingKey, refreshToken) {
         console.error("could not verify JWT: ", err);
         reject(err);
       }
-      // console.log("decoded JWT");
-      sessionStorage.setItem("pluto:access-token", token); //it validates so save the token
+
+      window.localStorage.setItem("pluto:access-token", token); //it validates so save the token
       if (refreshToken)
-        sessionStorage.setItem("pluto:refresh-token", refreshToken);
+        window.localStorage.setItem("pluto:refresh-token", refreshToken);
       resolve(decoded);
     });
   });
@@ -47,7 +47,7 @@ async function loadInSigningKey() {
  * @returns {string} the JWT, or null if it is not set.
  */
 function getRawToken() {
-  return sessionStorage.getItem("pluto:access-token");
+  return window.localStorage.getItem("pluto:access-token");
 }
 
 export { validateAndDecode, loadInSigningKey, getRawToken };

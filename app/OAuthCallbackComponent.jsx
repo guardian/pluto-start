@@ -8,8 +8,8 @@ require("./appgeneric.css");
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
  * that lands here. We are given an opaque code by the server in the "code" query parameter.
- * We take this and try to exchange it for a bearer token; if successful this is stored into the session
- * storage and we then redirect the user back to what they were doing (via the State parameter)
+ * We take this and try to exchange it for a bearer token; if successful this is stored into
+ * the local storage and we then redirect the user back to what they were doing (via the State parameter)
  * If not successful, we halt and display an error message.
  */
 class OAuthCallbackComponent extends React.Component {
