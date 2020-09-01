@@ -143,10 +143,7 @@ class OAuthCallbackComponent extends React.Component {
     switch (response.status) {
       case 200:
         const content = await response.json();
-        document.cookie =
-          "pluto:access-token=" +
-          content.access_token +
-          "; domain=localhost; path=/";
+
         return this.setStatePromise({
           stage: 2,
           token: content.access_token,
