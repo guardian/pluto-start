@@ -22,6 +22,7 @@ import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
+import LogOutComponent from "./LogOutComponent.jsx";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 require("./app.css");
@@ -120,7 +121,7 @@ class App extends React.Component {
             render={() => {
               window.localStorage.removeItem("pluto:access-token");
               return (
-                <Redirect to={this.state.oAuthUri + "/adfs/oauth2/logout"} />
+                <LogOutComponent />
               );
             }}
           />
