@@ -120,9 +120,7 @@ class App extends React.Component {
             path="/logout"
             render={() => {
               window.localStorage.removeItem("pluto:access-token");
-              return (
-                <LogOutComponent />
-              );
+              return <LogOutComponent />;
             }}
           />
           <Route
