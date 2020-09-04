@@ -11,3 +11,13 @@ body {
   font-weight: 400;
   margin: 0;
 }
+
+div.logout {
+  padding: 30px;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+h1.logout_heading {
+  margin-bottom: 30px;
+}
