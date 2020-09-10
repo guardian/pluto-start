@@ -22,7 +22,7 @@ import OAuthCallbackComponent from "./OAuthCallbackComponent.jsx";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
-import LogOutComponent from "./LogOutComponent.jsx";
+import LoggedOutComponent from "./LoggedOutComponent.jsx";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 require("./app.css");
@@ -129,7 +129,7 @@ class App extends React.Component {
             path="/logout"
             render={() => {
               this.logOutIfReferrer();
-              return <LogOutComponent />;
+              return <LoggedOutComponent />;
             }}
           />
           <Route

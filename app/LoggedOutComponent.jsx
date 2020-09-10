@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 require("./app.css");
 
-class LogOutComponent extends React.Component {
+class LoggedOutComponent extends React.Component {
   render() {
     return (
       <div className="logout">
@@ -14,4 +14,4 @@ class LogOutComponent extends React.Component {
   }
 }
 
-export default LogOutComponent;
+export default LoggedOutComponent;
