@@ -41,7 +41,7 @@ validationtool:
   tags:
     - gnm
     - docker
-only:
+  only:
     - master
     - merge_requests
 
