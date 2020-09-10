@@ -103,18 +103,14 @@ class App extends React.Component {
 
   logOutCode() {
     var loggingOutValue = window.localStorage.getItem("pluto:logging-out");
-    while (this.state.hasExecuted == 0) {
+    if (this.state.hasExecuted == 0) {
       if (loggingOutValue === null) {
         window.localStorage.removeItem("pluto:access-token");
         window.localStorage.setItem("pluto:logging-out", "True");
-        console.log('Running section 1');
         this.setState({ hasExecuted: 1 });
-        break;
       } else {
         window.localStorage.removeItem("pluto:logging-out");
-        console.log('Running section 2');
         this.setState({ hasExecuted: 1 });
-        break;
       }
     }
   }
@@ -139,24 +135,6 @@ class App extends React.Component {
             path="/logout"
             render={() => {
               this.logOutCode();
-              //var loggingOutValue = window.localStorage.getItem("pluto:logging-out");
-              //if (loggingOutValue === null) {
-              //  window.localStorage.removeItem("pluto:access-token");
-              //  window.localStorage.setItem("pluto:logging-out", "True");
-              //  console.log('Running section 1');
-              //} else {
-              //  window.localStorage.removeItem("pluto:logging-out");
-              //  console.log('Running section 2');
-              //}
-              //if (window.localStorage.getItem("pluto:logging-out") == "True") {
-              ///  window.localStorage.setItem("pluto:logging-out", "False");
-              //} else if (window.localStorage.getItem("pluto:logging-out") === null) {
-              //  window.localStorage.removeItem("pluto:access-token");
-              //  window.localStorage.setItem("pluto:logging-out", "True");
-              //} else if (window.localStorage.getItem("pluto:logging-out") == "False") {
-              //  window.localStorage.removeItem("pluto:access-token");
-              //  window.localStorage.setItem("pluto:logging-out", "True");
-              //}
               return <LogOutComponent />;
             }}
           />
