@@ -40,7 +40,6 @@ class App extends React.Component {
       resource: "",
       oAuthUri: "",
       tokenUri: "",
-      hasExecuted: 0
     };
 
     const currentUri = new URL(window.location.href);
@@ -101,17 +100,12 @@ class App extends React.Component {
     }
   }
 
-  logOutCode() {
-    var loggingOutValue = window.localStorage.getItem("pluto:logging-out");
-    if (this.state.hasExecuted == 0) {
-      if (loggingOutValue === null) {
-        window.localStorage.removeItem("pluto:access-token");
-        window.localStorage.setItem("pluto:logging-out", "True");
-        this.setState({ hasExecuted: 1 });
-      } else {
-        window.localStorage.removeItem("pluto:logging-out");
-        this.setState({ hasExecuted: 1 });
-      }
+  logOutIfReferrer() {
+    //If the referring URL contains '/oauth2/callback' the user is trying
+    //to log in again so the access token should not be cleared.
+    var referrer = document.referrer;
+    if (!referrer.includes("/oauth2/callback")) {
+      window.localStorage.removeItem("pluto:access-token");
     }
   }
 
@@ -134,7 +128,7 @@ class App extends React.Component {
             exact
             path="/logout"
             render={() => {
-              this.logOutCode();
+              this.logOutIfReferrer();
               return <LogOutComponent />;
             }}
           />
