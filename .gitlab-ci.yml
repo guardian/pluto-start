@@ -41,6 +41,9 @@ validationtool:
   tags:
     - gnm
     - docker
+only:
+    - master
+    - merge_requests
 
 deploy:
   image: docker:19.03.11
@@ -58,3 +61,6 @@ deploy:
   tags:
     - gnm
     - docker
+  only:
+    - master
+    - merge_requests
