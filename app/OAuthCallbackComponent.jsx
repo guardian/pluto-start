@@ -66,13 +66,18 @@ class OAuthCallbackComponent extends React.Component {
         this.state.signingKey,
         this.state.refreshToken
       );
+      const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+      }
       /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
        * You should not assume that the component will still be existing when the initial promise completes! */
+      var userBeaconAttemptMade = false;
       fetch("/userbeacon/register-login", {
         method: "PUT",
         headers: { Authorization: `Bearer ${this.state.token}`, body: "" },
       })
         .then((response) => {
+          userBeaconAttemptMade = true;
           if (response.status === 200) {
             console.log("UserBeacon contacted successfully");
           } else {
@@ -80,12 +85,24 @@ class OAuthCallbackComponent extends React.Component {
           }
         })
         .catch((err) => {
+          userBeaconAttemptMade = true;
           console.error("Could not contact userbeacon: ", err);
         });
-      return this.setStatePromise({
-        decodedContent: JSON.stringify(decoded),
-        stage: 3,
-      });
+      sleep(1000).then(() => {
+        if (userBeaconAttemptMade) {
+          return this.setStatePromise({
+            decodedContent: JSON.stringify(decoded),
+            stage: 3,
+          });
+        } else {
+          sleep(4000).then(() => {
+            return this.setStatePromise({
+              decodedContent: JSON.stringify(decoded),
+              stage: 3,
+            });
+          })
+        }
+      })
     } catch (err) {
       console.error("could not decode JWT: ", err);
       return this.setStatePromise({ lastError: err.toString() });
