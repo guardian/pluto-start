@@ -4,6 +4,43 @@ import jwt from "jsonwebtoken";
 import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
 import { Redirect } from "react-router";
 require("./appgeneric.css");
+
+function delayedRequest(url, timeoutDelay, token) {
+  return new Promise((resolve, reject)=>{
+    const timerId = window.setTimeout(()=>{
+      console.error("Request timed out, could not contact UserBeacon");
+      resolve();
+    }, timeoutDelay);
+
+    fetch(url, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}`, body: "" },
+    })
+      .then((response) => {
+        try {
+          window.clearTimeout(timerId);
+        } catch (err) {
+          console.error("Could not clear the time out: ", err);
+        }
+        if (response.status === 200) {
+          console.log("UserBeacon contacted successfully");
+        } else {
+          console.log("UserBeacon returned an error: ", response.status);
+        }
+        resolve();
+      })
+      .catch((err) => {
+        try {
+          window.clearTimeout(timerId);
+        } catch (error) {
+          console.error("Could not clear the time out: ", error);
+        }
+        console.error("Could not contact UserBeacon: ", err);
+        reject(err);
+      });
+  });
+}
+
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -47,34 +84,6 @@ class OAuthCallbackComponent extends React.Component {
     );
   }
 
-  delayedRequest(url, timeoutDelay) {
-    return new Promise((resolve, reject)=>{
-      const timerId = window.setTimeout(()=>{
-        console.error("Request timed out, could not contact UserBeacon");
-        resolve();
-      }, timeoutDelay);
-
-      fetch(url, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${this.state.token}`, body: "" },
-      })
-        .then((response) => {
-          window.clearTimeout(timerId);
-          if (response.status === 200) {
-            console.log("UserBeacon contacted successfully");
-          } else {
-            console.log("UserBeacon returned an error: ", response.status);
-          }
-          resolve();
-        })
-        .catch((err) => {
-          window.clearTimeout(timerId);
-          console.error("Could not contact userbeacon: ", err);
-          reject(err);
-        });
-    });
-  }
-
   /**
    * perform the validation of the token via jsonwebtoken library.
    * if validation fails then the returned promise is rejected
@@ -96,7 +105,7 @@ class OAuthCallbackComponent extends React.Component {
       );
       /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
        * You should not assume that the component will still be existing when the initial promise completes! */
-      await this.delayedRequest("/userbeacon/register-login", 5000);
+      await delayedRequest("/userbeacon/register-login", 5000, this.state.token);
       return this.setStatePromise({
         decodedContent: JSON.stringify(decoded),
         stage: 3,
@@ -249,4 +258,5 @@ class OAuthCallbackComponent extends React.Component {
   }
 }
 
+export {delayedRequest};
 export default OAuthCallbackComponent;
