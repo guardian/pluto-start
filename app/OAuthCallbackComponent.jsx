@@ -6,8 +6,8 @@ import { Redirect } from "react-router";
 require("./appgeneric.css");
 
 function delayedRequest(url, timeoutDelay, token) {
-  return new Promise((resolve, reject)=>{
-    const timerId = window.setTimeout(()=>{
+  return new Promise((resolve, reject) => {
+    const timerId = window.setTimeout(() => {
       console.error("Request timed out, could not contact UserBeacon");
       resolve();
     }, timeoutDelay);
@@ -105,7 +105,11 @@ class OAuthCallbackComponent extends React.Component {
       );
       /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
        * You should not assume that the component will still be existing when the initial promise completes! */
-      await delayedRequest("/userbeacon/register-login", 5000, this.state.token);
+      await delayedRequest(
+        "/userbeacon/register-login",
+        5000,
+        this.state.token
+      );
       return this.setStatePromise({
         decodedContent: JSON.stringify(decoded),
         stage: 3,
@@ -258,5 +262,5 @@ class OAuthCallbackComponent extends React.Component {
   }
 }
 
-export {delayedRequest};
+export { delayedRequest };
 export default OAuthCallbackComponent;
