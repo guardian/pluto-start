@@ -23,6 +23,7 @@ import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent.jsx";
+import OAuthCallbackErrorComponent from "./OAuthCallbackErrorComponent.jsx"
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 require("./app.css");
@@ -150,6 +151,7 @@ class App extends React.Component {
               );
             }}
           />
+          <Route path="/oauth2/callback?error=*" component={OAuthCallbackErrorComponent} />
           <Route
             exact
             path="/oauth2/callback"
