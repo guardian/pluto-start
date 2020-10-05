@@ -103,8 +103,8 @@ class OAuthCallbackComponent extends React.Component {
         this.state.signingKey,
         this.state.refreshToken
       );
-      /* make a fire-and-forget request to pluto-user-beacon (if available) to ensure that the user exists in VS.
-       * You should not assume that the component will still be existing when the initial promise completes! */
+      /* Make a request to pluto-user-beacon (if available) to ensure that the user exists in Vidispine.
+       * The function should wait for up to five seconds for a response from pluto-user-beacon. */
       await delayedRequest(
         "/userbeacon/register-login",
         5000,
