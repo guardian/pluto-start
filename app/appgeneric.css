@@ -39,3 +39,7 @@ img.loading-image {
   flex: 1 1 0;
   object-fit: cover;
 }
+
+p.URL_error {
+  padding: 40px;
+}

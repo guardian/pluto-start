@@ -55,6 +55,7 @@ class OAuthCallbackComponent extends React.Component {
     tokenUri: PropTypes.string.isRequired,
     clientId: PropTypes.string.isRequired,
     redirectUri: PropTypes.string.isRequired,
+    resource: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -73,6 +74,7 @@ class OAuthCallbackComponent extends React.Component {
       doRedirect: false,
       decodedContent: "",
       signingKey: "",
+      errorInURL: false,
     };
 
     this.validateAndDecode = this.validateAndDecode.bind(this);
@@ -127,6 +129,9 @@ class OAuthCallbackComponent extends React.Component {
   async loadInAuthcode() {
     const paramParts = new URLSearchParams(this.props.location.search);
     //FIXME: handle incoming error messages too
+    if (paramParts.get("error")) {
+      this.setState({ errorInURL: true });
+    }
     return this.setStatePromise({
       stage: 1,
       authCode: paramParts.get("code"),
@@ -223,6 +228,22 @@ class OAuthCallbackComponent extends React.Component {
     }
   }
 
+  makeLoginURL() {
+    const args = {
+      response_type: "code",
+      client_id: this.props.clientId,
+      resource: this.props.resource,
+      redirect_uri: this.props.redirectUri,
+      state: "/",
+    };
+
+    const encoded = Object.entries(args).map(
+      ([k, v]) => `${k}=${encodeURIComponent(v)}`
+    );
+
+    return this.props.oAuthUri + "?" + encoded.join("&");
+  }
+
   render() {
     let newLocation = "";
     if (this.state.stage === 3) {
@@ -232,31 +253,40 @@ class OAuthCallbackComponent extends React.Component {
     }
 
     return (
-      <div
-        className="centered"
-        style={{ display: this.state.inProgress ? "flex" : "none" }}
-      >
-        <img
-          src="/static/Ellipsis-4.5s-200px.svg"
-          alt="loading"
-          className="loading-image"
-        />
-        <p
-          style={{
-            flex: 1,
-            display: this.state.inProgress ? "inherit" : "none",
-          }}
-        >
-          {this.state.stage === 3
-            ? `Login completed, sending you to ${newLocation}`
-            : "Logging you in..."}
-        </p>
-        <p
-          className="error"
-          style={{ display: this.state.lastError ? "inherit" : "none" }}
-        >
-          Uh-oh, something went wrong: {this.state.lastError}
-        </p>
+      <div>
+        {this.state.errorInURL ? (
+          <div className="centered">
+            <p className="URL_error">There was an error when logging in.</p>
+            <a href={this.makeLoginURL()}>Attempt to log in again</a>
+          </div>
+        ) : (
+          <div
+            className="centered"
+            style={{ display: this.state.inProgress ? "flex" : "none" }}
+          >
+            <img
+              src="/static/Ellipsis-4.5s-200px.svg"
+              alt="loading"
+              className="loading-image"
+            />
+            <p
+              style={{
+                flex: 1,
+                display: this.state.inProgress ? "inherit" : "none",
+              }}
+            >
+              {this.state.stage === 3
+                ? `Login completed, sending you to ${newLocation}`
+                : "Logging you in..."}
+            </p>
+            <p
+              className="error"
+              style={{ display: this.state.lastError ? "inherit" : "none" }}
+            >
+              Uh-oh, something went wrong: {this.state.lastError}
+            </p>
+          </div>
+        )}
       </div>
     );
   }
