@@ -43,3 +43,12 @@ img.loading-image {
 p.URL_error {
   padding: 40px;
 }
+
+div.error_centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  font-size: 40px;
+}

@@ -255,7 +255,7 @@ class OAuthCallbackComponent extends React.Component {
     return (
       <div>
         {this.state.errorInURL ? (
-          <div className="centered">
+          <div className="error_centered">
             <p className="URL_error">There was an error when logging in.</p>
             <a href={this.makeLoginURL()}>Attempt to log in again</a>
           </div>
