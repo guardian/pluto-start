@@ -131,13 +131,11 @@ class OAuthCallbackComponent extends React.Component {
   async loadInAuthcode() {
     const paramParts = new URLSearchParams(this.props.location.search);
     //FIXME: handle incoming error messages too
-    if (paramParts.get("error")) {
-      this.setState({ errorInURL: true });
-    }
     return this.setStatePromise({
       stage: 1,
       authCode: paramParts.get("code"),
       state: paramParts.get("state"),
+      errorInURL: paramParts.get("error") ? true : false,
     });
   }
 
