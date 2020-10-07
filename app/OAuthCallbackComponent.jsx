@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
 import { Redirect } from "react-router";
 require("./appgeneric.css");
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function delayedRequest(url, timeoutDelay, token) {
   return new Promise((resolve, reject) => {
@@ -75,6 +76,7 @@ class OAuthCallbackComponent extends React.Component {
       decodedContent: "",
       signingKey: "",
       errorInURL: false,
+      showingLink: false,
     };
 
     this.validateAndDecode = this.validateAndDecode.bind(this);
@@ -226,6 +228,7 @@ class OAuthCallbackComponent extends React.Component {
         this.setState({ lastError: err.toString(), inProgress: false });
       });
     }
+    window.setTimeout(() => this.setState({showingLink: true}), 2000)
   }
 
   makeLoginURL() {
@@ -257,7 +260,11 @@ class OAuthCallbackComponent extends React.Component {
         {this.state.errorInURL ? (
           <div className="error_centered">
             <p className="URL_error">There was an error when logging in.</p>
-            <a href={this.makeLoginURL()}>Attempt to log in again</a>
+            {this.state.showingLink ? (
+              <a href={this.makeLoginURL()}>Attempt to log in again</a>
+            ) : (
+              <CircularProgress />
+            )}
           </div>
         ) : (
           <div
