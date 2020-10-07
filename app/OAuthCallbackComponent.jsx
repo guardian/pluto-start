@@ -228,7 +228,7 @@ class OAuthCallbackComponent extends React.Component {
         this.setState({ lastError: err.toString(), inProgress: false });
       });
     }
-    window.setTimeout(() => this.setState({ showingLink: true }), 6000);
+    window.setTimeout(() => this.setState({ showingLink: true }), 8000);
   }
 
   makeLoginURL() {
