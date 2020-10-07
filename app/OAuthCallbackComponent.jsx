@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
 import { Redirect } from "react-router";
 require("./appgeneric.css");
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function delayedRequest(url, timeoutDelay, token) {
   return new Promise((resolve, reject) => {
@@ -228,7 +228,7 @@ class OAuthCallbackComponent extends React.Component {
         this.setState({ lastError: err.toString(), inProgress: false });
       });
     }
-    window.setTimeout(() => this.setState({showingLink: true}), 2000)
+    window.setTimeout(() => this.setState({ showingLink: true }), 2000);
   }
 
   makeLoginURL() {
