@@ -12,15 +12,20 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import Axios from "axios";
-import { loadInSigningKey, validateAndDecode, getRawToken } from "./JwtHelpers.jsx";
+import {
+  loadInSigningKey,
+  validateAndDecode,
+  getRawToken,
+} from "./JwtHelpers.jsx";
 
-
-async function getCommissions (user) {
-
+async function getCommissions(user) {
   const {
     status,
     data: { result: commissions = [] },
-  } = await Axios.put(`/pluto-core/api/pluto/commission/list?length=16`,{"owner": user, "match":"W_CONTAINS"});
+  } = await Axios.put(`/pluto-core/api/pluto/commission/list?length=16`, {
+    owner: user,
+    match: "W_CONTAINS",
+  });
 
   if (status !== 200) {
     throw new Error("Unable to fetch commissions");
@@ -30,7 +35,7 @@ async function getCommissions (user) {
   return commissions;
 }
 
-async function isLoggedIn () {
+async function isLoggedIn() {
   try {
     const { status, data } = await Axios.get(`/pluto-core/api/isLoggedIn`);
 
@@ -43,7 +48,7 @@ async function isLoggedIn () {
     console.error(error);
     throw error;
   }
-};
+}
 
 async function getUserName() {
   const signingKey = await loadInSigningKey();
@@ -53,14 +58,12 @@ async function getUserName() {
   return decodedData.preferred_username ?? decodedData.username;
 }
 
-
 class CommissionsList extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       commissions: [],
-      userName: ''
+      userName: "",
     };
   }
 
@@ -69,9 +72,9 @@ class CommissionsList extends React.Component {
       try {
         const user = await getUserName();
         console.log("User is: " + user);
-        this.setState({ userName: user })
+        this.setState({ userName: user });
         const commissions = await getCommissions(this.state.userName);
-        this.setState({ commissions: commissions })
+        this.setState({ commissions: commissions });
       } catch (error) {
         console.error("Could not get user or commissions:", error);
       }
@@ -85,7 +88,6 @@ class CommissionsList extends React.Component {
     //};
 
     //updateCommissions();
-
   }
 
   //componentDidUpdate() {
@@ -99,43 +101,52 @@ class CommissionsList extends React.Component {
 
   ///const [commissions, setCommissions] = useState([]);
 
-
   render() {
     //const token = window.localStorage.getItem("pluto:access-token");
     //console.log(getCommissions());
 
     //const commissionData = getCommissions();
 
-
     return (
-    <>
-      <Paper elevation={3} className="home-page-comissions-table">
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <strong>Latest Commissions</strong>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            {!!this.state.commissions.length ? (
-              <TableBody>
-                {this.state.commissions.map(commission => <TableRow hover={true} onClick={() => { window.location.href = (`/pluto-core/commission/${commission.id}`);}} key={commission.id}><TableCell>{commission.title}</TableCell><TableCell>{new Date(commission.created).toLocaleString()}</TableCell></TableRow>)}
-              </TableBody>
-            ) : (
-              <TableBody>
+      <>
+        <Paper elevation={3} className="home-page-comissions-table">
+          <TableContainer>
+            <Table>
+              <TableHead>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    No commissions found
+                    <strong>Latest Commissions</strong>
                   </TableCell>
                 </TableRow>
-              </TableBody>
-            )}
-          </Table>
-        </TableContainer>
-      </Paper>
-    </>
+              </TableHead>
+              {!!this.state.commissions.length ? (
+                <TableBody>
+                  {this.state.commissions.map((commission) => (
+                    <TableRow
+                      hover={true}
+                      onClick={() => {
+                        window.location.href = `/pluto-core/commission/${commission.id}`;
+                      }}
+                      key={commission.id}
+                    >
+                      <TableCell>{commission.title}</TableCell>
+                      <TableCell>
+                        {new Date(commission.created).toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ) : (
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={2}>No commissions found</TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </TableContainer>
+        </Paper>
+      </>
     );
   }
 }
