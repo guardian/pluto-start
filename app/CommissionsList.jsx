@@ -33,21 +33,6 @@ async function getCommissions(user) {
   return commissions;
 }
 
-async function isLoggedIn() {
-  try {
-    const { status, data } = await Axios.get(`/pluto-core/api/isLoggedIn`);
-
-    if (status === 200) {
-      return data;
-    }
-
-    throw new Error(`Could not retrieve who is logged in. ${status}`);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
 async function getUserName() {
   const signingKey = await loadInSigningKey();
   const decodedData = await validateAndDecode(getRawToken(), signingKey, null);

@@ -15,21 +15,19 @@ class RootComponent extends React.Component {
     const token = window.localStorage.getItem("pluto:access-token");
 
     return (
-      <div className="home-page-container-box">
-        <h3>Welcome to Pluto</h3>
+      <div>
+        <h3 className="home-page-title">Welcome to Pluto</h3>
         {token ? (
-          <div>
-            <Table>
-              <TableRow>
-                <TableCell className="home-page-table">
-                  <CommissionsList />
-                </TableCell>
-                <TableCell className="home-page-table">
-                  <ProjectsList />
-                </TableCell>
-              </TableRow>
-            </Table>
-          </div>
+          <Table>
+            <TableRow>
+              <TableCell className="home-page-table">
+                <CommissionsList />
+              </TableCell>
+              <TableCell className="home-page-table">
+                <ProjectsList />
+              </TableCell>
+            </TableRow>
+          </Table>
         ) : (
           <div>
             <p>Please log in with the link above to continue</p>

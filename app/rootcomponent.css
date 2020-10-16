@@ -8,12 +8,8 @@ div.action-component-box {
   margin-right: 0.5em;
 }
 
-div.home-page-container-box {
+h3.home-page-title {
   margin-left: 20px;
-}
-
-.home-page-comissions-table {
-  /*max-width: 45%;*/
 }
 
 .MuiTableRow-hover {
