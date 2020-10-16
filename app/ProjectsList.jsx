@@ -65,6 +65,34 @@ class ProjectsList extends React.Component {
   }
 
   render() {
+    const getProjectsContent = (projects) => {
+      let content = [];
+      for (let i = 0; i < 16; i++) {
+        if (projects[i]) {
+          const item = projects[i];
+          content.push(
+            <TableRow
+              hover={true}
+              onClick={() => {
+                window.location.href = `/pluto-core/project/${item.id}`;
+              }}
+              key={item.id}
+            >
+              <TableCell>{item.title}</TableCell>
+              <TableCell>{new Date(item.created).toLocaleString()}</TableCell>
+            </TableRow>
+          );
+        } else {
+          content.push(
+            <TableRow>
+              <TableCell colSpan={2}>&nbsp;</TableCell>
+            </TableRow>
+          );
+        }
+      }
+      return content;
+    };
+
     return (
       <>
         <Paper elevation={3} className="home-page-comissions-table">
@@ -78,22 +106,7 @@ class ProjectsList extends React.Component {
                 </TableRow>
               </TableHead>
               {!!this.state.projects.length ? (
-                <TableBody>
-                  {this.state.projects.map((project) => (
-                    <TableRow
-                      hover={true}
-                      onClick={() => {
-                        window.location.href = `/pluto-core/project/${project.id}`;
-                      }}
-                      key={project.id}
-                    >
-                      <TableCell>{project.title}</TableCell>
-                      <TableCell>
-                        {new Date(project.created).toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                <TableBody>{getProjectsContent(this.state.projects)}</TableBody>
               ) : (
                 <TableBody>
                   <TableRow>

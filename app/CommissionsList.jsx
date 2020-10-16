@@ -80,6 +80,33 @@ class CommissionsList extends React.Component {
   }
 
   render() {
+    const getCommissionsContent = (commissions) => {
+      let content = [];
+      for (let i = 0; i < 16; i++) {
+        if (commissions[i]) {
+          const item = commissions[i];
+          content.push(
+            <TableRow
+              hover={true}
+              onClick={() => {
+                window.location.href = `/pluto-core/commission/${item.id}`;
+              }}
+              key={item.id}
+            >
+              <TableCell>{item.title}</TableCell>
+              <TableCell>{new Date(item.created).toLocaleString()}</TableCell>
+            </TableRow>
+          );
+        } else {
+          content.push(
+            <TableRow>
+              <TableCell colSpan={2}>&nbsp;</TableCell>
+            </TableRow>
+          );
+        }
+      }
+      return content;
+    };
     return (
       <>
         <Paper elevation={3} className="home-page-comissions-table">
@@ -94,20 +121,7 @@ class CommissionsList extends React.Component {
               </TableHead>
               {!!this.state.commissions.length ? (
                 <TableBody>
-                  {this.state.commissions.map((commission) => (
-                    <TableRow
-                      hover={true}
-                      onClick={() => {
-                        window.location.href = `/pluto-core/commission/${commission.id}`;
-                      }}
-                      key={commission.id}
-                    >
-                      <TableCell>{commission.title}</TableCell>
-                      <TableCell>
-                        {new Date(commission.created).toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {getCommissionsContent(this.state.commissions)}
                 </TableBody>
               ) : (
                 <TableBody>
