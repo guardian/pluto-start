@@ -7,3 +7,19 @@ div.action-component-box {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
+
+div.home-page-container-box {
+  margin-left: 20px;
+}
+
+.home-page-comissions-table {
+  /*max-width: 45%;*/
+}
+
+.MuiTableRow-hover {
+  cursor: pointer;
+}
+
+.home-page-table {
+  vertical-align: top;
+}

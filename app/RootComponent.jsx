@@ -1,5 +1,13 @@
 import React from "react";
 import "./rootcomponent.css";
+import CommissionsList from "./CommissionsList.jsx"
+import ProjectsList from "./ProjectsList.jsx"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@material-ui/core";
 
 class RootComponent extends React.Component {
   constructor(props) {
@@ -12,31 +20,20 @@ class RootComponent extends React.Component {
     const token = window.localStorage.getItem("pluto:access-token");
 
     return (
-      <div>
-        <h1>Next-Gen Pluto Dev Login</h1>
+      <div className="home-page-container-box">
+        <h3>Welcome to Pluto</h3>
         {token ? (
           <div>
-            <p>
-              This page is the under-development landing page for "Prexit", the
-              next-generation version of Pluto.
-            </p>
-            <p>
-              Choose from the following locations:
-              <ul>
-                <li>
-                  <a href="/pluto-core/">Pluto-Core</a>
-                </li>
-                <li>
-                  <a href="/deliverables/">Deliverables</a>
-                </li>
-                <li>
-                  <a href="/vs/">Media Browser</a>
-                </li>
-                <li>
-                  <a href="/vs-jobs/">Pluto-Logtool</a>
-                </li>
-              </ul>
-            </p>
+            <Table>
+              <TableRow>
+                <TableCell className="home-page-table">
+                  <CommissionsList />
+                </TableCell>
+                <TableCell className="home-page-table">
+                  <ProjectsList />
+                </TableCell>
+              </TableRow>
+            </Table>
           </div>
         ) : (
           <div>
