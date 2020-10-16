@@ -30,8 +30,6 @@ async function getCommissions(user) {
   if (status !== 200) {
     throw new Error("Unable to fetch commissions");
   }
-  //const commissionData = await Axios.get(`/pluto-core/api/commission?length=16`);
-  //console.log(commissions);
   return commissions;
 }
 
@@ -53,8 +51,6 @@ async function isLoggedIn() {
 async function getUserName() {
   const signingKey = await loadInSigningKey();
   const decodedData = await validateAndDecode(getRawToken(), signingKey, null);
-  console.log("Got profile", decodedData);
-  //console.log("User from token: " + decodedData.username);
   return decodedData.preferred_username ?? decodedData.username;
 }
 
@@ -81,32 +77,9 @@ class CommissionsList extends React.Component {
     };
 
     getUserAndCommissions();
-
-    //const updateCommissions = async () => {
-    //  const commissions = await getCommissions(this.state.userName);
-    //  this.setState({ commissions: commissions })
-    //};
-
-    //updateCommissions();
   }
 
-  //componentDidUpdate() {
-  //  const updateCommissions = async () => {
-  //    const commissions = await getCommissions();
-  //    this.setState({ commissions: commissions })
-  //  };
-
-  //  updateCommissions();
-  //}
-
-  ///const [commissions, setCommissions] = useState([]);
-
   render() {
-    //const token = window.localStorage.getItem("pluto:access-token");
-    //console.log(getCommissions());
-
-    //const commissionData = getCommissions();
-
     return (
       <>
         <Paper elevation={3} className="home-page-comissions-table">

@@ -30,8 +30,6 @@ async function getProjects(user) {
   if (status !== 200) {
     throw new Error("Unable to fetch projects");
   }
-  //const commissionData = await Axios.get(`/pluto-core/api/commission?length=16`);
-  //console.log(commissions);
   return projects;
 }
 
@@ -64,32 +62,9 @@ class ProjectsList extends React.Component {
     };
 
     getUserAndProjects();
-
-    //const updateCommissions = async () => {
-    //  const commissions = await getCommissions(this.state.userName);
-    //  this.setState({ commissions: commissions })
-    //};
-
-    //updateCommissions();
   }
 
-  //componentDidUpdate() {
-  //  const updateCommissions = async () => {
-  //    const commissions = await getCommissions();
-  //    this.setState({ commissions: commissions })
-  //  };
-
-  //  updateCommissions();
-  //}
-
-  ///const [commissions, setCommissions] = useState([]);
-
   render() {
-    //const token = window.localStorage.getItem("pluto:access-token");
-    //console.log(getCommissions());
-
-    //const commissionData = getCommissions();
-
     return (
       <>
         <Paper elevation={3} className="home-page-comissions-table">
