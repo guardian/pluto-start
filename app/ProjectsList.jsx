@@ -112,7 +112,7 @@ class ProjectsList extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    <strong>My Latest Projects</strong>
+                    <strong>My Projects</strong>
                   </TableCell>
                 </TableRow>
               </TableHead>

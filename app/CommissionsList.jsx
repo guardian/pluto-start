@@ -111,7 +111,7 @@ class CommissionsList extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    <strong>Latest Commissions</strong>
+                    <strong>Commissions</strong>
                   </TableCell>
                 </TableRow>
               </TableHead>
