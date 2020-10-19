@@ -17,6 +17,7 @@ import {
   validateAndDecode,
   getRawToken,
 } from "./JwtHelpers.jsx";
+import moment from "moment";
 
 async function getCommissions(user) {
   const {
@@ -79,7 +80,9 @@ class CommissionsList extends React.Component {
               key={item.id}
             >
               <TableCell>{item.title}</TableCell>
-              <TableCell>{new Date(item.created).toLocaleString()}</TableCell>
+              <TableCell>
+                {moment(item.created).format("ddd Do MMM [at] H:mm")}
+              </TableCell>
             </TableRow>
           );
         } else {
