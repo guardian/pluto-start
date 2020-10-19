@@ -23,10 +23,18 @@ async function getProjects(user) {
   const {
     status,
     data: { result: projects = [] },
-  } = await Axios.put(`/pluto-core/api/project/list?length=16`, {
-    user: user,
-    match: "W_CONTAINS",
-  });
+  } = await Axios.put(
+    `/pluto-core/api/project/list?length=16`,
+    {
+      user: user,
+      match: "W_CONTAINS",
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("pluto:access-token")}`,
+      },
+    }
+  );
 
   if (status !== 200) {
     throw new Error("Unable to fetch projects");

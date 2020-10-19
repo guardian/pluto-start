@@ -23,10 +23,18 @@ async function getCommissions(user) {
   const {
     status,
     data: { result: commissions = [] },
-  } = await Axios.put(`/pluto-core/api/pluto/commission/list?length=16`, {
-    owner: user,
-    match: "W_CONTAINS",
-  });
+  } = await Axios.put(
+    `/pluto-core/api/pluto/commission/list?length=16`,
+    {
+      owner: user,
+      match: "W_CONTAINS",
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("pluto:access-token")}`,
+      },
+    }
+  );
 
   if (status !== 200) {
     throw new Error("Unable to fetch commissions");
