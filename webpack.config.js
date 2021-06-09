@@ -13,6 +13,12 @@ var config = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
+    fallback: {
+      stream: require.resolve("stream-browserify"),
+      util: require.resolve("util/"),
+      crypto: require.resolve("crypto-browserify"),
+      buffer: require.resolve("buffer/"),
+    },
   },
   optimization: {
     minimizer: [new TerserPlugin()],
@@ -25,12 +31,15 @@ var config = {
         loader: "ts-loader",
       },
       {
-        test: /\.jsx?/,
-        include: APP_DIR,
-        loader: "ts-loader",
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+        type: "javascript/auto", //see https://github.com/webpack/webpack/issues/11467
       },
       {
-        test: /react-multistep\/.*\.js/,
+        test: /\.jsx?/,
+        include: APP_DIR,
         loader: "ts-loader",
       },
       {
@@ -52,6 +61,11 @@ var config = {
       },
     ],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+  ],
   devtool: "source-map",
 };
 
