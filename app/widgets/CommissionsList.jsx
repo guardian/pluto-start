@@ -14,9 +14,9 @@ import React from "react";
 import Axios from "axios";
 import {
   loadInSigningKey,
-  validateAndDecode,
+  verifyJwt,
   getRawToken,
-} from "./JwtHelpers.jsx";
+} from "../login/JwtHelpers.ts";
 import moment from "moment";
 import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 
@@ -45,7 +45,7 @@ async function getCommissions(user) {
 
 async function getUserName() {
   const signingKey = await loadInSigningKey();
-  const decodedData = await validateAndDecode(getRawToken(), signingKey, null);
+  const decodedData = await verifyJwt(getRawToken(), signingKey, null);
   return decodedData.preferred_username ?? decodedData.username;
 }
 

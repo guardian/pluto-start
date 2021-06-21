@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 /**
  * perform the validation of the token via jsonwebtoken library.
@@ -6,8 +6,8 @@ import jwt from "jsonwebtoken";
  * if validation succeeds, then the promise only completes once the decoded content has been set into the state.
  * @returns {Promise<object>} Decoded JWT content or rejects with an error
  */
-function validateAndDecode(token, signingKey, refreshToken) {
-  return new Promise((resolve, reject) => {
+function verifyJwt(token: string, signingKey: string, refreshToken?: string) {
+  return new Promise<JwtPayload | undefined>((resolve, reject) => {
     jwt.verify(token, signingKey, (err, decoded) => {
       if (err) {
         console.log("token: ", token);
@@ -50,4 +50,4 @@ function getRawToken() {
   return window.localStorage.getItem("pluto:access-token");
 }
 
-export { validateAndDecode, loadInSigningKey, getRawToken };
+export { verifyJwt, loadInSigningKey, getRawToken };

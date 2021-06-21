@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-require("./appgeneric.css");
+require("../appgeneric.css");
 
 /**
  * very simple component that looks the same as <Redirect> but can bounce us out to another server
@@ -12,7 +12,7 @@ class AbsoluteRedirect extends React.Component {
   };
 
   render() {
-    window.location.href = this.props.to;
+    window.location.assign(this.props.to);
     return (
       <div className="centered" style={{ display: "flex" }}>
         <img

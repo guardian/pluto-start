@@ -1,4 +1,4 @@
-import { JwtDataShape, JwtData } from "../app/DecodedProfile";
+import { JwtDataShape, JwtData } from "../app/login/DecodedProfile";
 import moment, { Moment } from "moment";
 
 describe("DecodedProfile", () => {

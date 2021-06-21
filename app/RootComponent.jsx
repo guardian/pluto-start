@@ -1,7 +1,7 @@
 import React from "react";
 import "./rootcomponent.css";
-import CommissionsList from "./CommissionsList.jsx";
-import ProjectsList from "./ProjectsList.jsx";
+import CommissionsList from "./widgets/CommissionsList.jsx";
+import ProjectsList from "./widgets/ProjectsList.jsx";
 import { Table, TableBody, TableCell, TableRow } from "@material-ui/core";
 
 class RootComponent extends React.Component {
