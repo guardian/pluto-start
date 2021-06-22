@@ -27,6 +27,7 @@ import { OAuthContextProvider } from "./context/OAuthContext";
 import { UserContextProvider } from "./context/UserContext";
 import { JwtDataShape } from "./login/DecodedProfile";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
+import Wallpaper from "./Wallpaper";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 
@@ -42,6 +43,9 @@ const theme = createMuiTheme({
   },
   palette: {
     type: "dark",
+    background: {
+      paper: "#424242A0",
+    },
   },
 });
 
@@ -73,6 +77,7 @@ const App: React.FC<{}> = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Wallpaper />
       {window.location.href.includes("oauth2") ? (
         ""
       ) : (
