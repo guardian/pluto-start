@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-require("./app.css");
 
 class LoggedOutComponent extends React.Component {
   render() {

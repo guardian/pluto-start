@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import jwt from "jsonwebtoken";
-import { Redirect, useHistory } from "react-router";
-require("../appgeneric.css");
+import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import OAuthContext from "../context/OAuthContext";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
 import UserContext from "../context/UserContext";
 import { JwtData } from "./DecodedProfile";
+import { Link, Typography } from "@material-ui/core";
+import { useStyles } from "../../CommonStyles";
 
 /**
  * this component handles the token redirect from the authentication
@@ -25,6 +24,8 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const oAuthContext = useContext(OAuthContext);
   const userContext = useContext(UserContext);
+
+  const classes = useStyles();
 
   const history = useHistory();
 
@@ -86,38 +87,43 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
         } catch (err) {
           setLastError(`Could not log in: ${err}`);
           setInProgress(false);
+          window.setTimeout(() => setShowingLink(true), 3000);
         }
       } else {
         setLastError("Could not get server information for login");
         setInProgress(false);
+        setShowingLink(true);
       }
     };
 
     loginProcess();
-  }, []);
+  }, [oAuthContext]);
 
   return (
     <div>
       {lastError ? (
-        <div className="error_centered">
-          <p className="URL_error">There was an error when logging in.</p>
+        <div className={classes.errorCentered}>
+          <Typography className={classes.urlError}>
+            There was an error when logging in.
+          </Typography>
+          <Typography>{lastError}</Typography>
           {showingLink ? (
-            <a href={makeLoginURL()}>Attempt to log in again</a>
+            <Link href={makeLoginURL()}>Attempt to log in again</Link>
           ) : (
             <CircularProgress />
           )}
         </div>
       ) : (
         <div
-          className="centered"
+          className={classes.centered}
           style={{ display: inProgress ? "flex" : "none" }}
         >
           <img
             src="/static/Ellipsis-4.5s-200px.svg"
             alt="loading"
-            className="loading-image"
+            className={classes.loadingImage}
           />
-          <p
+          <Typography
             style={{
               flex: 1,
               display: inProgress ? "inherit" : "none",
@@ -126,13 +132,13 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
             {doRedirect
               ? `Login completed, sending you to ${doRedirect}`
               : "Logging you in..."}
-          </p>
-          <p
-            className="error"
+          </Typography>
+          <Typography
+            className={classes.error}
             style={{ display: lastError ? "inherit" : "none" }}
           >
             Uh-oh, something went wrong: {lastError}
-          </p>
+          </Typography>
         </div>
       )}
     </div>

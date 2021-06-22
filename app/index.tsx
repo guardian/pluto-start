@@ -16,19 +16,34 @@ import {
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import RootComponent from "./RootComponent.jsx";
-import NotFoundComponent from "./NotFoundComponent.jsx";
+import RootComponent from "./RootComponent";
+import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
-import LoggedOutComponent from "./LoggedOutComponent.jsx";
+import LoggedOutComponent from "./LoggedOutComponent";
 import { OAuthContextProvider } from "./context/OAuthContext";
 import { UserContextProvider } from "./context/UserContext";
 import { JwtDataShape } from "./login/DecodedProfile";
+import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
-require("./app.css");
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      "sans-serif",
+      '"Helvetica Neue"',
+      "Helvetica",
+      "Arial",
+      "sans-serif",
+    ].join(","),
+  },
+  palette: {
+    type: "dark",
+  },
+});
 
 const App: React.FC<{}> = () => {
   const [startup, setStartup] = useState(true);
@@ -44,16 +59,6 @@ const App: React.FC<{}> = () => {
     return window.localStorage.getItem("pluto:access-token");
   };
 
-  // async componentDidMount() {
-  //   await this.loadOauthData();
-  //   if (this.haveToken()) {
-  //     console.log("have pre-existing token");
-  //     this.setState({ lastError: null });
-  //   } else {
-  //     this.setState({ redirectToLogin: true });
-  //   }
-  // }
-
   const logOutIfReferrer = () => {
     //If the referring URL contains '/oauth2/callback' the user is trying
     //to log in again so the access token should not be cleared.
@@ -66,7 +71,8 @@ const App: React.FC<{}> = () => {
   //need it to be evaluated at run when it is set
   //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       {window.location.href.includes("oauth2") ? (
         ""
       ) : (
@@ -111,7 +117,7 @@ const App: React.FC<{}> = () => {
           </Switch>
         </UserContextProvider>
       </OAuthContextProvider>
-    </>
+    </ThemeProvider>
   );
 };
 

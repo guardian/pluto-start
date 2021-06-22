@@ -1,14 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link, Typography } from "@material-ui/core";
 
 class NotFoundComponent extends React.Component {
   render() {
     return (
-      <div>
-        <h1>Not found</h1>
-        <p>Hmmmm, there is no page with that path in the frontend.</p>
-        <Link to="/">Home</Link>
-      </div>
+      <>
+        <Typography variant="h4">Not found</Typography>
+        <Typography>
+          Hmmmm, there is no page with that path in the frontend.
+        </Typography>
+        <Link component={RouterLink} to="/">
+          Home
+        </Link>
+      </>
     );
   }
 }

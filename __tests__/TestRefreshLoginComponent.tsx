@@ -31,8 +31,8 @@ describe("RefreshLoginComponent", () => {
       </MemoryRouter>
     );
 
-    //@ts-ignore
     expect(
+      //@ts-ignore
       window.location.assign.calledWith(
         "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2Fpath%2Fto%2Fsome%2Fother%2Fservice"
       )
@@ -56,8 +56,8 @@ describe("RefreshLoginComponent", () => {
       </MemoryRouter>
     );
 
-    //@ts-ignore
     expect(
+      //@ts-ignore
       window.location.assign.calledWith(
         "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
@@ -80,8 +80,8 @@ describe("RefreshLoginComponent", () => {
       </MemoryRouter>
     );
 
-    //@ts-ignore
     expect(
+      //@ts-ignore
       window.location.assign.calledWith(
         "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
@@ -99,8 +99,8 @@ describe("RefreshLoginComponent", () => {
       </MemoryRouter>
     );
 
-    //@ts-ignore
     expect(
+      //@ts-ignore
       window.location.assign.calledWith(
         "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
