@@ -75,54 +75,56 @@ const App: React.FC<{}> = () => {
   //need it to be evaluated at run when it is set
   //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Wallpaper />
-      {window.location.href.includes("oauth2") ? (
-        ""
-      ) : (
-        <>
-          <Header />
-          <AppSwitcher />
-        </>
-      )}
-      <OAuthContextProvider>
-        <UserContextProvider
-          value={{
-            profile: userProfile,
-            updateProfile: (newValue) => setUserProfile(newValue),
-          }}
-        >
-          <Switch>
-            <Route
-              exact
-              path="/logout"
-              render={() => {
-                logOutIfReferrer();
-                return <LoggedOutComponent />;
-              }}
-            />
-            <Route
-              path="/refreshlogin"
-              render={(props) => {
-                return startup ? (
-                  <StartingUpComponent />
-                ) : (
-                  <RefreshLoginComponent />
-                );
-              }}
-            />
-            <Route
-              exact
-              path="/oauth2/callback"
-              component={OAuthCallbackComponent}
-            />
-            <Route exact path="/" component={RootComponent} />
-            <Route path="/" component={NotFoundComponent} />
-          </Switch>
-        </UserContextProvider>
-      </OAuthContextProvider>
-    </ThemeProvider>
+    <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Wallpaper />
+        {window.location.href.includes("oauth2") ? (
+          ""
+        ) : (
+          <>
+            <Header />
+            <AppSwitcher />
+          </>
+        )}
+        <OAuthContextProvider>
+          <UserContextProvider
+            value={{
+              profile: userProfile,
+              updateProfile: (newValue) => setUserProfile(newValue),
+            }}
+          >
+            <Switch>
+              <Route
+                exact
+                path="/logout"
+                render={() => {
+                  logOutIfReferrer();
+                  return <LoggedOutComponent />;
+                }}
+              />
+              <Route
+                path="/refreshlogin"
+                render={(props) => {
+                  return startup ? (
+                    <StartingUpComponent />
+                  ) : (
+                    <RefreshLoginComponent />
+                  );
+                }}
+              />
+              <Route
+                exact
+                path="/oauth2/callback"
+                component={OAuthCallbackComponent}
+              />
+              <Route exact path="/" component={RootComponent} />
+              <Route path="/" component={NotFoundComponent} />
+            </Switch>
+          </UserContextProvider>
+        </OAuthContextProvider>
+      </ThemeProvider>
+    </div>
   );
 };
 

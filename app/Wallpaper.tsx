@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { LoadWallpaperManifest } from "./WallpaperService";
+import { Fade } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   wallpaperHolder: {
@@ -22,7 +23,7 @@ const Wallpaper: React.FC = () => {
     undefined
   );
   const [imageIndex, setImageIndex] = useState(0);
-  const [loadImmediate, setLoadImmediate] = useState(false);
+  const [loadImmediate, setLoadImmediate] = useState(true);
 
   const classes = useStyles();
 
@@ -65,7 +66,7 @@ const Wallpaper: React.FC = () => {
       `Loading in next image ${imageIndex} ${config?.wallpaperUrls[imageIndex]}`
     );
     const targetImage = selectedImageHolder == 0 ? 1 : 0;
-    if (imageHolders[targetImage].current && config) {
+    if (config) {
       // @ts-ignore
       imageHolders[targetImage].current.src = config.wallpaperUrls[imageIndex];
       // @ts-ignore
@@ -82,24 +83,29 @@ const Wallpaper: React.FC = () => {
     if (config && config.wallpaperUrls) {
       loadNextImage();
     }
-  }, [config, imageIndex]);
+  }, [config]);
+
+  const timeouts = {
+    enter: (config?.transitionTime ?? 3) * 1000,
+    exit: (config?.transitionTime ?? 3) * 1000,
+  };
 
   return (
     <>
-      <img
-        ref={imageHolders[0]}
-        className={classes.wallpaperHolder}
-        style={{
-          display: selectedImageHolder == 0 && config ? "block" : "none",
-        }}
-      />
-      <img
-        ref={imageHolders[1]}
-        className={classes.wallpaperHolder}
-        style={{
-          display: selectedImageHolder == 1 && config ? "block" : "none",
-        }}
-      />
+      <Fade
+        in={selectedImageHolder == 0 && !!config}
+        timeout={timeouts}
+        onExited={loadNextImage}
+      >
+        <img ref={imageHolders[0]} className={classes.wallpaperHolder} />
+      </Fade>
+      <Fade
+        in={selectedImageHolder == 1 && !!config}
+        timeout={timeouts}
+        onExited={loadNextImage}
+      >
+        <img ref={imageHolders[1]} className={classes.wallpaperHolder} />
+      </Fade>
     </>
   );
 };
