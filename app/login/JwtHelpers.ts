@@ -1,4 +1,5 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, verify } from "jsonwebtoken";
+import { JwtData, JwtDataShape } from "./DecodedProfile";
 
 /**
  * perform the validation of the token via jsonwebtoken library.
@@ -43,6 +44,18 @@ async function loadInSigningKey() {
 }
 
 /**
+ * helper function that validates and decodes into a user profile a token already existing in the localstorage
+ */
+async function verifyExistingLogin(): Promise<JwtDataShape | undefined> {
+  const token = getRawToken();
+  if (token) {
+    const signingKey = await loadInSigningKey();
+    const jwtPayload = await verifyJwt(token, signingKey);
+    return jwtPayload ? JwtData(jwtPayload) : undefined;
+  }
+}
+
+/**
  * returns the raw JWT for passing to backend services
  * @returns {string} the JWT, or null if it is not set.
  */
@@ -50,4 +63,4 @@ function getRawToken() {
   return window.localStorage.getItem("pluto:access-token");
 }
 
-export { verifyJwt, loadInSigningKey, getRawToken };
+export { verifyJwt, loadInSigningKey, verifyExistingLogin, getRawToken };

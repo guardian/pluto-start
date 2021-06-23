@@ -10,8 +10,10 @@ interface JwtDataShape {
   sub?: string;
   email?: string;
   first_name?: string;
+  given_name?: string;
   family_name?: string;
   username?: string;
+  preferred_username?: string;
   location?: string;
   job_title?: string;
   authmethod?: string;
@@ -28,6 +30,10 @@ function JwtData(jwtData: object) {
           return moment.utc(target.iat * 1000);
         case "exp_moment":
           return moment.utc(target.exp * 1000);
+        case "username":
+          return target.preferred_username ?? target.username;
+        case "first_name":
+          return target.first_name ?? target.given_name;
         default:
           return (<any>target)[prop] ?? null;
       }

@@ -7,7 +7,7 @@ import UserContext from "../context/UserContext";
 import { JwtData } from "./DecodedProfile";
 import { Link, Typography } from "@material-ui/core";
 import { useStyles } from "../../CommonStyles";
-
+import { makeLoginUrl as buildLoginURL } from "./OAuthService";
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -31,19 +31,7 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
 
   const makeLoginURL = () => {
     if (oAuthContext) {
-      const args = {
-        response_type: "code",
-        client_id: oAuthContext.clientId,
-        resource: oAuthContext.resource,
-        redirect_uri: oAuthContext.redirectUri,
-        state: "/",
-      };
-
-      const encoded = Object.entries(args).map(
-        ([k, v]) => `${k}=${encodeURIComponent(v)}`
-      );
-
-      return oAuthContext.oAuthUri + "?" + encoded.join("&");
+      return buildLoginURL(oAuthContext);
     } else {
       setLastError("Could not get server information for login");
       setShowingLink(false);

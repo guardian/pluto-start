@@ -1,4 +1,5 @@
 import { loadInSigningKey, verifyJwt } from "./JwtHelpers";
+import { OAuthContextData } from "../context/OAuthContext";
 
 interface OAuthResponse {
   token?: string;
@@ -158,4 +159,19 @@ async function validateAndDecode(response: OAuthResponse) {
   }
 }
 
-export { stageTwoExchange, validateAndDecode, delayedRequest };
+function makeLoginUrl(oAuthContext: OAuthContextData) {
+  const args = {
+    response_type: "code",
+    client_id: oAuthContext.clientId,
+    resource: oAuthContext.resource,
+    redirect_uri: oAuthContext.redirectUri,
+    state: "/",
+  };
+
+  const encoded = Object.entries(args).map(
+    ([k, v]) => `${k}=${encodeURIComponent(v)}`
+  );
+
+  return oAuthContext.oAuthUri + "?" + encoded.join("&");
+}
+export { stageTwoExchange, validateAndDecode, delayedRequest, makeLoginUrl };

@@ -94,4 +94,5 @@ export const OAuthContextProvider: React.FC<{
   );
 };
 
+export type { OAuthContextData };
 export default OAuthContext;

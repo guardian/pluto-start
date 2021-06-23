@@ -28,6 +28,8 @@ import { UserContextProvider } from "./context/UserContext";
 import { JwtDataShape } from "./login/DecodedProfile";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
+import NewRootComponent from "./NewRootComponent";
+import { verifyExistingLogin } from "./login/JwtHelpers";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 
@@ -63,11 +65,22 @@ const App: React.FC<{}> = () => {
     return window.localStorage.getItem("pluto:access-token");
   };
 
+  useEffect(() => {
+    if (haveToken()) {
+      verifyExistingLogin()
+        .then((profile) => setUserProfile(profile))
+        .catch((err) =>
+          console.error("Could not verify existing user profile: ", err)
+        );
+    }
+  }, []);
+
   const logOutIfReferrer = () => {
     //If the referring URL contains '/oauth2/callback' the user is trying
     //to log in again so the access token should not be cleared.
     if (!document.referrer.includes("/oauth2/callback")) {
       window.localStorage.removeItem("pluto:access-token");
+      setUserProfile(undefined);
     }
   };
 
@@ -118,7 +131,7 @@ const App: React.FC<{}> = () => {
                 path="/oauth2/callback"
                 component={OAuthCallbackComponent}
               />
-              <Route exact path="/" component={RootComponent} />
+              <Route exact path="/" component={NewRootComponent} />
               <Route path="/" component={NotFoundComponent} />
             </Switch>
           </UserContextProvider>
