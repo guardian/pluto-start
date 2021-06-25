@@ -6,6 +6,7 @@ import ProjectsPanel from "./panels/ProjectsPanel";
 import clsx from "clsx";
 import DeliverablesPanel from "./panels/DeliverablesPanel";
 import { ChevronRight } from "@material-ui/icons";
+import { makeLoginUrl, OAuthContext } from "pluto-headers";
 
 const rootComponentStyles = makeStyles((theme) => ({
   actionPanel: {
@@ -21,10 +22,14 @@ const rootComponentStyles = makeStyles((theme) => ({
   separated: {
     marginBottom: "1em",
   },
+  loginBox: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "10em",
+  },
 }));
 
 const LoggedInRoot: React.FC = () => {
-  const userContext = useContext(UserContext);
   const [showDeliverables, setShowDeliverables] = useState(false);
   const classes = rootComponentStyles();
 
@@ -56,30 +61,42 @@ const LoggedInRoot: React.FC = () => {
 };
 
 const LoggedOutRoot: React.FC = () => {
+  const classes = rootComponentStyles();
+
+  const oauthContext = useContext(OAuthContext);
+
+  const doLogin = () => {
+    oauthContext
+      ? window.location.assign(makeLoginUrl(oauthContext))
+      : alert(
+          "Could not load login metadata, this should not happen. Please contact multimediatech."
+        );
+  };
+
   return (
-    <Grid
-      container
-      justify="space-around"
-      style={{ marginTop: "auto", marginBottom: "auto" }}
-    >
-      <Grid item>
-        <Paper className={classes.actionPanel}>
+    <Paper className={clsx(classes.actionPanel, classes.loginBox)}>
+      <Grid container direction="column" alignItems="center" spacing={3}>
+        <Grid item>
           <Typography variant="h6" className={classes.bannerText}>
             You need to log in to access the Multimedia production system, using
             your normal Mac login credentials.
           </Typography>
+        </Grid>
+        <Grid item>
           <Button
             style={{ marginLeft: "auto", marginRight: "auto" }}
             variant="contained"
             endIcon={<ChevronRight />}
+            onClick={doLogin}
           >
             Log me in
           </Button>
-        </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };
+
 const NewRootComponent: React.FC = () => {
   const userContext = useContext(UserContext);
   const classes = rootComponentStyles();

@@ -1,5 +1,5 @@
 import React from "react";
-import { JwtDataShape } from "../login/DecodedProfile";
+import { JwtDataShape } from "pluto-headers";
 import { Jwt } from "jsonwebtoken";
 
 interface UserContext {

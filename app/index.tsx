@@ -16,20 +16,18 @@ import {
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import RootComponent from "./RootComponent";
 import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent";
-import { OAuthContextProvider } from "./context/OAuthContext";
+import { OAuthContextProvider } from "pluto-headers";
 import { UserContextProvider } from "./context/UserContext";
-import { JwtDataShape } from "./login/DecodedProfile";
+import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
-import { verifyExistingLogin } from "./login/JwtHelpers";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 

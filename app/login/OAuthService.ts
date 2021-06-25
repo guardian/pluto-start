@@ -1,5 +1,5 @@
-import { loadInSigningKey, verifyJwt } from "./JwtHelpers";
-import { OAuthContextData } from "../context/OAuthContext";
+import { OAuthContextData } from "pluto-headers";
+import { loadInSigningKey, verifyJwt } from "pluto-headers";
 
 interface OAuthResponse {
   token?: string;
@@ -71,15 +71,6 @@ async function stageTwoExchange(
           error: undefined,
         };
 
-      // return this.setStatePromise({
-      //     stage: 2,
-      //     token: content.access_token,
-      //     refreshToken: content.hasOwnProperty("refresh_token")
-      //         ? content.refresh_token
-      //         : null,
-      //     expiry: content.expires_in,
-      //     inProgress: false,
-      // });
       default:
         const errorContent = await response.text();
         console.log(
@@ -159,19 +150,4 @@ async function validateAndDecode(response: OAuthResponse) {
   }
 }
 
-function makeLoginUrl(oAuthContext: OAuthContextData) {
-  const args = {
-    response_type: "code",
-    client_id: oAuthContext.clientId,
-    resource: oAuthContext.resource,
-    redirect_uri: oAuthContext.redirectUri,
-    state: "/",
-  };
-
-  const encoded = Object.entries(args).map(
-    ([k, v]) => `${k}=${encodeURIComponent(v)}`
-  );
-
-  return oAuthContext.oAuthUri + "?" + encoded.join("&");
-}
-export { stageTwoExchange, validateAndDecode, delayedRequest, makeLoginUrl };
+export { stageTwoExchange, delayedRequest, validateAndDecode };

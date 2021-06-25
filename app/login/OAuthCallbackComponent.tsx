@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import OAuthContext from "../context/OAuthContext";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
 import UserContext from "../context/UserContext";
-import { JwtData } from "./DecodedProfile";
+import { JwtData, OAuthContext } from "pluto-headers";
 import { Link, Typography } from "@material-ui/core";
 import { useStyles } from "../../CommonStyles";
-import { makeLoginUrl as buildLoginURL } from "./OAuthService";
+import { makeLoginUrl as buildLoginURL } from "pluto-headers";
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect

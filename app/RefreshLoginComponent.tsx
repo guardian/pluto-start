@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import QueryString from "query-string";
 import AbsoluteRedirect from "./login/AbsoluteRedirect";
-import OAuthContext from "./context/OAuthContext";
+import { OAuthContext } from "pluto-headers";
 import { useHistory } from "react-router";
 
 const RefreshLoginComponent: React.FC<{}> = () => {
