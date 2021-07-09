@@ -23,7 +23,7 @@ import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent.jsx";
-import { SystemNotification } from "pluto-headers/src/components/SystemNotification/SystemNotification";
+import { SystemNotification } from "pluto-headers";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 require("./app.css");

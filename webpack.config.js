@@ -26,11 +26,6 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.tsx?/,
-        include: APP_DIR,
-        loader: "ts-loader",
-      },
-      {
         test: /\.m?js$/,
         resolve: {
           fullySpecified: false,
@@ -38,7 +33,7 @@ var config = {
         type: "javascript/auto", //see https://github.com/webpack/webpack/issues/11467
       },
       {
-        test: /\.jsx?/,
+        test: /\.[tj]sx?/,
         include: APP_DIR,
         loader: "ts-loader",
       },
