@@ -23,6 +23,7 @@ import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent.jsx";
+import { SystemNotification } from "pluto-headers/src/components/SystemNotification/SystemNotification";
 
 library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 require("./app.css");
@@ -114,13 +115,14 @@ class App extends React.Component {
     //need it to be evaluated at run when it is set
     //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
     return (
-      <div>
+      <>
         {window.location.href.includes("oauth2") ? (
           ""
         ) : (
           <>
             <Header></Header>
             <AppSwitcher></AppSwitcher>
+            <SystemNotification />
           </>
         )}
         <Switch>
@@ -167,7 +169,8 @@ class App extends React.Component {
           <Route exact path="/" component={RootComponent} />
           <Route path="/" component={NotFoundComponent} />
         </Switch>
-      </div>
+        <SystemNotification />
+      </>
     );
   }
 }
