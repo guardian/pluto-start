@@ -69,6 +69,9 @@ deploy:
     - "echo ci_merge_request_title: \\\"${CI_MERGE_REQUEST_TITLE}\\\" >> build-info.yaml"
     - "echo ci_pipeline_iid: ${CI_PIPELINE_IID} >> build-info.yaml"
     - "echo built_image: guardianmultimedia/pluto-start:$CI_PIPELINE_IID >> build-info.yaml"
+  artifacts:
+    paths:
+      - build-info.yaml
   tags:
     - gnm
     - docker
