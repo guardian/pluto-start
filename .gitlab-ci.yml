@@ -71,7 +71,7 @@ deploy:
     - "echo built_image: guardianmultimedia/pluto-start:$CI_PIPELINE_IID >> build-info.yaml"
   artifacts:
     paths:
-      - build-info.yaml
+      - build/build-info.yaml
   tags:
     - gnm
     - docker
