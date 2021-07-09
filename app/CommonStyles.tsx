@@ -60,6 +60,14 @@ const useStyles = makeStyles((theme) => ({
   error: {
     color: theme.palette.warning.main,
   },
+  secondaryPara: {
+    color: theme.palette.text.secondary,
+    fontSize: theme.typography.subtitle2.fontSize,
+    fontWeight: theme.typography.subtitle2.fontWeight,
+    lineHeight: theme.typography.subtitle2.lineHeight,
+    letterSpacing: theme.typography.subtitle2.letterSpacing,
+    paddingLeft: "0.8em",
+  },
 }));
 
 export { useStyles };

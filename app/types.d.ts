@@ -41,5 +41,5 @@ interface PlutoCoreListResponse<T> {
 
 interface PlutoCoreResponse<T> {
   status: string;
-  entry: T;
+  result: T;
 }

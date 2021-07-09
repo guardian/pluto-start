@@ -13,7 +13,8 @@ const DeliverablesPanel: React.FC<ProjectsPanelProps> = (props) => {
 
   useEffect(() => {
     GetMyRecentOpenProjects(5)
-      .then((projects) => {
+      .then((results) => {
+        const [projects, events] = results;
         setRecentOpenProjects(projects);
         if (props.onLoaded) props.onLoaded(projects.length > 0);
       })

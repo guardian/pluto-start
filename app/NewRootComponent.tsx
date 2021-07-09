@@ -30,7 +30,7 @@ const rootComponentStyles = makeStyles((theme) => ({
 }));
 
 const LoggedInRoot: React.FC = () => {
-  const [showDeliverables, setShowDeliverables] = useState(false);
+  const [showDeliverables, setShowDeliverables] = useState(true);
   const classes = rootComponentStyles();
 
   return (

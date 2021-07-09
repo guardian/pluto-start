@@ -8,11 +8,13 @@ interface LauncherProps {
   buttonLabel: string;
   buttonVariant?: "text" | "outlined" | "contained";
   onClick: () => void;
+  disabled?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
   caption: {
     fontSize: "1.4em",
+    paddingLeft: "0.4em",
   },
   captionContainer: {
     maxWidth: "70%",
@@ -30,17 +32,20 @@ const PanelLauncher: React.FC<LauncherProps> = (props) => {
       spacing={3}
       alignItems="center"
     >
-      <Grid item className={classes.captionContainer}>
-        {props.children ? props.children : null}
-        {props.caption && !props.children ? (
-          <Typography className={classes.caption}>{props.caption}</Typography>
-        ) : null}
+      <Grid container direction="column" className={classes.captionContainer}>
+        <Grid item>
+          {props.caption ? (
+            <Typography className={classes.caption}>{props.caption}</Typography>
+          ) : null}
+        </Grid>
+        <Grid>{props.children}</Grid>
       </Grid>
       <Grid item>
         <Button
           onClick={props.onClick}
           variant={props.buttonVariant}
           endIcon={<ChevronRight />}
+          disabled={props.disabled}
         >
           {props.buttonLabel}
         </Button>

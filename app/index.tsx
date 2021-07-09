@@ -19,16 +19,19 @@ import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
+import axios from "axios";
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: [
-      "sans-serif",
-      '"Helvetica Neue"',
-      "Helvetica",
-      "Arial",
-      "sans-serif",
-    ].join(","),
+    // fontFamily: [
+    //   "sans-serif",
+    //   '"Helvetica Neue"',
+    //   "Helvetica",
+    //   "Arial",
+    //   "sans-serif",
+    // ].join(","),
+    fontFamily:
+      '"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif',
   },
   palette: {
     type: "dark",
@@ -36,6 +39,18 @@ const theme = createMuiTheme({
       paper: "#424242A0",
     },
   },
+});
+
+axios.interceptors.request.use(function (config) {
+  const token = window.localStorage.getItem("pluto:access-token");
+  if (
+    config.url?.startsWith("/pluto-core") ||
+    config.url?.startsWith("/deliverables")
+  ) {
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 const App: React.FC<{}> = () => {

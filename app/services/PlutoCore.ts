@@ -28,10 +28,10 @@ function dedupeAuditLogs(
  */
 async function GetMyRecentOpenProjects(
   wantedCount: number
-): Promise<PlutoProject[]> {
+): Promise<[PlutoProject[], PlutoAuditLog[]]> {
   //we get the default number, even though we want less; this is to de-duplicate on the item id and still meet our wanted count
   const response = await axios.get<PlutoCoreListResponse<PlutoAuditLog>>(
-    "/pluto-core/api/history/my/actions?OpenProject"
+    `/pluto-core/api/history/my/actions?actionType=OpenProject&limit=${wantedCount}`
   );
 
   const deDuped = dedupeAuditLogs(response.data.result, wantedCount);
@@ -45,7 +45,7 @@ async function GetMyRecentOpenProjects(
   );
 
   const projectInformation = await projectInformationPromise;
-  return projectInformation.map((proj) => proj.data.entry);
+  return [projectInformation.map((proj) => proj.data.result), deDuped];
 }
 
 export { GetMyRecentOpenProjects };
