@@ -18,6 +18,7 @@ import {
   getRawToken,
 } from "./JwtHelpers.jsx";
 import moment from "moment";
+import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 
 async function getCommissions(user) {
   const {
@@ -66,6 +67,10 @@ class CommissionsList extends React.Component {
         const commissions = await getCommissions(this.state.userName);
         this.setState({ commissions: commissions });
       } catch (error) {
+        SystemNotification.open(
+          SystemNotifcationKind.Error,
+          "Could not load commissions. If this problem persists contact multimediatech@theguardian.com"
+        );
         console.error("Could not get user or commissions:", error);
       }
     };

@@ -5,6 +5,7 @@ import { loadInSigningKey, validateAndDecode } from "./JwtHelpers.jsx";
 import { Redirect } from "react-router";
 require("./appgeneric.css");
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 
 function delayedRequest(url, timeoutDelay, token) {
   return new Promise((resolve, reject) => {
@@ -119,6 +120,10 @@ class OAuthCallbackComponent extends React.Component {
         stage: 3,
       });
     } catch (err) {
+      SystemNotification.open(
+        SystemNotifcationKind.Error,
+        "Could not decode the user token, try reloading. If this problem persists contact multimediatech@theguardian.com"
+      );
       console.error("could not decode JWT: ", err);
       return this.setStatePromise({ lastError: err.toString() });
     }
@@ -129,14 +134,21 @@ class OAuthCallbackComponent extends React.Component {
    * @returns {Promise<unknown>}
    */
   async loadInAuthcode() {
-    const paramParts = new URLSearchParams(this.props.location.search);
-    //FIXME: handle incoming error messages too
-    return this.setStatePromise({
-      stage: 1,
-      authCode: paramParts.get("code"),
-      state: paramParts.get("state"),
-      errorInURL: paramParts.get("error") ? true : false,
-    });
+    try {
+      const paramParts = new URLSearchParams(this.props.location.search);
+      //FIXME: handle incoming error messages too
+      return this.setStatePromise({
+        stage: 1,
+        authCode: paramParts.get("code"),
+        state: paramParts.get("state"),
+        errorInURL: !!paramParts.get("error"),
+      });
+    } catch (err) {
+      SystemNotification.open(
+        SystemNotifcationKind.Error,
+        "Server response was not valid, try reloading. If this problem persists contact multimediatech@theguardian.com"
+      );
+    }
   }
 
   /**
@@ -158,7 +170,7 @@ class OAuthCallbackComponent extends React.Component {
       redirect_uri: this.props.redirectUri,
       code: this.state.authCode,
     };
-    console.log("passed client_id ", this.props.clientId);
+    //console.log("passed client_id ", this.props.clientId);
 
     const content_elements = Object.keys(postdata).map(
       (k) => k + "=" + encodeURIComponent(postdata[k])
@@ -187,6 +199,10 @@ class OAuthCallbackComponent extends React.Component {
           inProgress: false,
         });
       default:
+        SystemNotification.open(
+          SystemNotifcationKind.Error,
+          "Could not get user token, try reloading. If this problem persists contact multimediatech@theguardian.com"
+        );
         const errorContent = await response.text();
         console.log(
           "token endpoint returned ",
@@ -212,6 +228,10 @@ class OAuthCallbackComponent extends React.Component {
       this.requestToken()
         .then(this.validateAndDecode)
         .catch((err) => {
+          SystemNotification.open(
+            SystemNotifcationKind.Error,
+            "Could not request token, try reloading. If this problem persists contact multimediatech@theguardian.com"
+          );
           console.error("requestToken failed: ", err);
           this.setState({ lastError: err.toString(), inProgress: false });
         });

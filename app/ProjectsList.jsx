@@ -18,6 +18,7 @@ import {
   getRawToken,
 } from "./JwtHelpers.jsx";
 import moment from "moment";
+import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 
 async function getProjects(user) {
   const {
@@ -66,6 +67,10 @@ class ProjectsList extends React.Component {
         const projects = await getProjects(this.state.userName);
         this.setState({ projects: projects });
       } catch (error) {
+        SystemNotification.open(
+          SystemNotifcationKind.Error,
+          "Could not load projects. If this problem persists contact multimediatech@theguardian.com"
+        );
         console.error("Could not get user or projects:", error);
       }
     };
