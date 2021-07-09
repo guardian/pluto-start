@@ -1,5 +1,5 @@
 import React from "react";
-import { useStyles } from "../CommonStyles";
+import { useStyles } from "./CommonStyles";
 
 const StartingUpComponent: React.FC = () => {
   const classes = useStyles();

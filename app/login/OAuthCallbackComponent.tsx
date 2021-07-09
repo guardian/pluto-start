@@ -5,7 +5,7 @@ import { stageTwoExchange, validateAndDecode } from "./OAuthService";
 import { UserContext } from "pluto-headers";
 import { JwtData, OAuthContext } from "pluto-headers";
 import { Link, Typography } from "@material-ui/core";
-import { useStyles } from "../../CommonStyles";
+import { useStyles } from "../CommonStyles";
 import { makeLoginUrl as buildLoginURL } from "pluto-headers";
 /**
  * this component handles the token redirect from the authentication

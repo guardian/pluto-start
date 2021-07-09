@@ -7,15 +7,6 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faFolder,
-  faFolderOpen,
-  faSearch,
-  faCog,
-  faUser,
-  faSignOutAlt,
-} from "@fortawesome/free-solid-svg-icons";
 import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
@@ -28,8 +19,6 @@ import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
-
-library.add(faFolder, faFolderOpen, faSearch, faCog, faUser, faSignOutAlt);
 
 const theme = createMuiTheme({
   typography: {

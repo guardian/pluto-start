@@ -1,5 +1,5 @@
 import React from "react";
-import { useStyles } from "../../CommonStyles";
+import { useStyles } from "../CommonStyles";
 
 interface AbsoluteRedirectProps {
   to: string;
