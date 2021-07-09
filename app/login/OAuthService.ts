@@ -1,4 +1,3 @@
-import { OAuthContextData } from "pluto-headers";
 import { loadInSigningKey, verifyJwt } from "pluto-headers";
 
 interface OAuthResponse {
@@ -8,12 +7,12 @@ interface OAuthResponse {
 }
 
 /**
- * performs the second-stage exchange, i.e. it sends the code back to the server and requests a bearer
+ * performs the second-stage exchange, i.e. it sends the received code back to the server and requests a bearer
  * token in response
- * @param searchParams
- * @param clientId
- * @param redirectUri
- * @param tokenUri
+ * @param searchParams the URLSearchParams received from the server in stage one, including the "code" or "error" parameter
+ * @param clientId oauth client ID from context
+ * @param redirectUri oauth redirect uri from context
+ * @param tokenUri oauth token uri from context
  */
 async function stageTwoExchange(
   searchParams: URLSearchParams,
@@ -82,10 +81,6 @@ async function stageTwoExchange(
         return {
           error: "Could not get token from server",
         };
-      // return this.setStatePromise({
-      //     lastError: errorContent,
-      //     inProgress: false,
-      // });
     }
   }
 }

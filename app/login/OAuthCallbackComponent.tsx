@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
-import UserContext from "../context/UserContext";
+import { UserContext } from "pluto-headers";
 import { JwtData, OAuthContext } from "pluto-headers";
 import { Link, Typography } from "@material-ui/core";
 import { useStyles } from "../../CommonStyles";

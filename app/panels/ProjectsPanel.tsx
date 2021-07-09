@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Paper } from "@material-ui/core";
-import UserContext from "../context/UserContext";
+import { UserContext } from "pluto-headers";
 import PanelLauncher from "./PanelLauncher";
 import { ProjectsPanelProps } from "./PanelsCommon";
 

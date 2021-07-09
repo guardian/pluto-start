@@ -23,7 +23,7 @@ import StartingUpComponent from "./StartingUpComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent";
 import { OAuthContextProvider } from "pluto-headers";
-import { UserContextProvider } from "./context/UserContext";
+import { UserContextProvider } from "pluto-headers";
 import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
 import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
