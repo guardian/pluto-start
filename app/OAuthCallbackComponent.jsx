@@ -170,7 +170,7 @@ class OAuthCallbackComponent extends React.Component {
       redirect_uri: this.props.redirectUri,
       code: this.state.authCode,
     };
-    //console.log("passed client_id ", this.props.clientId);
+
 
     const content_elements = Object.keys(postdata).map(
       (k) => k + "=" + encodeURIComponent(postdata[k])
