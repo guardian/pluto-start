@@ -171,7 +171,6 @@ class OAuthCallbackComponent extends React.Component {
       code: this.state.authCode,
     };
 
-
     const content_elements = Object.keys(postdata).map(
       (k) => k + "=" + encodeURIComponent(postdata[k])
     );
