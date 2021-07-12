@@ -62,15 +62,23 @@ class CommissionsList extends React.Component {
     const getUserAndCommissions = async () => {
       try {
         const user = await getUserName();
-        console.log("User is: " + user);
         this.setState({ userName: user });
         const commissions = await getCommissions(this.state.userName);
         this.setState({ commissions: commissions });
       } catch (error) {
-        SystemNotification.open(
-          SystemNotifcationKind.Error,
-          "Could not load commissions. If this problem persists contact multimediatech@theguardian.com"
-        );
+        if (
+          !(
+            error.response &&
+            error.response.status &&
+            error.response.status === 403
+          )
+        ) {
+          //if we are not logged in yet then hide notification
+          SystemNotification.open(
+            SystemNotifcationKind.Error,
+            "Could not load commissions. If this problem persists contact multimediatech@theguardian.com"
+          );
+        }
         console.error("Could not get user or commissions:", error);
       }
     };

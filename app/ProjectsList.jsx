@@ -67,10 +67,19 @@ class ProjectsList extends React.Component {
         const projects = await getProjects(this.state.userName);
         this.setState({ projects: projects });
       } catch (error) {
-        SystemNotification.open(
-          SystemNotifcationKind.Error,
-          "Could not load projects. If this problem persists contact multimediatech@theguardian.com"
-        );
+        if (
+          !(
+            error.response &&
+            error.response.status &&
+            error.response.status === 403
+          )
+        ) {
+          //if we are not logged in yet then hide notification
+          SystemNotification.open(
+            SystemNotifcationKind.Error,
+            "Could not load projects. If this problem persists contact multimediatech@theguardian.com"
+          );
+        }
         console.error("Could not get user or projects:", error);
       }
     };
