@@ -53,11 +53,13 @@ describe("delayedRequest", () => {
         })
     );
 
-    const requestOutput = await delayedRequest(
-      "/test/url/segment",
-      200,
-      "Token"
-    );
+    try {
+      const requestOutput = await delayedRequest(
+        "/test/url/segment",
+        200,
+        "Token"
+      );
+    } catch (err) {}
     expect(fetch).toHaveBeenCalledWith("/test/url/segment", {
       headers: { Authorization: "Bearer Token", body: "" },
       method: "PUT",
