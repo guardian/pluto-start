@@ -8,7 +8,7 @@ describe("delayedRequest", () => {
     //@ts-ignore
     fetch.mockImplementation(
       () =>
-        new Promise((resolve, reject) => {
+        new Promise((resolve, _) => {
           resolve({ status: 200 });
         })
     );
@@ -22,7 +22,6 @@ describe("delayedRequest", () => {
       headers: { Authorization: "Bearer Token", body: "" },
       method: "PUT",
     });
-    //expect(requestOutput).toBe();
   });
 
   it("should cope with UserBeacon not being contacted successfully", async () => {
@@ -43,7 +42,6 @@ describe("delayedRequest", () => {
       headers: { Authorization: "Bearer Token", body: "" },
       method: "PUT",
     });
-    // expect(requestOutput).toBe(void);
   });
 
   it("should cope with an error attempting to contact UserBeacon", async () => {
@@ -55,18 +53,15 @@ describe("delayedRequest", () => {
         })
     );
 
-    try {
-      const requestOutput = await delayedRequest(
-        "/test/url/segment",
-        200,
-        "Token"
-      );
-      expect(fetch).toHaveBeenCalledWith("/test/url/segment", {
-        headers: { Authorization: "Bearer Token", body: "" },
-        method: "PUT",
-      });
-      //expect(requestOutput).toBe();
-    } catch (err) {}
+    const requestOutput = await delayedRequest(
+      "/test/url/segment",
+      200,
+      "Token"
+    );
+    expect(fetch).toHaveBeenCalledWith("/test/url/segment", {
+      headers: { Authorization: "Bearer Token", body: "" },
+      method: "PUT",
+    });
   });
 
   it("should cope if no response received before time out", async () => {
@@ -82,6 +77,5 @@ describe("delayedRequest", () => {
       headers: { Authorization: "Bearer Token", body: "" },
       method: "PUT",
     });
-    //expect(requestOutput).toBe();
   });
 });
