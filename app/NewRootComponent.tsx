@@ -10,7 +10,7 @@ import { makeLoginUrl, OAuthContext } from "pluto-headers";
 
 const rootComponentStyles = makeStyles((theme) => ({
   actionPanel: {
-    width: "40%",
+    width: "800px",
     maxWidth: "1000px",
   },
   panelContent: {

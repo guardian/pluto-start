@@ -68,6 +68,22 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: theme.typography.subtitle2.letterSpacing,
     paddingLeft: "0.8em",
   },
+  clickable: {
+    cursor: "pointer",
+  },
+  bigInfoDialog: {
+    "max-width": "95%",
+    "min-width": "60%",
+  },
+  dialogPara: {
+    marginBottom: "0.4em",
+  },
+  dialogButtonSingle: {
+    maxWidth: "300px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: "1em",
+  },
 }));
 
 export { useStyles };

@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
