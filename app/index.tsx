@@ -17,13 +17,6 @@ import axios from "axios";
 
 const theme = createMuiTheme({
   typography: {
-    // fontFamily: [
-    //   "sans-serif",
-    //   '"Helvetica Neue"',
-    //   "Helvetica",
-    //   "Arial",
-    //   "sans-serif",
-    // ].join(","),
     fontFamily:
       '"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif',
   },
