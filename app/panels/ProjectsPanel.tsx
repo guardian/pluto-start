@@ -21,6 +21,7 @@ import { useStyles as useCommonStyles } from "../CommonStyles";
 import { GetMyRecentOpenProjects } from "../services/PlutoCore";
 import { formatRelative, parseISO } from "date-fns";
 import { CancelOutlined, Help, Launch } from "@material-ui/icons";
+import PlutoCoreHealthcheck from "./PlutoCoreHealthcheck";
 
 const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
   const userContext = useContext(UserContext);
@@ -30,6 +31,10 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
     PlutoProject | undefined
   >(undefined);
   const [lastOpenedAt, setLastOpenedAt] = useState<Date | undefined>(undefined);
+  const [
+    healthcheckStateChangeCount,
+    setHealthcheckStateChangeCount,
+  ] = useState(0);
 
   const [showingCreateHelp, setShowingCreateHelp] = useState(false);
 
@@ -63,13 +68,16 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
           "Could not get last opened project"
         );
       });
-  }, []);
+  }, [healthcheckStateChangeCount]);
 
   const launchLastProject = () => {
-    alert(
-      `I would launch last project for ${userContext.profile?.username}, but it's not been implemented yet`
-    );
+    if (lastOpenedProject) {
+      window.location.href = `pluto:openproject:${lastOpenedProject.id}`;
+    } else {
+      console.error("Can't open last opened project as there is none set");
+    }
   };
+
   return (
     <>
       <Paper className={props.className}>
@@ -123,6 +131,11 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
             Should I create a new commission or project?
           </Typography>
         </span>
+        <PlutoCoreHealthcheck
+          onConnectionRestored={() =>
+            setHealthcheckStateChangeCount((prev) => prev + 1)
+          }
+        />
       </Paper>
 
       <Dialog
