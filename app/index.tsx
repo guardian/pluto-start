@@ -5,7 +5,7 @@ import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
-import { Header, AppSwitcher } from "pluto-headers";
+import { Header, AppSwitcher, PlutoThemeProvider } from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent";
 import { OAuthContextProvider } from "pluto-headers";
 import { UserContextProvider } from "pluto-headers";
@@ -14,19 +14,6 @@ import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
 import axios from "axios";
-
-const theme = createMuiTheme({
-  typography: {
-    fontFamily:
-      '"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif',
-  },
-  palette: {
-    type: "dark",
-    background: {
-      paper: "#424242A0",
-    },
-  },
-});
 
 axios.interceptors.request.use(function (config) {
   const token = window.localStorage.getItem("pluto:access-token");
@@ -78,7 +65,7 @@ const App: React.FC<{}> = () => {
   //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
   return (
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
-      <ThemeProvider theme={theme}>
+      <PlutoThemeProvider>
         <CssBaseline />
         <Wallpaper />
         {window.location.href.includes("oauth2") ? (
@@ -125,7 +112,7 @@ const App: React.FC<{}> = () => {
             </Switch>
           </UserContextProvider>
         </OAuthContextProvider>
-      </ThemeProvider>
+      </PlutoThemeProvider>
     </div>
   );
 };

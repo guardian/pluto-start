@@ -27,6 +27,9 @@ const rootComponentStyles = makeStyles((theme) => ({
     marginRight: "auto",
     marginTop: "10em",
   },
+  forceWhite: {
+    color: theme.palette.common.white,
+  },
 }));
 
 const LoggedInRoot: React.FC = () => {
@@ -37,7 +40,11 @@ const LoggedInRoot: React.FC = () => {
     <>
       <Typography
         variant="h6"
-        className={clsx(classes.bannerText, classes.separated)}
+        className={clsx(
+          classes.bannerText,
+          classes.separated,
+          classes.forceWhite
+        )}
       >
         What do you need to find?
       </Typography>
@@ -110,7 +117,10 @@ const NewRootComponent: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h1" className={classes.bannerText}>
+      <Typography
+        variant="h1"
+        className={clsx(classes.bannerText, classes.forceWhite)}
+      >
         {userContext.profile ? `Welcome ${displayName()}` : "Welcome to Pluto"}
       </Typography>
       {userContext.profile ? <LoggedInRoot /> : <LoggedOutRoot />}
