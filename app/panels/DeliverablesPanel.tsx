@@ -25,6 +25,11 @@ const DeliverablesPanel: React.FC<ProjectsPanelProps> = (props) => {
 
   return (
     <Paper className={props.className}>
+      <PanelLauncher
+        buttonLabel="Search"
+        onClick={() => window.location.assign("/deliverables/search")}
+        caption="Search for deliverables"
+      />
       {recentOpenProjects.map((proj, idx) => (
         <PanelLauncher
           key={idx}
