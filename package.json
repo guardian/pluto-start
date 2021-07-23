@@ -4,7 +4,7 @@
   "description": "Pure clientside auth test",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --verbose",
+    "test": "jest --verbose",
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "lint": "prettier --check app __tests__",
