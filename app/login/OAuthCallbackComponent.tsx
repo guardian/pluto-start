@@ -76,10 +76,6 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
           setInProgress(false);
           window.setTimeout(() => setShowingLink(true), 3000);
         }
-      } else {
-        setLastError("Could not get server information for login");
-        setInProgress(false);
-        setShowingLink(true);
       }
     };
 
