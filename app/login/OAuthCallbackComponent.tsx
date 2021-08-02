@@ -31,10 +31,7 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
   const makeLoginURL = () => {
     if (oAuthContext) {
       return buildLoginURL(oAuthContext);
-    } else {
-      setLastError("Could not get server information for login");
-      setShowingLink(false);
-    }
+    } //shouldn't show an error message as we always start up without oAuthContext then it gets updated
   };
 
   useEffect(() => {
