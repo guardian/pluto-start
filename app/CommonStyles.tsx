@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme) => ({
       marginRight: "2em",
     },
   },
+  "@global": {
+    ".MuiPaper-root": {
+      backgroundColor: theme.palette.type == "dark" ? "#424242A0" : "#FBFBFBA0",
+    },
+  },
   appContainer: {
     display: "flex",
   },
