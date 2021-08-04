@@ -4,9 +4,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
 import { UserContext } from "pluto-headers";
 import { JwtData, OAuthContext } from "pluto-headers";
-import { Link, Typography } from "@material-ui/core";
+import { Grid, LinearProgress, Link, Typography } from "@material-ui/core";
 import { useStyles } from "../CommonStyles";
 import { makeLoginUrl as buildLoginURL } from "pluto-headers";
+import NotLoggedInPanel from "../panels/NotLoggedInPanel";
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -16,8 +17,7 @@ import { makeLoginUrl as buildLoginURL } from "pluto-headers";
  * If not successful, we halt and display an error message.
  */
 const OAuthCallbackComponent: React.FC<{}> = () => {
-  const [inProgress, setInProgress] = useState(true);
-  const [doRedirect, setDoRedirect] = useState<string | undefined>(undefined);
+  const [inProgress, setInProgress] = useState(false);
   const [showingLink, setShowingLink] = useState(false);
 
   const [lastError, setLastError] = useState<string | undefined>(undefined);
@@ -33,6 +33,11 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
       return buildLoginURL(oAuthContext);
     } //shouldn't show an error message as we always start up without oAuthContext then it gets updated
   };
+
+  useEffect(() => {
+    const timerId = window.setTimeout(() => setShowingLink(true), 3000);
+    return () => window.clearTimeout(timerId);
+  }, [lastError]);
 
   useEffect(() => {
     const loginProcess = async () => {
@@ -52,15 +57,20 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
 
             if (decodedData) {
               const marshalledData = JwtData(decodedData);
-              userContext.updateProfile(marshalledData);
+              userContext.updateProfile(marshalledData); //updating this context here seems to trigger a re-mount, or at least a re-running of this hook
             } else {
               setLastError("Login was validated but no user data returned");
             }
 
             const newLocation = searchParams.get("state");
             if (newLocation && newLocation != "/") {
-              //if we  have a specific location to go to, then assume it's external and do it via window.setLocation
-              setDoRedirect(newLocation);
+              //disallow any fully-qualified links as they may send us where we don't want to go
+              if (newLocation.startsWith("htt")) {
+                history.push("/");
+              } else {
+                //if we  have a specific location to go to, then assume it's external and do it via window.setLocation
+                window.location.href = newLocation;
+              }
               setInProgress(false);
             } else {
               //if we are going to root, that is one of ours, so do it through react-router
@@ -71,57 +81,38 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
         } catch (err) {
           setLastError(`Could not log in: ${err}`);
           setInProgress(false);
-          window.setTimeout(() => setShowingLink(true), 3000);
         }
       }
     };
 
-    loginProcess();
+    if (oAuthContext && !inProgress) {
+      setInProgress(true); //if we don't put a blocker in here this hook is run twice resulting in spurious errors
+      loginProcess();
+    }
   }, [oAuthContext]);
 
-  return (
-    <div>
-      {lastError ? (
-        <div className={classes.errorCentered}>
-          <Typography className={classes.urlError}>
-            There was an error when logging in.
-          </Typography>
-          <Typography>{lastError}</Typography>
-          {showingLink ? (
-            <Link href={makeLoginURL()}>Attempt to log in again</Link>
-          ) : (
-            <CircularProgress />
-          )}
-        </div>
-      ) : (
-        <div
-          className={classes.centered}
-          style={{ display: inProgress ? "flex" : "none" }}
-        >
-          <img
-            src="/static/Ellipsis-4.5s-200px.svg"
-            alt="loading"
-            className={classes.loadingImage}
-          />
-          <Typography
-            style={{
-              flex: 1,
-              display: inProgress ? "inherit" : "none",
-            }}
-          >
-            {doRedirect
-              ? `Login completed, sending you to ${doRedirect}`
-              : "Logging you in..."}
-          </Typography>
-          <Typography
-            className={classes.error}
-            style={{ display: lastError ? "inherit" : "none" }}
-          >
-            Uh-oh, something went wrong: {lastError}
-          </Typography>
-        </div>
-      )}
-    </div>
+  return lastError ? (
+    <NotLoggedInPanel bannerText="Could not log you in">
+      <Grid item>
+        <Typography>There was a problem logging you in: {lastError}</Typography>
+      </Grid>
+      <Grid item>
+        {showingLink ? (
+          <Link href={makeLoginURL()}>Attempt to log in again</Link>
+        ) : (
+          <CircularProgress />
+        )}
+      </Grid>
+    </NotLoggedInPanel>
+  ) : (
+    <NotLoggedInPanel bannerText="Logging you in...">
+      <Grid item style={{ width: "100%" }}>
+        <LinearProgress
+          color="secondary"
+          style={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}
+        />
+      </Grid>
+    </NotLoggedInPanel>
   );
 };
 

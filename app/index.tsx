@@ -69,14 +69,8 @@ const App: React.FC<{}> = () => {
               updateProfile: (newValue) => setUserProfile(newValue),
             }}
           >
-            {window.location.href.includes("oauth2") ? (
-              ""
-            ) : (
-              <>
-                <Header />
-                {userProfile ? <AppSwitcher /> : undefined}
-              </>
-            )}
+            <Header />
+            {userProfile ? <AppSwitcher /> : undefined}
             <Switch>
               <Route
                 exact
