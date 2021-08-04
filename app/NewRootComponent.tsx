@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "pluto-headers";
 import { Button, Fade, Grid, Paper, Typography } from "@material-ui/core";
@@ -8,6 +8,7 @@ import DeliverablesPanel from "./panels/DeliverablesPanel";
 import { ChevronRight } from "@material-ui/icons";
 import { makeLoginUrl, OAuthContext } from "pluto-headers";
 import NotLoggedInPanel from "./panels/NotLoggedInPanel";
+import HelpPanel from "./panels/HelpPanel";
 
 const rootComponentStyles = makeStyles((theme) => ({
   panelContent: {
@@ -30,7 +31,17 @@ const rootComponentStyles = makeStyles((theme) => ({
 
 const LoggedInRoot: React.FC = () => {
   const [showDeliverables, setShowDeliverables] = useState(true);
+  const [showHelp, setShowHelp] = useState(true);
   const classes = rootComponentStyles();
+
+  const hideHelp = () => {
+    localStorage.setItem("pluto-hide-help", "true");
+    setShowHelp(false);
+  };
+
+  useEffect(() => {
+    setShowHelp(localStorage.getItem("pluto-hide-help") !== "true");
+  }, []);
 
   return (
     <>
@@ -44,6 +55,20 @@ const LoggedInRoot: React.FC = () => {
       >
         What do you need to find?
       </Typography>
+      <Fade in={showHelp}>
+        {showHelp ? (
+          <Grid container justify="space-around" spacing={4}>
+            <Grid item className={classes.actionPanel}>
+              <HelpPanel
+                className={classes.panelContent}
+                hideRequested={hideHelp}
+              />
+            </Grid>
+          </Grid>
+        ) : (
+          <span />
+        )}
+      </Fade>
       <Grid container justify="space-around" spacing={4}>
         <Fade in={true}>
           <Grid item className={classes.actionPanel}>
