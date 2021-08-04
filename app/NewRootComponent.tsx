@@ -7,12 +7,9 @@ import clsx from "clsx";
 import DeliverablesPanel from "./panels/DeliverablesPanel";
 import { ChevronRight } from "@material-ui/icons";
 import { makeLoginUrl, OAuthContext } from "pluto-headers";
+import NotLoggedInPanel from "./panels/NotLoggedInPanel";
 
 const rootComponentStyles = makeStyles((theme) => ({
-  actionPanel: {
-    width: "800px",
-    maxWidth: "1000px",
-  },
   panelContent: {
     padding: "1em",
   },
@@ -22,10 +19,9 @@ const rootComponentStyles = makeStyles((theme) => ({
   separated: {
     marginBottom: "1em",
   },
-  loginBox: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: "10em",
+  actionPanel: {
+    width: "800px",
+    maxWidth: "1000px",
   },
   forceWhite: {
     color: theme.palette.common.white,
@@ -81,26 +77,18 @@ const LoggedOutRoot: React.FC = () => {
   };
 
   return (
-    <Paper className={clsx(classes.actionPanel, classes.loginBox)}>
-      <Grid container direction="column" alignItems="center" spacing={3}>
-        <Grid item>
-          <Typography variant="h6" className={classes.bannerText}>
-            You need to log in to access the Multimedia production system, using
-            your normal Mac login credentials.
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            style={{ marginLeft: "auto", marginRight: "auto" }}
-            variant="contained"
-            endIcon={<ChevronRight />}
-            onClick={doLogin}
-          >
-            Log me in
-          </Button>
-        </Grid>
+    <NotLoggedInPanel bannerText="You need to log in to access the Multimedia production system, using your normal Mac password">
+      <Grid item>
+        <Button
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+          variant="contained"
+          endIcon={<ChevronRight />}
+          onClick={doLogin}
+        >
+          Log me in
+        </Button>
       </Grid>
-    </Paper>
+    </NotLoggedInPanel>
   );
 };
 

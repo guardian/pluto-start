@@ -10,7 +10,7 @@ import LoggedOutComponent from "./LoggedOutComponent";
 import { OAuthContextProvider } from "pluto-headers";
 import { UserContextProvider } from "pluto-headers";
 import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
-import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
 import axios from "axios";
@@ -29,9 +29,6 @@ axios.interceptors.request.use(function (config) {
 
 const App: React.FC<{}> = () => {
   const [startup, setStartup] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const [lastError, setLastError] = useState<string | undefined>(undefined);
 
   const [userProfile, setUserProfile] = useState<JwtDataShape | undefined>(
     undefined
@@ -60,22 +57,11 @@ const App: React.FC<{}> = () => {
     }
   };
 
-  //it's important that logout uses render= not component=. render= is evaluated at load, when oAuthUri is blank
-  //need it to be evaluated at run when it is set
-  //the adfs server bounces us back to /adfs/oauth2/logout when the logout process is complete so we bounce straight back to root
   return (
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       <PlutoThemeProvider>
         <CssBaseline />
         <Wallpaper />
-        {window.location.href.includes("oauth2") ? (
-          ""
-        ) : (
-          <>
-            <Header />
-            <AppSwitcher />
-          </>
-        )}
         <OAuthContextProvider>
           <UserContextProvider
             value={{
@@ -83,6 +69,14 @@ const App: React.FC<{}> = () => {
               updateProfile: (newValue) => setUserProfile(newValue),
             }}
           >
+            {window.location.href.includes("oauth2") ? (
+              ""
+            ) : (
+              <>
+                <Header />
+                {userProfile ? <AppSwitcher /> : undefined}
+              </>
+            )}
             <Switch>
               <Route
                 exact
