@@ -5,7 +5,6 @@ import { stageTwoExchange, validateAndDecode } from "./OAuthService";
 import { UserContext } from "pluto-headers";
 import { JwtData, OAuthContext } from "pluto-headers";
 import { Grid, LinearProgress, Link, Typography } from "@material-ui/core";
-import { useStyles } from "../CommonStyles";
 import { makeLoginUrl as buildLoginURL } from "pluto-headers";
 import NotLoggedInPanel from "../panels/NotLoggedInPanel";
 /**
@@ -23,8 +22,6 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const oAuthContext = useContext(OAuthContext);
   const userContext = useContext(UserContext);
-
-  const classes = useStyles();
 
   const history = useHistory();
 
