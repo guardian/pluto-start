@@ -80,7 +80,8 @@ const LoggedInRoot: React.FC = () => {
           <Grid item className={classes.actionPanel}>
             <DeliverablesPanel
               className={classes.panelContent}
-              onLoaded={(haveContent) => setShowDeliverables(haveContent)}
+              //always show deliverables panel now, as we have the general "search for deliverables" option above
+              onLoaded={(haveContent) => setShowDeliverables(true)}
             />
           </Grid>
         </Fade>
@@ -90,7 +91,7 @@ const LoggedInRoot: React.FC = () => {
 };
 
 const LoggedOutRoot: React.FC = () => {
-  const classes = rootComponentStyles();
+  //const classes = rootComponentStyles();
 
   const oauthContext = useContext(OAuthContext);
 
