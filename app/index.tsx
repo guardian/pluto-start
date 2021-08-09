@@ -27,7 +27,7 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
-const App: React.FC<{}> = () => {
+const App: React.FC = () => {
   const [startup, setStartup] = useState(true);
 
   const [userProfile, setUserProfile] = useState<JwtDataShape | undefined>(

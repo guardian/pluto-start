@@ -5786,9 +5786,9 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#f16f95fc":
+"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#e9de8f57":
   version "1.5.1"
-  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#f16f95fc80807edad0da53c2c4a5038eb335837c"
+  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#e9de8f57834efd8e0a98960efe5c79501e184c19"
 
 pn@^1.1.0:
   version "1.1.0"

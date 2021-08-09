@@ -16,16 +16,18 @@ import {
   UserContext,
 } from "pluto-headers";
 import PanelLauncher from "./PanelLauncher";
-import { ProjectsPanelProps } from "./PanelsCommon";
+import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
 import { useStyles as useCommonStyles } from "../CommonStyles";
 import { GetMyRecentOpenProjects } from "../services/PlutoCore";
 import { formatRelative, parseISO } from "date-fns";
 import { CancelOutlined, Help, Launch } from "@material-ui/icons";
 import PlutoCoreHealthcheck from "./PlutoCoreHealthcheck";
+import clsx from "clsx";
 
 const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
   const userContext = useContext(UserContext);
   const commonClasses = useCommonStyles();
+  const panelClasses = usePanelStyles();
 
   const [lastOpenedProject, setLastOpenedProject] = useState<
     PlutoProject | undefined
@@ -80,7 +82,7 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
 
   return (
     <>
-      <Paper className={props.className}>
+      <Paper className={clsx(props.className, panelClasses.panel)}>
         <PanelLauncher
           buttonLabel="Open Project"
           onClick={launchLastProject}

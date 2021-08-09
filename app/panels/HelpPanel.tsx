@@ -1,9 +1,9 @@
 import React from "react";
-import { ProjectsPanelProps } from "./PanelsCommon";
-import { IconButton, Link, Paper, Typography } from "@material-ui/core";
+import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
+import { Link, Paper } from "@material-ui/core";
 import PanelLauncher from "./PanelLauncher";
 import { useStyles } from "../CommonStyles";
-import { ArrowDropUp } from "@material-ui/icons";
+import clsx from "clsx";
 
 interface HelpPanelProps extends ProjectsPanelProps {
   hideRequested: () => void;
@@ -11,9 +11,10 @@ interface HelpPanelProps extends ProjectsPanelProps {
 
 const HelpPanel: React.FC<HelpPanelProps> = (props) => {
   const commonClasses = useStyles();
+  const panelStyles = usePanelStyles();
 
   return (
-    <Paper className={props.className}>
+    <Paper className={clsx(props.className, panelStyles.panel)}>
       <PanelLauncher
         buttonLabel="Help"
         onClick={() =>

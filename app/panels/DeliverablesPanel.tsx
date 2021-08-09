@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ProjectsPanelProps } from "./PanelsCommon";
+import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
 import { UserContext } from "pluto-headers";
 import { Paper } from "@material-ui/core";
 import PanelLauncher from "./PanelLauncher";
 import { GetMyRecentOpenProjects } from "../services/PlutoCore";
+import clsx from "clsx";
 
 const DeliverablesPanel: React.FC<ProjectsPanelProps> = (props) => {
-  const userContext = useContext(UserContext);
+  const panelClasses = usePanelStyles();
+
   const [recentOpenProjects, setRecentOpenProjects] = useState<PlutoProject[]>(
     []
   );
@@ -24,7 +26,7 @@ const DeliverablesPanel: React.FC<ProjectsPanelProps> = (props) => {
   }, []);
 
   return (
-    <Paper className={props.className}>
+    <Paper className={clsx(props.className, panelClasses.panel)}>
       <PanelLauncher
         buttonLabel="Search"
         onClick={() => window.location.assign("/deliverables/search")}

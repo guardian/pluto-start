@@ -26,6 +26,7 @@ const rootComponentStyles = makeStyles((theme) => ({
   },
   forceWhite: {
     color: theme.palette.common.white,
+    textShadow: "2px 2px 4px #00000070",
   },
 }));
 
