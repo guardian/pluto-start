@@ -18,8 +18,9 @@ const HelpPanel: React.FC<HelpPanelProps> = (props) => {
       <PanelLauncher
         buttonLabel="Help"
         onClick={() =>
-          window.location.assign(
-            "https://docs.google.com/document/d/1QG9mOu_HDBoGqQs7Dly0sxifk4w9vaJiDiWdi3Uk1a8"
+          window.open(
+            "https://docs.google.com/document/d/1QG9mOu_HDBoGqQs7Dly0sxifk4w9vaJiDiWdi3Uk1a8",
+            "_blank"
           )
         }
         caption="This is all new to me, what should I do?"

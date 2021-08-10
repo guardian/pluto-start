@@ -4,7 +4,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { useHistory } from "react-router";
 
 const LoggedOutComponent: React.FC = (props) => {
-  const [timeRemaining, setTimeRemaining] = useState(10);
+  const [timeRemaining, setTimeRemaining] = useState(5);
   const history = useHistory();
 
   const countTimer = () => {
