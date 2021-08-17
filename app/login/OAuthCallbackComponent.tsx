@@ -2,11 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
-import { UserContext } from "pluto-headers";
+import { makeLoginUrl, UserContext } from "pluto-headers";
 import { JwtData, OAuthContext } from "pluto-headers";
-import { Grid, LinearProgress, Link, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  LinearProgress,
+  Link,
+  Typography,
+} from "@material-ui/core";
 import { makeLoginUrl as buildLoginURL } from "pluto-headers";
 import NotLoggedInPanel from "../panels/NotLoggedInPanel";
+import { Replay } from "@material-ui/icons";
 /**
  * this component handles the token redirect from the authentication
  * once the user has authed successfully with the IdP, the browser is sent a redirect
@@ -95,7 +102,13 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
       </Grid>
       <Grid item>
         {showingLink ? (
-          <Link href={makeLoginURL()}>Attempt to log in again</Link>
+          <Button
+            variant="contained"
+            startIcon={<Replay />}
+            onClick={() => window.location.assign(makeLoginURL() ?? "/")}
+          >
+            Try again
+          </Button>
         ) : (
           <CircularProgress />
         )}

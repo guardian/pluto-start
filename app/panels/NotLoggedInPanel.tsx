@@ -3,6 +3,7 @@ import { Button, Grid, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { ChevronRight } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { usePanelStyles } from "./PanelsCommon";
 
 interface NotLoggedInPanelProps {
   bannerText?: string;
@@ -25,9 +26,16 @@ const useStyles = makeStyles({
 
 const NotLoggedInPanel: React.FC<NotLoggedInPanelProps> = (props) => {
   const classes = useStyles();
+  const panelClasses = usePanelStyles();
 
   return (
-    <Paper className={clsx(classes.actionPanel, classes.loginBox)}>
+    <Paper
+      className={clsx(
+        classes.actionPanel,
+        classes.loginBox,
+        panelClasses.panel
+      )}
+    >
       <Grid container direction="column" alignItems="center" spacing={3}>
         {props.bannerText ? (
           <Grid item>
