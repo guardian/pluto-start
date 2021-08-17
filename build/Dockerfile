@@ -1,4 +1,4 @@
-FROM nginx:1.19-alpine
+FROM nginx:mainline-alpine
 
 COPY local-config/menu.json /etc/menu-config/
 COPY docker-entrypoint.sh /
