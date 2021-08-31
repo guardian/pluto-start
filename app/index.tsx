@@ -14,6 +14,7 @@ import { CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
 
 axios.interceptors.request.use(function (config) {
   const token = window.localStorage.getItem("pluto:access-token");
@@ -27,12 +28,23 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
+const useStyles = makeStyles((theme) => ({
+  rootContainer: {
+    width: "100vw",
+    height: "100vh",
+    overflowX: "hidden",
+    overflowY: "auto",
+  },
+}));
+
 const App: React.FC = () => {
   const [startup, setStartup] = useState(true);
 
   const [userProfile, setUserProfile] = useState<JwtDataShape | undefined>(
     undefined
   );
+
+  const classes = useStyles();
 
   const haveToken = () => {
     return window.localStorage.getItem("pluto:access-token");
@@ -58,7 +70,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div className={classes.rootContainer}>
       <PlutoThemeProvider>
         <CssBaseline />
         <Wallpaper />
