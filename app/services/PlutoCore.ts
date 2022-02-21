@@ -49,3 +49,59 @@ async function GetMyRecentOpenProjects(
 }
 
 export { GetMyRecentOpenProjects };
+
+export const getFileData = async (id: number): Promise<FileEntry[]> => {
+  try {
+    const {
+      status,
+      data: { files },
+    } = await axios.get<PlutoFilesAPIResponse<FileEntry[]>>(
+      `/pluto-core/api/project/${id}/files`
+    );
+
+    if (status === 200) {
+      return files;
+    }
+
+    throw new Error(`Could not get project data for project ${id}. ${status}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getStorageData = async (id: number): Promise<StorageEntry> => {
+  try {
+    const {
+      status,
+      data: { result },
+    } = await axios.get<PlutoApiResponse<StorageEntry>>(
+      `/pluto-core/api/storage/${id}`
+    );
+
+    if (status === 200) {
+      return result;
+    }
+
+    throw new Error(`Could not get storage data for storage ${id}. ${status}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const openProject = async (id: number) => {
+  const fileResult = await getFileData(id);
+  const storageResult = await getStorageData(fileResult[0].storage);
+  const pathToUse = storageResult.clientpath
+    ? storageResult.clientpath
+    : storageResult.rootpath;
+  console.log("About to access a project with this path: " + pathToUse);
+  console.log(
+    "About to access a project with this file name: " + fileResult[0].filepath
+  );
+  window.open(
+    `pluto:openproject:${pathToUse}/${fileResult[0].filepath}`,
+    "_blank"
+  );
+};

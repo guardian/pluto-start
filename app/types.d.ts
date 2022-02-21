@@ -43,3 +43,41 @@ interface PlutoCoreResponse<T> {
   status: string;
   result: T;
 }
+
+interface PlutoFilesAPIResponse<T> {
+  files: T;
+}
+
+interface FileEntry {
+  id: number;
+  filepath: string;
+  storage: number;
+  user: string;
+  version: number;
+  ctime: string;
+  mtime: string;
+  atime: string;
+  hasContent: boolean;
+  hasLink: boolean;
+  backupOf?: number;
+}
+
+interface StorageEntry {
+  id: number;
+  nickname?: string;
+  rootpath?: string;
+  clientpath?: string;
+  storageType: string;
+  user?: string;
+  password?: string;
+  host?: string;
+  port?: number;
+  device?: string;
+  supportsVersion: boolean;
+  status?: string;
+  backsUpTo?: number;
+}
+
+interface PlutoApiResponse<T> {
+  result: T;
+}

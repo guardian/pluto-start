@@ -18,7 +18,7 @@ import {
 import PanelLauncher from "./PanelLauncher";
 import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
 import { useStyles as useCommonStyles } from "../CommonStyles";
-import { GetMyRecentOpenProjects } from "../services/PlutoCore";
+import { GetMyRecentOpenProjects, openProject } from "../services/PlutoCore";
 import { formatRelative, parseISO } from "date-fns";
 import { CancelOutlined, Help, Launch } from "@material-ui/icons";
 import PlutoCoreHealthcheck from "./PlutoCoreHealthcheck";
@@ -72,9 +72,17 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
       });
   }, [healthcheckStateChangeCount]);
 
-  const launchLastProject = () => {
+  const launchLastProject = async () => {
     if (lastOpenedProject) {
-      window.location.href = `pluto:openproject:${lastOpenedProject.id}`;
+      try {
+        await openProject(lastOpenedProject.id);
+      } catch (error) {
+        SystemNotification.open(
+          SystemNotifcationKind.Warning,
+          "An error occurred when attempting to open the project."
+        );
+        console.error(error);
+      }
     } else {
       console.error("Can't open last opened project as there is none set");
     }
