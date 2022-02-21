@@ -78,7 +78,7 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
         await openProject(lastOpenedProject.id);
       } catch (error) {
         SystemNotification.open(
-          SystemNotifcationKind.Warning,
+          SystemNotifcationKind.Error,
           "An error occurred when attempting to open the project."
         );
         console.error(error);

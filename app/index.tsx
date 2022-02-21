@@ -15,6 +15,7 @@ import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import { SystemNotification } from "pluto-headers";
 
 axios.interceptors.request.use(function (config) {
   const token = window.localStorage.getItem("pluto:access-token");
@@ -110,6 +111,7 @@ const App: React.FC = () => {
               <Route exact path="/" component={NewRootComponent} />
               <Route path="/" component={NotFoundComponent} />
             </Switch>
+            <SystemNotification />
           </UserContextProvider>
         </OAuthContextProvider>
       </PlutoThemeProvider>
