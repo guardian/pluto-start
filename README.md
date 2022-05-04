@@ -1,11 +1,23 @@
 # Pluto Start
 
 ## What is it?
+
 Pluto-start provides the user interface for the "home page" and also provides the oauth flow for user authentication.
 It's a frontend-only project that is built into Javascript from Typescript (mostly!) and is served via an nginx pod.
 
 Note that the top banner and menu bar, as well as parts of the login UI, are provided by the pluto-headers package: https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.
 
+## What is menuvalidator?
+
+menu-validator is a small commandline program that checks both the syntax and schema of a json menu definition file.
+It's used on the docker image at startup; the menu that is presented by pluto-headers is dynamically loaded from a json
+file provided by pluto-start. In production this json file is, in turn, provided by configuration in Kubernetes.
+
+If there was no validation, than a small schema error would break the entire UI for _every_ component. Therefore,
+we validate the provided menu at startup and refuse to run if there is a problem. Therefore any pod rollout will "stick"
+and prompt operator intervention.
+
+Why is it written in Go? Because it's small and simple.
 
 ## Prerequisites
 
@@ -27,9 +39,11 @@ in order to be able to meaningfully test pluto-start
 
 3. Ensure you have run `eval $(minikube docker-env)` so that Docker images get built into the prexit-local environment.
 
-4. Run `make` in the root directory to build a dev version of the frontend into a Docker image
+4. Run `make clean && make` in the root directory to build a dev version of the frontend into a Docker image. You can also run `make distclean` to remove
+   node_modules etc. as well.
 
 5. Either manually delete the currently running pluto-start pod or use the one-liner:
+
 ```bash
 kubectl delete pod $(kubectl get pods | grep pluto-start | awk '{print $1}')
 ```

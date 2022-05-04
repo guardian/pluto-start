@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --verbose",
     "dev": "webpack --mode development --watch",
+    "devbuild": "webpack --mode development",
     "build": "webpack --mode production",
     "lint": "prettier --check app __tests__",
     "lint:fix": "prettier --write app __tests__"
