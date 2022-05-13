@@ -9,6 +9,7 @@ import { ChevronRight } from "@material-ui/icons";
 import { makeLoginUrl, OAuthContext } from "pluto-headers";
 import NotLoggedInPanel from "./panels/NotLoggedInPanel";
 import HelpPanel from "./panels/HelpPanel";
+import ObitsPanel from "./panels/ObitsPanel";
 
 const rootComponentStyles = makeStyles((theme) => ({
   panelContent: {
@@ -83,6 +84,11 @@ const LoggedInRoot: React.FC = () => {
               //always show deliverables panel now, as we have the general "search for deliverables" option above
               onLoaded={(haveContent) => setShowDeliverables(true)}
             />
+          </Grid>
+        </Fade>
+        <Fade in={true}>
+          <Grid item className={classes.actionPanel}>
+            <ObitsPanel className={classes.panelContent} obitsToShow={4} />
           </Grid>
         </Fade>
       </Grid>

@@ -22,6 +22,7 @@ interface PlutoProject {
   sensitive: boolean;
   status: ProjectStatus;
   productionOffice: ProductionOffice;
+  isObitProject?: string;
 }
 
 interface PlutoAuditLog {

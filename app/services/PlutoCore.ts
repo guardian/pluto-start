@@ -50,6 +50,15 @@ async function GetMyRecentOpenProjects(
 
 export { GetMyRecentOpenProjects };
 
+async function GetRecentObits(wantedCount: number): Promise<PlutoProject[]> {
+  const response = await axios.get<PlutoCoreListResponse<PlutoProject>>(
+    `/api/project/obits?limit=${wantedCount}`
+  );
+  return response.data.result;
+}
+
+export { GetRecentObits };
+
 export const getFileData = async (id: number): Promise<FileEntry[]> => {
   try {
     const {
