@@ -22,6 +22,8 @@ async function stageTwoExchange(
 ): Promise<OAuthResponse> {
   const authCode = searchParams.get("code");
   const errorInUrl = searchParams.get("error");
+  const codeChallenge = sessionStorage.getItem("cx") as string | null; //this is set in OAuthContext.tsx, in pluto-headers, via makeLoginUrl()
+  sessionStorage.removeItem("cx");
 
   if (errorInUrl) {
     return {
@@ -44,6 +46,11 @@ async function stageTwoExchange(
     };
     console.log("passed client_id ", clientId);
 
+    if (!!codeChallenge && codeChallenge != "") {
+      console.log(`have code_verifier '${codeChallenge}' from step one`);
+      postdata["code_verifier"] = codeChallenge;
+    }
+
     const content_elements = Object.keys(postdata).map(
       (k) => k + "=" + encodeURIComponent(postdata[k])
     );
@@ -63,7 +70,7 @@ async function stageTwoExchange(
         const content = await response.json();
 
         return {
-          token: content.access_token,
+          token: content.id_token ?? content.access_token,
           refreshToken: content.hasOwnProperty("refresh_token")
             ? content.refresh_token
             : undefined,
