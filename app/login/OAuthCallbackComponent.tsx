@@ -57,7 +57,7 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
           if (response.error) {
             setLastError(response.error);
           } else {
-            const decodedData = await validateAndDecode(response);
+            const decodedData = await validateAndDecode(oAuthContext, response);
 
             if (decodedData) {
               const marshalledData = JwtData(decodedData);

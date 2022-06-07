@@ -1,4 +1,4 @@
-import { loadInSigningKey, verifyJwt } from "pluto-headers";
+import { loadInSigningKey, OAuthContextData, verifyJwt } from "pluto-headers";
 
 interface OAuthResponse {
   token?: string;
@@ -132,15 +132,15 @@ function delayedRequest(url: string, timeoutDelay: number, token: string) {
  *  * perform the validation of the token via jsonwebtoken library.
  * if validation fails then the returned promise is rejected
  * if validation succeeds, then the promise only completes once the decoded content has been set into the state.
- * @param response
  */
-async function validateAndDecode(response: OAuthResponse) {
-  const signingKey = await loadInSigningKey();
-
+async function validateAndDecode(
+  oAuthContext: OAuthContextData,
+  response: OAuthResponse
+) {
   if (response.token) {
     const decoded = await verifyJwt(
+      oAuthContext,
       response.token,
-      signingKey,
       response.refreshToken
     );
     /* Make a request to pluto-user-beacon (if available) to ensure that the user exists in Vidispine.

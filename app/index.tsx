@@ -5,7 +5,12 @@ import NotFoundComponent from "./NotFoundComponent";
 import OAuthCallbackComponent from "./login/OAuthCallbackComponent";
 import RefreshLoginComponent from "./RefreshLoginComponent";
 import StartingUpComponent from "./StartingUpComponent";
-import { Header, AppSwitcher, PlutoThemeProvider } from "pluto-headers";
+import {
+  Header,
+  AppSwitcher,
+  PlutoThemeProvider,
+  OAuthContextData,
+} from "pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent";
 import { OAuthContextProvider } from "pluto-headers";
 import { UserContextProvider } from "pluto-headers";
@@ -51,15 +56,15 @@ const App: React.FC = () => {
     return window.localStorage.getItem("pluto:access-token");
   };
 
-  useEffect(() => {
+  const oAuthConfigLoaded = (oAuthConfig: OAuthContextData) => {
     if (haveToken()) {
-      verifyExistingLogin()
+      verifyExistingLogin(oAuthConfig)
         .then((profile) => setUserProfile(profile))
         .catch((err) =>
           console.error("Could not verify existing user profile: ", err)
         );
     }
-  }, []);
+  };
 
   const logOutIfReferrer = () => {
     //If the referring URL contains '/oauth2/callback' the user is trying
@@ -75,10 +80,11 @@ const App: React.FC = () => {
       <PlutoThemeProvider>
         <CssBaseline />
         <Wallpaper />
-        <OAuthContextProvider>
+        <OAuthContextProvider onLoaded={oAuthConfigLoaded}>
           <UserContextProvider
             value={{
               profile: userProfile,
+
               updateProfile: (newValue) => setUserProfile(newValue),
             }}
           >
