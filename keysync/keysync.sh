@@ -5,7 +5,11 @@ if [ ! -f "/etc/oauth/config.json" ]; then
   exit 1
 fi
 
-JWKS_URI=$(jq -r .jwksUri < /etc/oauth/config.json)
+JWKS_URI=$(jq -r .jwksOriginUri < /etc/oauth/config.json)
+if [ "${JWKS_URI}" == "" ]; then
+  JWKS_URI=$(jq -r .jwksOriginUri < /etc/oauth/config.json)
+fi
+
 echo "INFO JWKS_URI is ${JWKS_URI}"
 
 if [ "${JWKS_URI}" == "" ]; then
