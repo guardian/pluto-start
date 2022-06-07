@@ -19,6 +19,11 @@ and prompt operator intervention.
 
 Why is it written in Go? Because it's small and simple.
 
+## What is keysync?
+
+keysync is a small Docker image containing `jq` and `curl`. It's used to regularly sync the JWKS signing keys from
+an external OAuth provider so we don't need to hit an external endpoint every time we validate.
+
 ## Prerequisites
 
 - Node.js environment, preferably v16. v17 is known to fail on the current version of Webpack. We use `nvm` to manage node versions.

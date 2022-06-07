@@ -69,6 +69,9 @@ deploy:
     - "echo ci_merge_request_title: \\\"${CI_MERGE_REQUEST_TITLE}\\\" >> build-info.yaml"
     - "echo ci_pipeline_iid: ${CI_PIPELINE_IID} >> build-info.yaml"
     - "echo built_image: guardianmultimedia/pluto-start:$CI_PIPELINE_IID >> build-info.yaml"
+    - cd ../keysync
+    - docker build . -t "guardianmultimedia/pluto-start-keysync:$CI_PIPELINE_IID"
+    - docker push "guardianmultimedia/pluto-start-keysync:$CI_PIPELINE_IID"
   artifacts:
     paths:
       - build/build-info.yaml
