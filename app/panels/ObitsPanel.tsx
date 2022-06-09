@@ -48,6 +48,12 @@ const ObitsPanel: React.FC<ProjectsPanelProps & { obitsToShow: number }> = (
       });
   }, [props.obitsToShow]);
 
+  function toTitleCase(str: string) {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
   return (
     <>
       <Paper className={clsx(props.className, classes.panel)}>
@@ -60,7 +66,7 @@ const ObitsPanel: React.FC<ProjectsPanelProps & { obitsToShow: number }> = (
           <PanelLauncher
             key={k}
             buttonLabel="Project page"
-            caption={obit.subject}
+            caption={toTitleCase(obit.subject)}
             onClick={() => openProject(obit.id)}
           >
             <Typography
