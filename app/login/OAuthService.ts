@@ -1,4 +1,8 @@
-import { loadInSigningKey, OAuthContextData, verifyJwt } from "pluto-headers";
+import {
+  loadInSigningKey,
+  OAuthContextData,
+  verifyJwt,
+} from "@guardian/pluto-headers";
 
 interface OAuthResponse {
   token?: string;
@@ -22,7 +26,7 @@ async function stageTwoExchange(
 ): Promise<OAuthResponse> {
   const authCode = searchParams.get("code");
   const errorInUrl = searchParams.get("error");
-  const codeChallenge = sessionStorage.getItem("cx") as string | null; //this is set in OAuthContext.tsx, in pluto-headers, via makeLoginUrl()
+  const codeChallenge = sessionStorage.getItem("cx") as string | null; //this is set in OAuthContext.tsx, in @guardian/pluto-headers, via makeLoginUrl()
   sessionStorage.removeItem("cx");
 
   if (errorInUrl) {

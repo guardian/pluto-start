@@ -303,6 +303,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
+"@guardian/pluto-headers@^2.0.0-pre6":
+  version "2.0.0-pre6"
+  resolved "https://npm.pkg.github.com/download/@guardian/pluto-headers/2.0.0-pre6/aeac139436b237f7814c73444b815ee003ba02d8bd06c38087072bac42e5ba69#385ffebd003900a82a80740d5e8d4aa1f7c1408d"
+  integrity sha512-AOJ4rVFDNbl/oHYuHmwHzE1hEgfTI3c++PPeRrgb3liFG2/HzuWNyaQnh3hqDBODweiHuO5RIgsNGRsI/KbXvQ==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -5693,9 +5698,6 @@ please-upgrade-node@^3.2.0:
   integrity sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==
   dependencies:
     semver-compare "^1.0.0"
-
-"pluto-headers@file:../pluto-headers":
-  version "1.6.2"
 
 pn@^1.1.0:
   version "1.1.0"

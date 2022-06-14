@@ -10,17 +10,17 @@ import {
   AppSwitcher,
   PlutoThemeProvider,
   OAuthContextData,
-} from "pluto-headers";
+} from "@guardian/pluto-headers";
 import LoggedOutComponent from "./LoggedOutComponent";
-import { OAuthContextProvider } from "pluto-headers";
-import { UserContextProvider } from "pluto-headers";
-import { JwtDataShape, verifyExistingLogin } from "pluto-headers";
+import { OAuthContextProvider } from "@guardian/pluto-headers";
+import { UserContextProvider } from "@guardian/pluto-headers";
+import { JwtDataShape, verifyExistingLogin } from "@guardian/pluto-headers";
 import { CssBaseline } from "@material-ui/core";
 import Wallpaper from "./Wallpaper";
 import NewRootComponent from "./NewRootComponent";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import { SystemNotification } from "pluto-headers";
+import { SystemNotification } from "@guardian/pluto-headers";
 
 axios.interceptors.request.use(function (config) {
   const token = window.localStorage.getItem("pluto:access-token");
