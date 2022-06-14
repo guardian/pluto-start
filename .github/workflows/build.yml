@@ -37,7 +37,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         shell: bash
         run: |
-          echo GITHUB_RUN_NUMBER=$(( GITHUB_RUN_NUMBER + 165 ))>> $
+          echo GITHUB_RUN_NUMBER=$(( GITHUB_RUN_NUMBER + 165 ))>> $GITHUB_ENV
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
