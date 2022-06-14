@@ -47,11 +47,12 @@ jobs:
       - run: if [ -d "junit-tests" ]; then mkdir junit-tests; fi
         name: Prepare test outputs location
 
-      - run: bash ./build/setup_headers.sh
-        env:
-          HEADERS_DEPLOY_USER: ${{ secrets.HEADERS_DEPLOY_USER }}
-          HEADERS_DEPLOY_TOKEN: ${{ secrets.HEADERS_DEPLOY_TOKEN }}
+      - run: "echo -e \"\n//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}\" >> .npmrc"
+        working-directory: frontend
+
       - run: yarn install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: yarn lint
       - run: yarn test
         env:
