@@ -80,10 +80,10 @@ jobs:
 
       - run: docker build build -t "guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }}"
 
-      - name: Tag docker image pluto-start
-        run: docker tag guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-versions-manager:${{ env.GITHUB_RUN_NUMBER }}
+      - name: Tag Docker image pluto-start
+        run: docker tag guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-start:${{ env.GITHUB_RUN_NUMBER }}
 
-      - name: Push docker image start
+      - name: Push Docker image pluto-start
         run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-start:${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Output build-info.yaml
