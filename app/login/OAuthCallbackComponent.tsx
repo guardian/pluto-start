@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { stageTwoExchange, validateAndDecode } from "./OAuthService";
-import { makeLoginUrl, UserContext } from "pluto-headers";
-import { JwtData, OAuthContext } from "pluto-headers";
+import { makeLoginUrl, UserContext } from "@guardian/pluto-headers";
+import { JwtData, OAuthContext } from "@guardian/pluto-headers";
 import {
   Button,
   Grid,
@@ -11,7 +11,7 @@ import {
   Link,
   Typography,
 } from "@material-ui/core";
-import { makeLoginUrl as buildLoginURL } from "pluto-headers";
+import { makeLoginUrl as buildLoginURL } from "@guardian/pluto-headers";
 import NotLoggedInPanel from "../panels/NotLoggedInPanel";
 import { Replay } from "@material-ui/icons";
 /**
@@ -57,7 +57,7 @@ const OAuthCallbackComponent: React.FC<{}> = () => {
           if (response.error) {
             setLastError(response.error);
           } else {
-            const decodedData = await validateAndDecode(response);
+            const decodedData = await validateAndDecode(oAuthContext, response);
 
             if (decodedData) {
               const marshalledData = JwtData(decodedData);

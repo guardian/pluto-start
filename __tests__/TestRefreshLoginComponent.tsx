@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import RefreshLoginComponent from "../app/RefreshLoginComponent";
-import { OAuthContext } from "pluto-headers";
+import { OAuthContext } from "@guardian/pluto-headers";
 import { MemoryRouter } from "react-router";
 import sinon from "sinon";
 

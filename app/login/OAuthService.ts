@@ -1,4 +1,8 @@
-import { loadInSigningKey, verifyJwt } from "pluto-headers";
+import {
+  loadInSigningKey,
+  OAuthContextData,
+  verifyJwt,
+} from "@guardian/pluto-headers";
 
 interface OAuthResponse {
   token?: string;
@@ -22,6 +26,8 @@ async function stageTwoExchange(
 ): Promise<OAuthResponse> {
   const authCode = searchParams.get("code");
   const errorInUrl = searchParams.get("error");
+  const codeChallenge = sessionStorage.getItem("cx") as string | null; //this is set in OAuthContext.tsx, in @guardian/pluto-headers, via makeLoginUrl()
+  sessionStorage.removeItem("cx");
 
   if (errorInUrl) {
     return {
@@ -44,6 +50,11 @@ async function stageTwoExchange(
     };
     console.log("passed client_id ", clientId);
 
+    if (!!codeChallenge && codeChallenge != "") {
+      console.log(`have code_verifier '${codeChallenge}' from step one`);
+      postdata["code_verifier"] = codeChallenge;
+    }
+
     const content_elements = Object.keys(postdata).map(
       (k) => k + "=" + encodeURIComponent(postdata[k])
     );
@@ -63,7 +74,7 @@ async function stageTwoExchange(
         const content = await response.json();
 
         return {
-          token: content.access_token,
+          token: content.id_token ?? content.access_token,
           refreshToken: content.hasOwnProperty("refresh_token")
             ? content.refresh_token
             : undefined,
@@ -125,15 +136,15 @@ function delayedRequest(url: string, timeoutDelay: number, token: string) {
  *  * perform the validation of the token via jsonwebtoken library.
  * if validation fails then the returned promise is rejected
  * if validation succeeds, then the promise only completes once the decoded content has been set into the state.
- * @param response
  */
-async function validateAndDecode(response: OAuthResponse) {
-  const signingKey = await loadInSigningKey();
-
+async function validateAndDecode(
+  oAuthContext: OAuthContextData,
+  response: OAuthResponse
+) {
   if (response.token) {
     const decoded = await verifyJwt(
+      oAuthContext,
       response.token,
-      signingKey,
       response.refreshToken
     );
     /* Make a request to pluto-user-beacon (if available) to ensure that the user exists in Vidispine.

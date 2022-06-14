@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
-import { UserContext } from "pluto-headers";
+import { UserContext } from "@guardian/pluto-headers";
 import { Paper } from "@material-ui/core";
 import PanelLauncher from "./PanelLauncher";
 import { GetMyRecentOpenProjects } from "../services/PlutoCore";

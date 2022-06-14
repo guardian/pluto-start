@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { UserContext } from "pluto-headers";
+import { UserContext } from "@guardian/pluto-headers";
 import { Button, Fade, Grid, Paper, Typography } from "@material-ui/core";
 import ProjectsPanel from "./panels/ProjectsPanel";
 import clsx from "clsx";
 import DeliverablesPanel from "./panels/DeliverablesPanel";
 import { ChevronRight } from "@material-ui/icons";
-import { makeLoginUrl, OAuthContext } from "pluto-headers";
+import { makeLoginUrl, OAuthContext } from "@guardian/pluto-headers";
 import NotLoggedInPanel from "./panels/NotLoggedInPanel";
 import HelpPanel from "./panels/HelpPanel";
 import ObitsPanel from "./panels/ObitsPanel";

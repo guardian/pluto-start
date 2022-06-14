@@ -82,3 +82,5 @@ interface StorageEntry {
 interface PlutoApiResponse<T> {
   result: T;
 }
+
+declare module "jwks-rsa";

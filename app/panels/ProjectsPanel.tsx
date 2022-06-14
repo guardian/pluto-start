@@ -14,7 +14,7 @@ import {
   SystemNotifcationKind,
   SystemNotification,
   UserContext,
-} from "pluto-headers";
+} from "@guardian/pluto-headers";
 import PanelLauncher from "./PanelLauncher";
 import { ProjectsPanelProps, usePanelStyles } from "./PanelsCommon";
 import { useStyles as useCommonStyles } from "../CommonStyles";
