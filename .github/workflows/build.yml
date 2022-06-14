@@ -72,14 +72,13 @@ jobs:
         with:
           files: junit-tests/*.xml
 
-      - run: cd build
-      - run: docker build . -t "guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }}"
+      - run: docker build build/Dockerfile -t "guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }}"
 
       - name: Tag docker image pluto-start
         run: docker tag guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-versions-manager:${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Push docker image start
-        run: docker push  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-start:${{ env.GITHUB_RUN_NUMBER }}
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pluto-start:${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Output build-info.yaml
         uses: fredex42/pluto-build-info@v1.1
