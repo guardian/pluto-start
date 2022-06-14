@@ -60,7 +60,7 @@ jobs:
           HEADERS_DEPLOY_TOKEN: ${{ secrets.HEADERS_DEPLOY_TOKEN }}
       - run: yarn install --frozen-lockfile
       - run: yarn lint
-      - run: yarn test-ci
+      - run: yarn test
         env:
           JEST_JUNIT_OUTPUT_DIR: junit-tests
           JEST_JUNIT_TITLE: Frontend tests
