@@ -76,7 +76,7 @@ jobs:
         working-directory: menuvalidator
         run: go build
 
-      - run: cp menuvalidator/menu-validator .
+      - run: cp menuvalidator/menu-validator build/menu-validator
 
       - run: docker build build -t "guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }}"
 
