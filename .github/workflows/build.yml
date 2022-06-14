@@ -72,6 +72,12 @@ jobs:
         with:
           files: junit-tests/*.xml
 
+      - name: Build menuvalidator
+        working-directory: menuvalidator
+        run: go build
+
+      - run: cp menuvalidator/menu-validator .
+
       - run: docker build build -t "guardianmultimedia/pluto-start:${{ env.GITHUB_RUN_NUMBER }}"
 
       - name: Tag docker image pluto-start
