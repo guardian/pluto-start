@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App: React.FC = () => {
-  const [startup, setStartup] = useState(true);
+  const [startup, setStartup] = useState(false);
 
   const [userProfile, setUserProfile] = useState<JwtDataShape | undefined>(
     undefined
