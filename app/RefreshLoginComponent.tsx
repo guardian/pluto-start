@@ -5,7 +5,6 @@ import { OAuthContext } from "@guardian/pluto-headers";
 import { useHistory } from "react-router";
 
 const RefreshLoginComponent: React.FC = () => {
-
   const oAuthContext = useContext(OAuthContext);
   const history = useHistory();
 
@@ -34,10 +33,7 @@ const RefreshLoginComponent: React.FC = () => {
     window.location.assign(makeLoginUrl());
   }
 
-  return (
-    <>
-    </>
-  );
+  return <></>;
 };
 
 export default RefreshLoginComponent;
