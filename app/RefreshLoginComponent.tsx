@@ -4,7 +4,7 @@ import AbsoluteRedirect from "./login/AbsoluteRedirect";
 import { OAuthContext } from "@guardian/pluto-headers";
 import { useHistory } from "react-router";
 
-const RefreshLoginComponent: React.FC<{}> = () => {
+const RefreshLoginComponent: React.FC = () => {
   const oAuthContext = useContext(OAuthContext);
   const history = useHistory();
 
@@ -29,12 +29,11 @@ const RefreshLoginComponent: React.FC<{}> = () => {
     return oAuthContext?.oAuthUri + "?" + encoded.join("&");
   };
 
-  return (
-    <AbsoluteRedirect
-      to={makeLoginUrl()}
-      descriptiveLabel="Redirecting to login service..."
-    />
-  );
+  if (oAuthContext) {
+    window.location.assign(makeLoginUrl());
+  }
+
+  return <></>;
 };
 
 export default RefreshLoginComponent;
