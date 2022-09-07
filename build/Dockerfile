@@ -8,6 +8,7 @@ COPY index.html /usr/share/nginx/html
 COPY menu-validator /usr/local/bin
 RUN /usr/local/bin/menu-validator -file /etc/menu-config/menu.json
 ADD static/ /usr/share/nginx/html/static
+COPY favicon.ico /usr/share/nginx/html
 COPY bundle.js /usr/share/nginx/html
 
 CMD /docker-entrypoint.sh
