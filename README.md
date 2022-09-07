@@ -54,3 +54,4 @@ kubectl delete pod $(kubectl get pods | grep pluto-start | awk '{print $1}')
 ```
 
 to do it automatically
+.
