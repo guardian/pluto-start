@@ -47,7 +47,7 @@ jobs:
       - run: if [ -d "junit-tests" ]; then mkdir junit-tests; fi
         name: Prepare test outputs location
 
-      - run: "echo -e \"\n//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}\" >> .npmrc"
+      - run: "echo -e \"\n//npm.pkg.github.com/:_authToken=${{secrets.ACTION}}\" >> .npmrc"
 
       - run: yarn install --frozen-lockfile
         env:
