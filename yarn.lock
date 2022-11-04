@@ -303,10 +303,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
-"@guardian/pluto-headers@^2.0.1-pre2":
-  version "2.0.1-pre2"
-  resolved "https://npm.pkg.github.com/download/@guardian/pluto-headers/2.0.1-pre2/ae93abe955f72f71b2bf054d2acf50af7b3d6bb3#ae93abe955f72f71b2bf054d2acf50af7b3d6bb3"
-  integrity sha512-VkvcHLnV3AxN6TUHA+g7tPdllnE3WE/pohwSOrhTTmCpoXdqG9Yph4NsfhMGssPOnhYrr/mTer8MMAhqktF7yw==
+"@guardian/pluto-headers@^2.0.1-pre4":
+  version "2.0.1-pre4"
+  resolved "https://npm.pkg.github.com/download/@guardian/pluto-headers/2.0.1-pre4/0f2251bb75caeac78d6c4cea60636282c17a52c6#0f2251bb75caeac78d6c4cea60636282c17a52c6"
+  integrity sha512-Tt/YuOWhKB2uXbWzOl+2K51i4FMJ78Y7tiZ+sPs+AjwS8ibPBgZ3341AdYA+AJP38IdDRkTWQb0ENIdpDodjxA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
