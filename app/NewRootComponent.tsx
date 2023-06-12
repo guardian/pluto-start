@@ -110,7 +110,9 @@ const LoggedOutRoot: React.FC = () => {
   };
 
   return (
-    <NotLoggedInPanel bannerText="You need to log in to access the Multimedia production system. When prompted enter your email address in the format firstname.lastname@theguardian.com, and then approve on your phone if prompted from the Microsoft Authenticator app">
+    <NotLoggedInPanel
+      bannerText={`You need to log in to access the Multimedia production system.<br><br>When prompted enter your email address in the format <em>firstname.lastname@theguardian.com</em>,<br>and then approve on your phone if prompted from the Microsoft Authenticator app`}
+    >
       <Grid item>
         <Button
           style={{ marginLeft: "auto", marginRight: "auto" }}
