@@ -8,7 +8,7 @@ import sinon from "sinon";
 describe("RefreshLoginComponent", () => {
   const oAuthData = {
     clientId: "my-clientid",
-    resource: "someresource",
+    scope: "somescope",
     redirectUri: "https://my-service/oauth2callback",
     oAuthUri: "https://my-oauth-server/adfs/oauth2/authorize",
     tokenUri: "https://my-oauth-server/token",
@@ -34,7 +34,7 @@ describe("RefreshLoginComponent", () => {
     expect(
       //@ts-ignore
       window.location.assign.calledWith(
-        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2Fpath%2Fto%2Fsome%2Fother%2Fservice"
+        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&scope=somescope&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2Fpath%2Fto%2Fsome%2Fother%2Fservice"
       )
     ).toBeTruthy();
     window.location.assign = originalAssign;
@@ -59,7 +59,7 @@ describe("RefreshLoginComponent", () => {
     expect(
       //@ts-ignore
       window.location.assign.calledWith(
-        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
+        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&scope=somescope&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
     ).toBeTruthy();
     window.location.assign = originalAssign;
@@ -83,7 +83,7 @@ describe("RefreshLoginComponent", () => {
     expect(
       //@ts-ignore
       window.location.assign.calledWith(
-        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
+        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&scope=somescope&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
     ).toBeTruthy();
   });
@@ -102,7 +102,7 @@ describe("RefreshLoginComponent", () => {
     expect(
       //@ts-ignore
       window.location.assign.calledWith(
-        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&resource=someresource&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
+        "https://my-oauth-server/adfs/oauth2/authorize?response_type=code&client_id=my-clientid&scope=somescope&redirect_uri=https%3A%2F%2Fmy-service%2Foauth2callback&state=%2F"
       )
     ).toBeTruthy();
   });
