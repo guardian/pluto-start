@@ -8,7 +8,10 @@ import * as crypto from "crypto";
 function generateCodeChallenge() {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
-  const str = array.reduce<string>((acc:string, x) => acc + x.toString(16).padStart(2, '0'), "");
+  const str = array.reduce<string>(
+    (acc: string, x) => acc + x.toString(16).padStart(2, "0"),
+    ""
+  );
   sessionStorage.setItem("cx", str);
   return str;
 }
@@ -30,7 +33,7 @@ const RefreshLoginComponent: React.FC = () => {
       scope: oAuthContext?.scope,
       redirect_uri: oAuthContext?.redirectUri,
       state: redirectState,
-      code_challenge: generateCodeChallenge()
+      code_challenge: generateCodeChallenge(),
     };
 
     const encoded = Object.entries(args).map(
