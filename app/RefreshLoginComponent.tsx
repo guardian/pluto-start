@@ -18,7 +18,7 @@ const RefreshLoginComponent: React.FC = () => {
     const args = {
       response_type: "code",
       client_id: oAuthContext?.clientId,
-      resource: oAuthContext?.resource,
+      scope: oAuthContext?.scope,
       redirect_uri: oAuthContext?.redirectUri,
       state: redirectState,
     };
