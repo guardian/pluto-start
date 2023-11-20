@@ -3,6 +3,15 @@ import QueryString from "query-string";
 import AbsoluteRedirect from "./login/AbsoluteRedirect";
 import { OAuthContext } from "@guardian/pluto-headers";
 import { useHistory } from "react-router";
+import * as crypto from "crypto";
+
+function generateCodeChallenge() {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  const str = array.reduce<string>((acc:string, x) => acc + x.toString(16).padStart(2, '0'), "");
+  sessionStorage.setItem("cx", str);
+  return str;
+}
 
 const RefreshLoginComponent: React.FC = () => {
   const oAuthContext = useContext(OAuthContext);
@@ -18,9 +27,10 @@ const RefreshLoginComponent: React.FC = () => {
     const args = {
       response_type: "code",
       client_id: oAuthContext?.clientId,
-      resource: oAuthContext?.resource,
+      scope: oAuthContext?.scope,
       redirect_uri: oAuthContext?.redirectUri,
       state: redirectState,
+      code_challenge: generateCodeChallenge()
     };
 
     const encoded = Object.entries(args).map(
