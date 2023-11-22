@@ -51,7 +51,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "expect": "^24.9.0",
     "husky": ">=4",
-    "jest": "^29.7.0",
+    "jest": "^26.0.1",
     "jest-cli": "^24.8.0",
     "jest-fetch-mock": "^3.0.1",
     "jest-junit": "^4.0.0",
