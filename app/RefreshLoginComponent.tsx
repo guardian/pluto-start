@@ -5,11 +5,15 @@ import { OAuthContext } from "@guardian/pluto-headers";
 import { useHistory } from "react-router";
 
 function generateCodeChallenge() {
-  const r =
+  const firstData =
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
     (Math.random() + 1).toString(36).substring(2) +
     (Math.random() + 1).toString(36).substring(2) +
     (Math.random() + 1).toString(36).substring(2) +
     (Math.random() + 1).toString(36).substring(2);
+  const r = firstData.substr(0, 64);
   sessionStorage.setItem("cx", r);
   return r;
 }
