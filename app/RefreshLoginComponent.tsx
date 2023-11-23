@@ -4,6 +4,20 @@ import AbsoluteRedirect from "./login/AbsoluteRedirect";
 import { OAuthContext } from "@guardian/pluto-headers";
 import { useHistory } from "react-router";
 
+function generateCodeChallenge() {
+  const firstData =
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2) +
+    (Math.random() + 1).toString(36).substring(2);
+  const r = firstData.substr(0, 64);
+  sessionStorage.setItem("cx", r);
+  return r;
+}
+
 const RefreshLoginComponent: React.FC = () => {
   const oAuthContext = useContext(OAuthContext);
   const history = useHistory();
@@ -18,9 +32,10 @@ const RefreshLoginComponent: React.FC = () => {
     const args = {
       response_type: "code",
       client_id: oAuthContext?.clientId,
-      resource: oAuthContext?.resource,
+      scope: oAuthContext?.scope,
       redirect_uri: oAuthContext?.redirectUri,
       state: redirectState,
+      code_challenge: generateCodeChallenge(),
     };
 
     const encoded = Object.entries(args).map(
