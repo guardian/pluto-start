@@ -1,7 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "@guardian/pluto-headers";
-import { Button, Fade, Grid, Paper, Typography } from "@material-ui/core";
+import {
+  Button,
+  Fade,
+  Grid,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  Link,
+} from "@material-ui/core";
 import ProjectsPanel from "./panels/ProjectsPanel";
 import clsx from "clsx";
 import DeliverablesPanel from "./panels/DeliverablesPanel";
@@ -10,6 +19,8 @@ import { makeLoginUrl, OAuthContext } from "@guardian/pluto-headers";
 import NotLoggedInPanel from "./panels/NotLoggedInPanel";
 import HelpPanel from "./panels/HelpPanel";
 import ObitsPanel from "./panels/ObitsPanel";
+import { getOverdueCommissions } from "./services/PlutoCore";
+import Alert from "@material-ui/lab/Alert";
 
 const rootComponentStyles = makeStyles((theme) => ({
   panelContent: {
@@ -28,6 +39,44 @@ const rootComponentStyles = makeStyles((theme) => ({
   forceWhite: {
     color: theme.palette.common.white,
     textShadow: "2px 2px 4px #00000070",
+  },
+  overdueAlert: {
+    margin: theme.spacing(2, 0), // Add some spacing
+    backgroundColor: theme.palette.error.dark, // Use a theme color for the background
+    color: theme.palette.getContrastText(theme.palette.error.dark),
+  },
+  overdueLink: {
+    color: theme.palette.getContrastText(theme.palette.error.dark),
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  listItem: {
+    padding: theme.spacing(0.5, 0), // Reduce padding for each list item for compactness
+  },
+  link: {
+    color: theme.palette.secondary.contrastText, // Use a color that stands out
+    fontWeight: "bold", // Make it bold to attract attention
+    "&:hover": {
+      textDecoration: "underline", // Underline on hover to indicate clickability
+    },
+  },
+}));
+
+const useStyles = makeStyles((theme) => ({
+  // existing styles...
+  overdueAlert: {
+    margin: theme.spacing(2, 0), // Add some spacing
+    backgroundColor: theme.palette.error.dark, // Use a theme color for the background
+    color: theme.palette.getContrastText(theme.palette.error.dark), // Ensure the text is readable on the error background
+  },
+  overdueLink: {
+    color: theme.palette.getContrastText(theme.palette.error.dark),
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
   },
 }));
 
@@ -131,7 +180,20 @@ const LoggedOutRoot: React.FC = () => {
 
 const NewRootComponent: React.FC = () => {
   const userContext = useContext(UserContext);
-  const classes = rootComponentStyles();
+  const classes = rootComponentStyles(); // Use custom useStyles instead of rootComponentStyles for the alert
+  const [overdueCommissions, setOverdueCommissions] = useState([]);
+
+  useEffect(() => {
+    if (userContext.profile) {
+      var user = `${userContext.profile.first_name}_${userContext.profile.family_name}`;
+      console.log("Fetching overdue commissions for", userContext.profile);
+      getOverdueCommissions(user)
+        .then((data) => setOverdueCommissions(data || []))
+        .catch((error) =>
+          console.error("Failed to fetch overdue commissions:", error)
+        );
+    }
+  }, [userContext.profile]);
 
   const displayName = () =>
     userContext.profile
@@ -140,14 +202,38 @@ const NewRootComponent: React.FC = () => {
         : userContext.profile.username
       : undefined;
 
+  const renderOverdueCommissionsAlert = () => (
+    <Alert severity="error" className={classes.overdueAlert}>
+      You have {overdueCommissions.length} overdue commission
+      {overdueCommissions.length > 1 ? "s" : ""}. Please adjust the scheduled
+      completion date if this commission is still ongoing.
+      <List>
+        {overdueCommissions.map((entry) => (
+          <ListItem key={entry["id"]} className={classes.listItem}>
+            <Link
+              href={`/pluto-core/commission/${entry["id"]}`}
+              className={classes.link}
+              underline="none"
+            >
+              {entry["title"]}
+            </Link>
+          </ListItem>
+        ))}
+      </List>
+    </Alert>
+  );
+
   return (
     <>
+      {overdueCommissions.length > 0 && renderOverdueCommissionsAlert()}
+
       <Typography
         variant="h1"
         className={clsx(classes.bannerText, classes.forceWhite)}
       >
         {userContext.profile ? `Welcome ${displayName()}` : "Welcome to Pluto"}
       </Typography>
+
       {userContext.profile ? <LoggedInRoot /> : <LoggedOutRoot />}
     </>
   );
