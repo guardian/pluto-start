@@ -10,7 +10,9 @@ import {
   List,
   ListItem,
   Link,
+  ButtonBase,
 } from "@material-ui/core";
+import Stack from "@mui/material/Stack";
 import ProjectsPanel from "./panels/ProjectsPanel";
 import clsx from "clsx";
 import DeliverablesPanel from "./panels/DeliverablesPanel";
@@ -22,7 +24,34 @@ import ObitsPanel from "./panels/ObitsPanel";
 import { getOverdueCommissions } from "./services/PlutoCore";
 import Alert from "@material-ui/lab/Alert";
 
-const rootComponentStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
+  fullwidthAlert: {
+    "&:hover": {
+      backgroundColor: theme.palette.warning.light,
+      cursor: "pointer",
+    },
+    width: "100%",
+  },
+  overdueAlert: {
+    margin: theme.spacing(2, 0),
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.getContrastText(theme.palette.error.main),
+    borderRadius: theme.shape.borderRadius,
+  },
+  overdueListItem: {
+    "&:hover": {
+      backgroundColor: theme.palette.error.light, // Lighter red on hover
+      cursor: "pointer", // Change cursor to pointer to indicate clickable
+    },
+  },
+  overdueListLink: {
+    textDecoration: "none",
+    color: theme.palette.getContrastText(theme.palette.error.main),
+    "&:hover": {
+      textDecoration: "underline", // Underline on hover to indicate clickability
+    },
+  },
   panelContent: {
     padding: "1em",
   },
@@ -40,50 +69,12 @@ const rootComponentStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
     textShadow: "2px 2px 4px #00000070",
   },
-  overdueAlert: {
-    margin: theme.spacing(2, 0), // Add some spacing
-    backgroundColor: theme.palette.error.dark, // Use a theme color for the background
-    color: theme.palette.getContrastText(theme.palette.error.dark),
-  },
-  overdueLink: {
-    color: theme.palette.getContrastText(theme.palette.error.dark),
-    textDecoration: "none",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  },
-  listItem: {
-    padding: theme.spacing(0.5, 0), // Reduce padding for each list item for compactness
-  },
-  link: {
-    color: theme.palette.secondary.contrastText, // Use a color that stands out
-    fontWeight: "bold", // Make it bold to attract attention
-    "&:hover": {
-      textDecoration: "underline", // Underline on hover to indicate clickability
-    },
-  },
-}));
-
-const useStyles = makeStyles((theme) => ({
-  // existing styles...
-  overdueAlert: {
-    margin: theme.spacing(2, 0), // Add some spacing
-    backgroundColor: theme.palette.error.dark, // Use a theme color for the background
-    color: theme.palette.getContrastText(theme.palette.error.dark), // Ensure the text is readable on the error background
-  },
-  overdueLink: {
-    color: theme.palette.getContrastText(theme.palette.error.dark),
-    textDecoration: "none",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  },
 }));
 
 const LoggedInRoot: React.FC = () => {
   const [showDeliverables, setShowDeliverables] = useState(true);
   const [showHelp, setShowHelp] = useState(true);
-  const classes = rootComponentStyles();
+  const classes = useStyles();
 
   const hideHelp = () => {
     localStorage.setItem("pluto-hide-help", "true");
@@ -180,18 +171,26 @@ const LoggedOutRoot: React.FC = () => {
 
 const NewRootComponent: React.FC = () => {
   const userContext = useContext(UserContext);
-  const classes = rootComponentStyles(); // Use custom useStyles instead of rootComponentStyles for the alert
+  const classes = useStyles(); // Use custom useStyles instead of rootComponentStyles for the alert
   const [overdueCommissions, setOverdueCommissions] = useState([]);
 
   useEffect(() => {
     if (userContext.profile) {
-      var user = `${userContext.profile.first_name}_${userContext.profile.family_name}`;
+      const user = `${userContext.profile.first_name}_${userContext.profile.family_name}`;
       console.log("Fetching overdue commissions for", userContext.profile);
-      getOverdueCommissions(user)
-        .then((data) => setOverdueCommissions(data || []))
-        .catch((error) =>
-          console.error("Failed to fetch overdue commissions:", error)
-        );
+
+      Promise.all([
+        getOverdueCommissions(user, "In Production"),
+        getOverdueCommissions(user, "New"),
+      ])
+        .then((results) => {
+          // Manually concatenate the arrays instead of using flat()
+          const combinedResults = [].concat(...results);
+          setOverdueCommissions(combinedResults || []);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch overdue commissions:", error);
+        });
     }
   }, [userContext.profile]);
 
@@ -203,24 +202,29 @@ const NewRootComponent: React.FC = () => {
       : undefined;
 
   const renderOverdueCommissionsAlert = () => (
-    <Alert severity="error" className={classes.overdueAlert}>
-      You have {overdueCommissions.length} overdue commission
-      {overdueCommissions.length > 1 ? "s" : ""}. Please adjust the scheduled
-      completion date if this commission is still ongoing.
-      <List>
-        {overdueCommissions.map((entry) => (
-          <ListItem key={entry["id"]} className={classes.listItem}>
-            <Link
-              href={`/pluto-core/commission/${entry["id"]}`}
-              className={classes.link}
-              underline="none"
-            >
-              {entry["title"]}
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Alert>
+    <Stack sx={{ width: "100%" }} spacing={2}>
+      <Alert variant="filled" className={classes.overdueAlert} severity="error">
+        You have {overdueCommissions.length} overdue commission
+        {overdueCommissions.length > 1 ? "s" : ""}. Please set the status to
+        "Completed" or adjust the scheduled completion date if the commission is
+        still ongoing.
+      </Alert>
+      {overdueCommissions.map((entry) => (
+        <ButtonBase
+          key={entry["id"]}
+          href={`/pluto-core/commission/${entry["id"]}`}
+          style={{ width: "100%", justifyContent: "flex-start" }} // Ensure the ButtonBase fills the container and aligns content to the start
+        >
+          <Alert
+            variant="filled"
+            className={classes.fullwidthAlert}
+            severity="warning"
+          >
+            {entry["title"]}
+          </Alert>
+        </ButtonBase>
+      ))}
+    </Stack>
   );
 
   return (
