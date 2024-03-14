@@ -212,10 +212,10 @@ const NewRootComponent: React.FC = () => {
   const renderOverdueCommissionsAlert = () => (
     <Stack sx={{ width: "100%" }} spacing={2}>
       <Alert variant="filled" className={classes.overdueAlert} severity="error">
-        You have {overdueCommissions.length} overdue commission
-        {overdueCommissions.length > 1 ? "s" : ""}. Please set the status to
-        "Completed" or adjust the scheduled completion date if the commission is
-        still ongoing.
+        You have {overdueCommissions.length} Commission
+        {overdueCommissions.length > 1
+          ? "s that have passed their completion dates. Please set their statuses to 'Completed' or adjust their scheduled completion dates if the commissions are still ongoing."
+          : " that has passed its completion date. Please set its status to 'Completed' or adjust the scheduled completion date if the commission is still ongoing."}
       </Alert>
       {overdueCommissions.map((entry) => (
         <ButtonBase
