@@ -114,3 +114,37 @@ export const openProject = async (id: number) => {
     "_blank"
   );
 };
+
+export const getOverdueCommissions = async (
+  user: string,
+  commission_status: string
+) => {
+  console.log("Fetching overdue commissions for", user);
+  // get today's date in the format 2024-02-14T00:00:00Z
+  const today = new Date();
+  // get date 1 month in the future
+  today.setMonth(today.getMonth() - 1);
+  const dateString = today.toISOString().split("T")[0].concat("T00:00:00Z");
+  console.log("Today's date - 1 month: ", dateString);
+  try {
+    const {
+      status,
+      data: { result },
+    } = await axios.put<PlutoApiResponse<any>>(
+      `/pluto-core/api/pluto/commission/list`,
+      {
+        match: "W_CONTAINS",
+        completionDateBefore: dateString, //"2024-02-14T00:00:00Z",
+        user: user.toLowerCase(),
+        status: commission_status,
+      }
+    );
+    if (status === 200) {
+      console.log("Overdue commissions: ", result);
+      return result;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
