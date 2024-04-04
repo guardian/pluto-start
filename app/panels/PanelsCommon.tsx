@@ -7,7 +7,7 @@ interface ProjectsPanelProps {
 
 const usePanelStyles = makeStyles((theme) => ({
   panel: {
-    backgroundColor: theme.palette.type == "dark" ? "#424242D0" : "#FBFBFBD0",
+    backgroundColor: theme.palette.type == "dark" ? "#424242E5" : "#FBFBFBE5",
   },
 }));
 
