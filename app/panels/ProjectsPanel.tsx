@@ -33,10 +33,8 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = (props) => {
     PlutoProject | undefined
   >(undefined);
   const [lastOpenedAt, setLastOpenedAt] = useState<Date | undefined>(undefined);
-  const [
-    healthcheckStateChangeCount,
-    setHealthcheckStateChangeCount,
-  ] = useState(0);
+  const [healthcheckStateChangeCount, setHealthcheckStateChangeCount] =
+    useState(0);
 
   const [showingCreateHelp, setShowingCreateHelp] = useState(false);
 
