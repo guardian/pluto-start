@@ -69,7 +69,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@guardian/pluto-headers": "^2.0.0-pre6",
+    "@guardian/pluto-headers": "^2.1.1",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.58",
