@@ -76,7 +76,7 @@
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.12",
     "ajv": "^6.12.3",
-    "axios": "^0.21.3",
+    "axios": "^1.6.0",
     "cross-storage": "^1.0.0",
     "css-loader": "^5.2.6",
     "date-fns": "^2.22.1",
