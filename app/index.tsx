@@ -89,7 +89,7 @@ const App: React.FC = () => {
             }}
           >
             <Header />
-            {userProfile ? <AppSwitcher /> : undefined}
+            <AppSwitcher />
             <Switch>
               <Route
                 exact

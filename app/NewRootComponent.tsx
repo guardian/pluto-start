@@ -281,16 +281,44 @@ const NewRootComponent: React.FC = () => {
 
   return (
     <>
-      {overdueCommissions.length > 0 && renderOverdueCommissionsAlert()}
-
       <Typography
         variant="h1"
         className={clsx(classes.bannerText, classes.forceWhite)}
       >
-        {userContext.profile ? `Welcome ${displayName()}` : "Welcome to Pluto"}
+        Pluto has been discontinued
       </Typography>
 
-      {userContext.profile ? <LoggedInRoot /> : <LoggedOutRoot />}
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={8} lg={6}>
+          <Paper
+            style={{
+              padding: "2rem",
+              textAlign: "center",
+              marginTop: "1.5rem",
+            }}
+          >
+            <Alert
+              variant="filled"
+              severity="warning"
+              style={{ marginBottom: "1.5rem" }}
+            >
+              This service is no longer available
+            </Alert>
+            <Typography variant="body1" style={{ marginBottom: "1rem" }}>
+              Pluto has been retired and replaced by a new system. Please use{" "}
+              <strong>Project Launcher</strong> to create new projects.
+            </Typography>
+            <Typography variant="body1">
+              If you need assistance or training on the new system, please
+              contact the Multimedia Tech team at{" "}
+              <Link href="mailto:multimediatech@theguardian.com">
+                multimediatech@theguardian.com
+              </Link>
+              .
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
     </>
   );
 };
